@@ -1,0 +1,26 @@
+# Stager Agent - Requirements
+# Python 3.11+
+
+# Web Framework
+fastapi>=0.109.0
+uvicorn[standard]>=0.27.0
+
+# HTTP Client
+httpx>=0.26.0
+
+# Data Validation
+pydantic>=2.5.0
+pydantic-settings>=2.1.0
+email-validator>=2.0.0
+
+# Image Processing
+Pillow>=10.2.0
+
+# Email (included in Python stdlib, but listed for clarity)
+# email, smtplib - stdlib
+
+# Optional: For development
+python-dotenv>=1.0.0
+
+# Optional: For async file operations (not strictly required)
+aiofiles>=23.2.0

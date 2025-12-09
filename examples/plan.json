@@ -1,0 +1,53 @@
+{
+  "job_id": "123-main-st-boston-ma-14f9c8",
+  "images": [
+    {
+      "id": "img_1",
+      "source_path": "raw/IMG_1234.jpg",
+      "room_type": "living_room",
+      "is_occupied": true,
+      "style": "modern_neutral",
+      "issues": [
+        "clutter",
+        "dim_lighting",
+        "dated_furniture"
+      ],
+      "nano_prompt": "Using the original photo as a base, keep the same camera angle, walls, windows, and flooring. Remove all existing furniture and clutter. Brighten the room with soft natural-looking light. Repaint the walls to a neutral warm white. Add modern, mid-century style furniture scaled realistically: a low-profile sofa in light gray fabric, a simple wooden coffee table, a modern floor lamp, and a small accent chair. Keep the view out the windows unchanged. Make the room feel clean, spacious, and move-in ready.",
+      "status": "staged",
+      "output_path": "staged/img_1_staged_final.jpg",
+      "error_message": null
+    },
+    {
+      "id": "img_2",
+      "source_path": "raw/IMG_1235.jpg",
+      "room_type": "bedroom",
+      "is_occupied": true,
+      "style": "modern_neutral",
+      "issues": [
+        "personal_items",
+        "cluttered_closet"
+      ],
+      "nano_prompt": "Using the original photo as a base, keep the same camera angle, walls, windows, and flooring. Remove all existing furniture, personal items, and clutter. Brighten the room with soft natural-looking light. Add modern bedroom furniture: a platform bed with neutral bedding in white and gray, matching nightstands with simple lamps, and a small bench at the foot of the bed. Add a subtle area rug under the bed. Make the room feel clean, spacious, and move-in ready.",
+      "status": "staged",
+      "output_path": "staged/img_2_staged_final.jpg",
+      "error_message": null
+    },
+    {
+      "id": "img_3",
+      "source_path": "raw/IMG_1236.jpg",
+      "room_type": "kitchen",
+      "is_occupied": false,
+      "style": "modern_neutral",
+      "issues": [
+        "empty_space",
+        "dim_lighting"
+      ],
+      "nano_prompt": "Using the original photo as a base, keep the same camera angle, walls, windows, cabinets, and flooring. The kitchen is vacant. Brighten the room with soft natural-looking light. Add modern kitchen staging: a simple fruit bowl on the counter, a small vase with greenery, and tasteful kitchen accessories. Add a pendant light above the island if there is one. Make the room feel clean, inviting, and move-in ready.",
+      "status": "staged",
+      "output_path": "staged/img_3_staged_final.jpg",
+      "error_message": null
+    }
+  ],
+  "created_at": "2025-12-04T18:31:20Z",
+  "updated_at": "2025-12-04T18:35:02Z"
+}

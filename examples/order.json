@@ -1,0 +1,16 @@
+{
+  "job_id": "123-main-st-boston-ma-14f9c8",
+  "airtable_record_id": "recXXXXXXXX",
+  "client": {
+    "name": "Jane Seller",
+    "email": "jane@example.com"
+  },
+  "address": "123 Main St, Boston, MA 02116",
+  "style": "modern_neutral",
+  "source": "fsbo_airtable",
+  "occupied": true,
+  "created_at": "2025-12-04T18:30:00Z",
+  "updated_at": "2025-12-04T18:31:12Z",
+  "status": "delivered",
+  "error_message": null
+}
