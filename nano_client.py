@@ -1,8 +1,8 @@
 """
-Nano Banana Client (gemini-2.5-flash-image) for conservative photo cleanup.
+Nano Banana Client (gemini-2.5-flash-image) for virtual staging.
 
-Uses Gemini's image generation/editing capabilities to clean up real estate photos.
-Philosophy: "Clean up this photo" not "lie about what this house is."
+Uses Gemini's image generation/editing capabilities to virtually stage real estate photos.
+Philosophy: "Stage this property to look move-in ready and professionally designed."
 
 Output: Dynamic aspect ratio matching the input image to prevent hallucinations.
 """
@@ -147,6 +147,9 @@ class NanoBananaClient:
     """
     Client for Gemini image generation model (gemini-2.5-flash-image / Nano Banana).
     Generates virtually staged room images from base photos and prompts.
+
+    Supports full virtual staging (adding furniture to vacant rooms) and
+    declutter/enhancement for occupied rooms.
     """
     
     def __init__(self, api_key: Optional[str] = None, base_url: Optional[str] = None):
@@ -174,16 +177,16 @@ class NanoBananaClient:
         image_size: Optional[str] = None
     ) -> bytes:
         """
-        Generate a cleaned-up version of the input image.
+        Generate a virtually staged version of the input image.
 
         Args:
             base_image_path: Path to the source image
-            prompt_text: Conservative cleanup prompt
+            prompt_text: Virtual staging prompt (full furniture staging or declutter)
             aspect_ratio: Output aspect ratio (auto-detected from input if not specified)
             image_size: Output size "1K", "2K", or "4K" (auto-detected from input if not specified)
 
         Returns:
-            Generated image as bytes
+            Generated staged image as bytes
 
         Raises:
             ValueError: If no image is returned
@@ -326,22 +329,61 @@ class NanoBananaClient:
         """
         # Extract the room type from the original prompt
         room_type = "room"
-        for rt in ["kitchen", "bathroom", "bedroom", "living room", "exterior", "hallway"]:
+        for rt in ["kitchen", "bathroom", "bedroom", "living room", "dining room", "exterior", "hallway", "office"]:
             if rt in original_prompt.lower():
                 room_type = rt
                 break
 
-        return f"""Clean up and enhance this {room_type} photo for a real estate listing.
+        # Detect if this is a vacant room needing staging or occupied room needing declutter
+        is_vacant = "stage this empty" in original_prompt.lower() or "vacant" in original_prompt.lower()
 
-Keep the same layout, walls, flooring, and all major fixtures exactly as they are.
+        # Detect style preference from original prompt (matches the 7 client-facing styles)
+        style = "neutral"
+        for s in ["traditional", "farmhouse", "coastal", "modern", "luxury", "neoclassical"]:
+            if s in original_prompt.lower():
+                style = s
+                break
 
-Remove any visible clutter, trash, or loose items to make the space look tidy.
+        if is_vacant:
+            # Staging fallback for vacant rooms
+            furniture_by_room = {
+                "bedroom": "a queen bed with headboard (standard size, not oversized), matching nightstands with lamps, and an area rug under the bed",
+                "living room": "a sofa (sized appropriately for the room), coffee table, accent chairs, area rug, and floor lamp",
+                "dining room": "a dining table with chairs (scaled to room size), area rug, and simple centerpiece",
+                "office": "a desk, desk chair, and small bookshelf",
+                "kitchen": "bar stools at the island if present, and minimal counter accessories",
+                "bathroom": "neatly rolled towels and a small plant",
+                "hallway": "a small console table and mirror if space allows",
+                "exterior": "outdoor seating on the porch if present",
+                "room": "appropriately sized furniture for the space"
+            }
+            furniture = furniture_by_room.get(room_type, furniture_by_room["room"])
 
-Apply professional photo enhancement: correct exposure, fix white balance, reduce haze, and make the image look sharp and high-quality like a DSLR photo.
+            return f"""VIRTUAL STAGING TASK: Stage this empty {room_type} photo for a real estate listing in a {style} style.
 
-Level the photo so vertical lines are truly vertical.
+KEEP ARCHITECTURE UNCHANGED: Keep the exact same layout, walls, flooring, windows, ceiling, and all architectural features from the original photo. Do NOT move walls, change flooring, or alter room dimensions.
 
-Do not add furniture, plants, or decor. Do not hide any damage. Keep it honest and realistic."""
+Add realistically scaled furniture: {furniture}. Include tasteful decor like plants and art that match the {style} style. All furniture must be properly sized for this specific room - do NOT use oversized furniture to fake room size.
+
+CRITICAL: Do NOT place any furniture, rugs, or decor to cover or hide any visible damage, stains, cracks, or wear on walls, floors, or ceiling. All defects must remain fully visible.
+
+Level the photo so vertical lines are truly vertical. Do NOT move camera horizontally or make the room appear larger.
+
+Apply professional photo enhancement: correct exposure, fix white balance, reduce haze. Result must be photorealistic."""
+
+        else:
+            # Declutter fallback for occupied rooms
+            return f"""VIRTUAL STYLING TASK: Clean up and enhance this {room_type} photo for a real estate listing.
+
+KEEP EVERYTHING UNCHANGED: Keep the exact same layout, walls, flooring, ceiling, and ALL major furniture exactly where it is. Do NOT remove or replace any furniture pieces.
+
+Remove only loose clutter, trash, and personal items to make the space look tidy. You may add ONLY small coordinating decor items (throw pillows, a small plant) that complement existing furniture.
+
+CRITICAL: Do NOT use any furniture, decor, or accessories to cover or hide any visible damage, stains, cracks, or wear. All defects must remain fully visible.
+
+Level the photo so vertical lines are truly vertical. Do NOT move camera horizontally.
+
+Apply professional photo enhancement: correct exposure, fix white balance, reduce haze. Result must be photorealistic."""
     
     def _extract_image_from_response(self, response: dict) -> Optional[bytes]:
         """

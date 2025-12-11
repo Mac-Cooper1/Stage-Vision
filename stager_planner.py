@@ -150,8 +150,8 @@ class StagerPlanner:
                 abs_path = job_dir / img.source_path
                 result = await self.gemini_client.analyze_image(
                     image_path=abs_path,
-                    style=order.style,
-                    is_occupied=order.occupied
+                    style_preference=order.style,
+                    comments=order.comments
                 )
                 
                 img.room_type = result.room_type

@@ -15,7 +15,8 @@ import httpx
 from config import get_settings
 from models import (
     Order, Plan, ImagePlan, ClientInfo,
-    AirtableWebhookPayload, JobStatus, ImageStatus
+    AirtableWebhookPayload, JobStatus, ImageStatus,
+    STYLE_MAPPING
 )
 from utils import generate_job_id, utc_now
 
@@ -92,8 +93,13 @@ class JobManager:
         (job_dir / "final").mkdir(parents=True, exist_ok=True)
         (job_dir / "logs").mkdir(parents=True, exist_ok=True)
 
-        # Parse occupied status (Yes/No from Airtable dropdown)
-        occupied = payload.fields.Occupied and payload.fields.Occupied.lower() in ("yes", "true", "1")
+        # Parse style from Airtable dropdown (map to internal enum value)
+        raw_style = payload.fields.Style or "Neutral"
+        style = STYLE_MAPPING.get(raw_style, "neutral")
+        logger.info(f"Style mapping: '{raw_style}' -> '{style}'")
+
+        # Get optional comments from client
+        comments = payload.fields.Comments
 
         # Create order
         order = Order(
@@ -104,7 +110,8 @@ class JobManager:
                 email=payload.fields.Email
             ),
             address=payload.fields.Address,
-            occupied=occupied,
+            style=style,
+            comments=comments,
             status=JobStatus.PENDING
         )
         

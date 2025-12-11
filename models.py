@@ -38,13 +38,34 @@ class ImageStatus(str, Enum):
 
 class StylePreference(str, Enum):
     """Available style preferences for staging."""
-    MODERN_NEUTRAL = "modern_neutral"
-    MODERN_MINIMALIST = "modern_minimalist"
-    COASTAL = "coastal"
-    FARMHOUSE = "farmhouse"
+    NEUTRAL = "neutral"
     TRADITIONAL = "traditional"
-    SCANDINAVIAN = "scandinavian"
-    MID_CENTURY = "mid_century"
+    FARMHOUSE = "farmhouse"
+    COASTAL = "coastal"
+    MODERN = "modern"
+    LUXURY = "luxury"
+    NEOCLASSICAL = "neoclassical"
+
+
+# Style mapping from Airtable dropdown text to internal enum values
+STYLE_MAPPING = {
+    # Short names
+    "Neutral": "neutral",
+    "Cozy Traditional": "traditional",
+    "Modern": "modern",
+    "Coastal": "coastal",
+    "Farmhouse": "farmhouse",
+    "Luxury": "luxury",
+    "Neoclassical": "neoclassical",
+    # Full dropdown values with descriptions
+    "Default (Clean, simple, light colors that work in almost any home.)": "neutral",
+    "Cozy Traditional (Warm, comfortable, classic furniture that feels lived-in but tidy.)": "traditional",
+    "Modern (Sleek lines, minimal clutter, and bolder contrast for a more updated look.)": "modern",
+    "Coastal (Bright, beachy, light woods and soft blues for an airy feel.)": "coastal",
+    "Farmhouse (Relaxed, country-style wood tones and simple rustic details.)": "farmhouse",
+    "Luxury (Higher-end furniture, richer textures, and more dramatic styling for upscale homes.)": "luxury",
+    "Neoclassical (Elegant, formal styling with traditional shapes and refined detailing.)": "neoclassical",
+}
 
 
 # ============================================================================
@@ -65,7 +86,8 @@ class AirtableFields(BaseModel):
     Name: str = Field(..., description="Client name")
     Email: EmailStr = Field(..., description="Client email")
     Address: str = Field(..., description="Property address")
-    Occupied: Optional[str] = Field(default="No", description="Is property occupied (Yes/No)")
+    Style: Optional[str] = Field(default="Neutral", description="Style preference dropdown")
+    Comments: Optional[str] = Field(default=None, description="Special instructions from client")
     Photos: list[AirtablePhoto] = Field(..., description="Uploaded photos")
 
     class Config:
@@ -115,7 +137,8 @@ class Order(BaseModel):
     client: ClientInfo
     address: str = Field(..., description="Property address")
     source: str = Field(default="fsbo_airtable")
-    occupied: bool = Field(default=False, description="Is property occupied (affects cleanup vs empty room)")
+    style: str = Field(default="neutral", description="Staging style preference")
+    comments: Optional[str] = Field(default=None, description="Client's special instructions")
     created_at: datetime = Field(default_factory=datetime.utcnow)
     updated_at: datetime = Field(default_factory=datetime.utcnow)
     status: JobStatus = Field(default=JobStatus.PENDING)
@@ -174,7 +197,7 @@ class GeminiAnalysisResult(BaseModel):
     room_type: str = Field(..., description="Type of room (living_room, bedroom, etc.)")
     is_occupied: bool = Field(..., description="Whether room has existing furniture")
     issues: list[str] = Field(default_factory=list, description="Issues to address")
-    suggested_style: str = Field(default="modern_neutral")
+    suggested_style: str = Field(default="neutral")
     staging_prompt: str = Field(..., description="Detailed prompt for staging")
 
 

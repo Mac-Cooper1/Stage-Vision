@@ -1,13 +1,16 @@
 """
-Gemini Client for image analysis and conservative cleanup prompt generation.
+Gemini Client for image analysis and virtual staging prompt generation.
 
-Uses Gemini vision model to analyze room photos and create conservative cleanup prompts.
-Philosophy: "Clean up this photo" not "lie about what this house is."
+Uses Gemini vision model to analyze room photos and create professional virtual staging prompts.
+Philosophy: "STRIP AND REFURNISH - remove all furniture and restage from scratch."
 
-We use conservative prompts that:
-- Lock down structure (walls, windows, cabinets, flooring, main furniture)
-- Only allow removable clutter to change
-- Standardize photo quality (lighting, straightening, more professional, etc.)
+We use intelligent staging prompts that:
+- STRIP all existing furniture and decor (whether vacant or occupied)
+- REFURNISH with stylish furniture appropriate to the room type and selected style
+- Apply style-specific design briefs (Neutral, Traditional, Farmhouse, Coastal, Modern, Luxury, Neoclassical)
+- Maintain structural honesty (walls, windows, flooring unchanged, damage visible)
+- Apply professional photo enhancement (lighting, straightening, color correction)
+- Keep furniture realistically scaled - never fake room dimensions
 """
 
 import base64
@@ -22,7 +25,7 @@ import httpx
 from config import get_settings
 from models import (
     Order, Plan, ImagePlan, GeminiAnalysisResult,
-    ImageStatus
+    ImageStatus, StylePreference
 )
 
 logger = logging.getLogger(__name__)
@@ -30,7 +33,11 @@ logger = logging.getLogger(__name__)
 
 class GeminiPlannerClient:
     """
-    Client for Gemini vision API to analyze room photos and generate staging prompts.
+    Client for Gemini vision API to analyze room photos and generate virtual staging prompts.
+
+    Supports 7 staging styles (Neutral, Traditional, Farmhouse, Coastal, Modern, Luxury, Neoclassical).
+    Uses STRIP AND REFURNISH approach: all rooms get furniture removed and restaged from scratch,
+    regardless of whether they're currently vacant or occupied.
     """
     
     def __init__(self, api_key: Optional[str] = None, base_url: Optional[str] = None):
@@ -49,190 +56,446 @@ class GeminiPlannerClient:
         
         logger.info(f"GeminiPlannerClient initialized with model: {self.model}")
     
-    def _build_analysis_prompt(self, is_occupied: bool) -> str:
+    def _build_analysis_prompt(self, is_occupied: bool, style_preference: str = "neutral", comments: str = None) -> str:
         """
-        Build the system prompt for conservative image analysis.
+        Build the system prompt for virtual staging image analysis.
 
-        Philosophy: We're a "clean up this photo" tool, not a "lie about what this house is" tool.
+        Philosophy: STRIP AND REFURNISH - regardless of whether the room is vacant or occupied,
+        we remove all existing furniture and decor, then restage from scratch in the selected style.
+        Occupancy only describes the input state, not the behavior.
 
-        Uses a 4-paragraph prompt skeleton with room-type specific patterns and gold examples.
+        Uses a 4-paragraph prompt skeleton with room-type specific staging patterns and gold examples.
         """
-        return f"""You are a real estate photo analyst creating CONSERVATIVE, MLS-safe cleanup prompts for Nano Banana (an AI image editor).
+        # Style-specific design briefs - comprehensive guidance for each of 7 client-facing styles
+        style_guides = {
+            "neutral": {
+                "description": "Safe, bright, works almost anywhere - clean-lined and understated",
+                "palette": "soft whites, light greys, light beige, light wood, small black accents",
+                "colors": "soft whites, light greys, light beige, light wood, small black accents",
+                "furniture": "clean-lined sofas/beds, simple straight-leg tables, un-fussy dining chairs, platform beds",
+                "decor": "minimal – a few pillows, throws, very simple art, plain lamps",
+                "rugs": "solid neutrals or subtle patterns in light grey or beige",
+                "lighting": "simple lamps, clean fixtures, drum shades",
+                "overall": "safe, bright, works almost anywhere"
+            },
+            "traditional": {
+                "description": "Comfortable, lived-in, family-friendly with warm classic furniture",
+                "palette": "warm creams, beiges, muted blues/greens, medium wood tones",
+                "colors": "warm creams, beiges, muted blues/greens, medium wood tones",
+                "furniture": "rolled-arm sofas, classic headboards, wooden coffee & side tables, wingback chairs",
+                "decor": "table lamps, framed art, a few books, soft rugs",
+                "rugs": "traditional patterns, warm tones, oriental-inspired",
+                "lighting": "classic lamps with pleated shades, traditional fixtures, brass or bronze finishes",
+                "overall": "comfortable, lived-in, family-friendly"
+            },
+            "farmhouse": {
+                "description": "Relaxed country feel without getting kitschy - warm woods and rustic details",
+                "palette": "white, warm woods, black metal accents, muted greens",
+                "colors": "white, warm woods, black metal accents, muted greens, off-whites",
+                "furniture": "wood dining tables, X-back or spindle chairs, rustic coffee tables, simple benches",
+                "decor": "woven baskets, simple checked/striped textiles, metal/wood lighting",
+                "rugs": "natural fibers, braided rugs, simple patterns",
+                "lighting": "industrial pendants, lantern-style fixtures, edison bulb accents",
+                "overall": "relaxed country feel without getting kitschy"
+            },
+            "coastal": {
+                "description": "Bright, breezy, beach-adjacent - light and airy without seashell explosion",
+                "palette": "white, sand, very light grey, soft blues, light oak",
+                "colors": "white, sand, very light grey, soft blues, light oak, driftwood tones",
+                "furniture": "slipcovered sofas, light wood or white tables, airy chairs, rattan accents",
+                "decor": "light rugs, linen-like curtains, simple coastal art (no seashell explosion)",
+                "rugs": "natural fiber jute/sisal, light blue patterns",
+                "lighting": "white ceramic lamps, natural woven shades, rope accents",
+                "overall": "bright, breezy, beach-adjacent"
+            },
+            "modern": {
+                "description": "Sharp, updated, minimal clutter - high contrast with clean lines",
+                "palette": "high contrast – white/black/charcoal, with occasional bold accent",
+                "colors": "white/black/charcoal contrast, occasional bold accent color, glass/metal materials",
+                "furniture": "low, boxy sofas; platform beds; thin-legged tables; glass/metal pieces",
+                "decor": "minimal art, clean lines, a few sculptural objects",
+                "rugs": "solid colors or bold geometric patterns",
+                "lighting": "minimalist pendants, track lighting, arc lamps",
+                "overall": "sharp, updated, minimal clutter"
+            },
+            "luxury": {
+                "description": "High-end designer showcase - rich materials, layered textures, statement pieces. NOT sterile hotel-lobby beige",
+                "palette": "rich neutrals (taupe, greige) with 1-2 muted accent colors (soft charcoal, muted blue/green, warm rust) for character",
+                "colors": "rich neutrals (taupe, greige), deep accents (navy, forest, charcoal), brass/gold metals, marble/stone textures",
+                "furniture": "substantial plush sofas in bouclé/velvet, upholstered headboards, marble or statement coffee tables, furniture that feels custom",
+                "decor": "large contemporary art, mirrors, textured pillows/throws in varied fabrics (velvet, linen, wool), sculptural objects",
+                "rugs": "large plush rugs that anchor seating areas (front legs of all furniture on rug), sophisticated patterns, high-end materials",
+                "lighting": "statement lighting as focal points - chandeliers, dramatic pendants, layered with sconces and table lamps",
+                "overall": "high-end designer showcase - substantial, comfortable, inviting. Avoid sterile hotel-lobby symmetry",
+                "textures": "layer bouclé, velvet, linen, wool so space feels lived-in and tactile, not flat",
+                "focal_point": "each room needs a hero moment - art above fireplace, styled coffee table, dramatic chandelier"
+            },
+            "neoclassical": {
+                "description": "Elegant and formal, especially for older or more stately homes",
+                "palette": "creams, soft whites, muted gold, dusky blues/greens, dark wood accents",
+                "colors": "creams, soft whites, muted gold, dusky blues/greens, dark wood accents",
+                "furniture": "more formal silhouettes, panelled or tufted headboards, framed traditional art",
+                "decor": "classic lamps, wall art, maybe simple molding-friendly details (but no architectural changes)",
+                "rugs": "oriental patterns, Persian-style designs",
+                "lighting": "chandeliers, brass table lamps, classic sconces",
+                "overall": "elegant and formal, especially for older or more stately homes"
+            }
+        }
+
+        style_guide = style_guides.get(style_preference, style_guides["neutral"])
+
+        # Build client special instructions section if comments provided
+        comments_section = ""
+        if comments and comments.strip():
+            comments_section = f"""
+=== CLIENT SPECIAL INSTRUCTIONS ===
+The client has provided these specific instructions:
+"{comments}"
+
+Consider these instructions when staging. If the client mentions specific rooms or requests
+(e.g., "stage small bedroom as nursery", "kitchen needs bar stools"), apply that guidance
+to the relevant images. Incorporate their preferences while maintaining the selected style.
+"""
+
+        return f"""You are a professional virtual staging designer creating beautiful, realistic staging prompts for Gemini's image editor.
+
+=== CRITICAL: VIRTUAL STAGING ONLY - DO NOT REGENERATE THE ROOM ===
+
+Treat this as a VIRTUAL STAGING task on top of the existing photograph, NOT a full room regeneration.
+Use the original image as the strict base layer:
+- Keep ALL walls, doors, windows, trim, flooring, ceiling height, and built-in elements EXACTLY where they are
+- Do NOT move, resize, or remove ANY architectural features or built-ins
+- Do NOT change paint colors, flooring materials, or window sizes
+- Only adjust lighting/photo quality - NEVER alter the physical space itself
+- The "bones" of the room must remain 100% unchanged from the original photo
 
 === CORE PRINCIPLES ===
 
-1. ANCHOR TO THE ACTUAL PHOTO
-   Make it clear we're editing the uploaded image, not generating a new one.
+1. PRESERVE STRUCTURE & ARCHITECTURE (NON-NEGOTIABLE)
+   Keep walls, windows, doors, flooring, ceiling, and built-in features exactly as they are.
+   Do not move walls, add windows, change flooring materials, or alter room dimensions.
+   The room's shell must be identical to the original photo.
 
-2. LOCK DOWN STRUCTURE
-   Explicitly list what must stay: layout, walls, windows, doors, cabinets, major furniture, flooring.
+2. FURNITURE SCALE AND ROOM HONESTY (CRITICAL)
+   When adding furniture or decor, keep all pieces at REALISTIC PHYSICAL SCALE for the room:
+   - Beds, sofas, tables, and chairs must be sized so they would comfortably fit in the actual floor area visible
+   - Do NOT use oversized or undersized furniture to make the room appear larger, wider, or deeper than it is
+   - Do NOT widen the field of view or push the back wall farther away
+   - The perceived dimensions of the room MUST match the original photo exactly
+   - A small room should look like a nicely staged small room, not a fake large room
 
-3. ONLY CHANGE REMOVABLE STUFF
-   Declutter loose objects, trash, personal items, scattered decor.
-   Light staging is okay, but only with simple, believable objects.
+3. DO NOT USE STAGING TO HIDE DEFECTS (MLS COMPLIANCE - CRITICAL)
+   NEVER use furniture, rugs, curtains, or decor to hide visible defects in the property:
+   - Do NOT cover holes, cracks, stains, damaged trim, damaged flooring, or other issues
+   - Do NOT strategically place couches, beds, rugs, plants, or artwork to obscure damage
+   - If damage is visible in the original image, it MUST remain visible and unobstructed in the staged version
+   - Do NOT fix, repaint, patch, blur, or cover any damage to walls, ceilings, floors, doors, windows, trim, or fixtures
+   - Do NOT invent or add damage that doesn't exist in the original
+   - This is LEGALLY REQUIRED for MLS honesty - violations can result in lawsuits
 
-4. PROFESSIONAL PHOTO ENHANCEMENT
+4. CAMERA ANGLE AND LEVELING (CRITICAL)
+   You may adjust the camera ONLY in ways that make the shot look professionally photographed while staying honest:
+
+   ALWAYS DO:
+   - Level the image so horizontals are straight and vertical lines (walls, doors, windows, posts, cabinets) are truly vertical
+
+   MAY DO:
+   - Adjust the apparent camera height slightly (a bit higher or lower) if it improves composition
+   - Adjust vertical angle (pitch) slightly for better framing
+
+   MUST NOT DO:
+   - Move the camera horizontally to a different wall or corner
+   - Swing the view left or right (yaw) to reveal new walls, doors, windows, or areas not visible in the original
+   - Widen the field of view to make the room appear larger
+   - Pull the back wall farther away to fake depth
+   - Invent or hallucinate any part of the room that wasn't photographed
+
+5. STYLE CONSISTENCY FOR THIS PROPERTY
+   Style: {style_preference.upper().replace('_', ' ')}
+   {style_guide['description']}
+   Colors: {style_guide['colors']}
+
+   Apply this style consistently:
+   - All staged furniture and decor must match this style's palette and aesthetic
+   - Colors, materials, and forms should be cohesive throughout
+   - Match the style to a believable price point for this property (attractive but not ultra-luxury unless the base photo supports it)
+   - Do NOT mix multiple unrelated design styles in the same room
+
+6. PROFESSIONAL PHOTO ENHANCEMENT
    Apply professional-level photographic improvements:
    - Correct exposure and increase contrast slightly for a crisp, well-defined look
-   - Correct white balance to neutralize color casts (whites should look clean, not unnaturally bright)
-   - Reduce noise and haze so the image looks sharp and high-quality like a DSLR photo
-   - Subtly refine brightness and uniformity of walls/ceilings so they look freshly cleaned (but do NOT change paint color or hide damage)
-   - Result should be photorealistic - no "AI art" vibe
+   - Correct white balance to neutralize color casts
+   - Reduce noise and haze so the image looks sharp like a DSLR photo
+   - Enhance natural lighting - make rooms feel bright and welcoming
+   - Result should be photorealistic - absolutely NO "AI art" vibe
 
-5. CAMERA ANGLE ADJUSTMENTS (CRITICAL - READ CAREFULLY)
-   We WANT the model to make the shot look like a professional real-estate photo. We do NOT want it to invent unseen parts of the room.
+7. REALISTIC FURNITURE PLACEMENT
+   - Furniture must be properly scaled to the room dimensions (see principle #2)
+   - Maintain realistic proportions and perspective
+   - Leave appropriate walkways and spacing - don't overfill the room
+   - Furniture should appear grounded with proper shadows and reflections
+   - Circulation paths must be believable
 
-   ALLOWED (do these assertively):
-   - Level the photo so the horizon is level and all vertical lines (walls, door frames, windows, posts) are truly vertical
-   - Adjust the vertical angle (pitch) and apparent camera height - raise or lower the view for better composition
-   - Gently correct roll/tilt for a more professional look
-   - Minor framing adjustments that improve the composition without revealing new areas
+8. TASTEFUL DECOR
+   - Add appropriate decorative items: plants, art, rugs, throw pillows, lamps
+   - Keep decor cohesive with the style preference
+   - Don't over-stage - less is often more
+   - Plants should be realistic and appropriate for indoor spaces
 
-   FORBIDDEN (never do these):
-   - Moving the camera horizontally to a different corner or wall
-   - Swinging the view (yaw) left/right to reveal walls, doors, windows, or surfaces not visible in the original
-   - Making the room appear larger by widening the field of view or pulling the back wall farther away
-   - Inventing or hallucinating parts of the room that were not photographed
+9. RUG ANCHORING (CRITICAL FOR COHESION)
+   - Use a large area rug that extends under all seating, with at least the front legs of all sofas and chairs on the rug
+   - The rug should make the furniture read as one cohesive conversation area, not isolated pieces
+   - Choose a rug with subtle, sophisticated pattern or texture that complements wood tones and doesn't fight the architecture
+   - Rug should be proportional to the seating area - err on the side of larger, not smaller
 
-   In plain terms: You may adjust vertical angle and camera height freely, but do not shift left/right or reveal new surfaces. Light lateral movement is acceptable ONLY if it does not expose made-up areas.
+10. FOCAL POINTS (ONE PER ROOM)
+   - Every room needs ONE clear focal point that photographs incredibly well
+   - Living room: large art above fireplace + beautifully styled coffee table
+   - Dining room: floral centerpiece or sculptural object + chandelier/pendant
+   - Bedroom: headboard wall with art + styled nightstands
+   - Keep the rest of the decor quieter so the focal point stands out
+   - The focal point should draw the eye immediately when viewing the photo
 
-6. NEVER HIDE OR INVENT DAMAGE
-   - Do NOT fix, repaint, patch, blur, or cover any damage to walls, ceilings, floors, doors, windows, trim, or fixtures
-   - Keep any visible cracks, stains, holes, scuffs, peeling paint, or worn areas clearly visible and unchanged
-   - Do NOT invent or add damage that is not in the original photo - if the walls are clean, keep them clean
-   - The AI can clean up mess, but it CANNOT change the actual physical condition of the home
-   - This is critical for MLS honesty - buyers must see the real condition, no better AND no worse
+11. SHELF & BOOKCASE STYLING (AVOID CLONE LOOK)
+   - Style shelves with a CURATED but VARIED mix - not identical repeating objects
+   - Books: different heights and spine colors within a soft, muted palette
+   - Mix in sculptural objects, small plants, 1-2 framed photos or art pieces
+   - Leave some negative space on shelves - don't overstuff
+   - NEVER repeat the same object, vase, or book stack multiple times across shelves
 
-7. NO NEW PLANTS OR DECOR
-   - Do NOT add plants, flowers, or greenery that are not already in the photo
-   - Do NOT add new decorative items - only tidy or remove existing ones
-   - Staging must use only items that are already present in the room
+12. MICRO-REALISM (SUBTLE LIFE)
+   - Allow very subtle natural variation so the room feels lived-in rather than rendered
+   - A pillow that isn't perfectly rigid, a throw with a slight realistic fold
+   - Bed linens with natural drape, not frozen stiff
+   - Keep it subtle - the room should still look professionally staged, just not sterile
 
-8. EMPHASIZE REALISM & MLS SAFETY
-   No new architecture, no fake high-end finishes, no major repairs magically fixed.
-   We clean up what a seller could do in 20 minutes - we do NOT lie about the house.
+=== FULL VIRTUAL STAGING – STRIP AND REFURNISH ===
 
-=== PROPERTY STATUS ===
-This property is: {"OCCUPIED" if is_occupied else "VACANT"}
+For virtual staging, REMOVE ALL existing furniture and decor and REFURNISH the room from scratch in the selected style.
 
-{"OCCUPIED means: Keep all existing furniture, cabinets, appliances, fixtures. Remove only loose clutter. Make beds with existing bedding. DO NOT replace or swap furniture." if is_occupied else "VACANT means: DO NOT add any furniture or staging items. Only improve lighting and straighten. Show the real empty room."}
+Treat the room as an EMPTY ARCHITECTURAL SHELL: keep only the walls, doors, windows, trim, flooring, built-ins, and any visible damage.
+
+You MUST REMOVE: beds, sofas, chairs, tables, dressers, rugs, lamps, artwork, and personal decor – even if the room is currently furnished.
+
+Then ADD a complete, realistic furniture layout appropriate for the room type and the selected style.
+
+CRITICAL: Do NOT hide or cover holes, cracks, stains, or other damage with furniture, rugs, or decor — defects must remain visible.
+
+=== OCCUPANCY DESCRIBES INPUT, NOT BEHAVIOR ===
+
+You will detect whether the room is OCCUPIED (has existing furniture) or VACANT (empty/nearly empty). This describes the CURRENT STATE of the input image only.
+
+REGARDLESS of occupancy status, the behavior is ALWAYS THE SAME:
+1. STRIP THE ROOM: Remove all existing furniture and decor
+2. RESTAGE THE ROOM: Add a complete furniture layout in the {style_preference.replace('_', ' ')} style
+
+For this virtual staging pipeline, you may remove all existing furniture and decor whether the room is currently vacant or occupied. Occupancy only describes the current state – the goal is ALWAYS to show a fully virtually staged version.
+
+=== STAGING REQUIREMENTS (FOR ALL ROOMS) ===
+
+After stripping, add a complete {style_preference.replace('_', ' ')} furniture set:
+- Main furniture pieces appropriate for room type (bed, sofa, dining table, desk, etc.)
+- Accent pieces (nightstands, coffee table, side tables, accent chairs)
+- Area rug appropriately sized and positioned
+- Lighting (floor lamps, table lamps, enhanced overhead light)
+- Plants and greenery
+- Wall art
+- Throw pillows, blankets, and soft accessories
+
+Keep circulation paths believable - do NOT overfill the room.
+All furniture must be properly scaled to fit the actual room dimensions.
+Do NOT alter the existing finishes (walls, floors, windows, built-ins).
+The goal is "move-in ready showcase" that helps buyers visualize living there.
+
+=== STYLE GUIDE: {style_preference.upper().replace('_', ' ')} ===
+{style_guide['description']}
+
+Furniture: {style_guide['furniture']}
+Decor: {style_guide['decor']}
+Rugs: {style_guide['rugs']}
+Lighting: {style_guide['lighting']}
 
 === 4-PARAGRAPH PROMPT SKELETON ===
 
-Your staging_prompt MUST follow this exact structure:
+Your staging_prompt MUST follow this exact structure. ALL rooms get fully staged (strip + refurnish):
 
 PARAGRAPH 1 - Context & Goal:
-"Using this uploaded [room type] photo, create a cleaner, brighter, professional real-estate listing image."
+"Using this uploaded [room type] photo, create a fully virtually staged real-estate listing image in a {style_preference.replace('_', ' ')} style. Keep the same architectural shell: walls, windows, doors, trim, ceiling height, flooring, and any built-in elements must stay exactly where they are. Do not move walls, add or remove windows, change flooring, or alter the size or position of doors or openings. Do not fix, repaint, patch, or cover any visible cracks, stains, holes, or other damage; these must remain visible."
 
-PARAGRAPH 2 - What Must Stay (be room-specific):
-"Keep the same [layout + key structures for this room type] – for example, the walls, windows, doors, [major built-ins / cabinets / tub / appliances / main furniture] and overall proportions of the room. Do not move walls, add or remove windows, change flooring, or replace major furniture or fixtures."
+PARAGRAPH 2 - Strip the Room:
+"First, STRIP THE ROOM: remove all existing furniture and decor, including [list specific items you see - sofas, beds, chairs, tables, shelves, TV, rugs, freestanding lamps, personal items], so the room appears unfurnished while still showing the true architecture and any visible defects. Do not hide or cover damaged areas with furniture or rugs."
 
-PARAGRAPH 3 - Declutter + Light Staging (what can change):
-{"For OCCUPIED: \"Virtually declutter by removing only loose, movable clutter such as [list specific loose/personal items you see] from [surfaces / floor / specific areas]. Do not add any new plants, flowers, or decorative items - only tidy or remove existing ones. Do not fix, repaint, or cover any damage to walls, ceilings, floors, doors, windows, trim, or fixtures; keep any visible cracks, stains, holes, scuffs, or worn areas clearly visible and unchanged. Do not invent or add damage that is not in the original photo. [Keep accessibility gear if present]. Straighten and neaten [bed / towels / cushions] while keeping their existing color and pattern.\"" if is_occupied else "For VACANT: \"Do not add furniture, plants, or staging items to this empty room. Do not fix, repaint, or cover any damage to walls, ceilings, floors, doors, windows, trim, or fixtures; keep any visible cracks, stains, holes, scuffs, or worn areas clearly visible and unchanged. Do not invent or add damage that is not in the original photo.\""}
+PARAGRAPH 3 - Refurnish in Selected Style:
+"Then, RE-FURNISH the room completely in a {style_preference.replace('_', ' ')} style: [Add detailed, style-specific furniture descriptions with colors, materials, and placement appropriate for this room type. Be specific about: main furniture pieces, accent pieces, area rug description and placement, plants, wall art, and lighting. All items must match the {style_preference.replace('_', ' ')} palette and aesthetic.] All furniture and decor must be realistically scaled to the room size – do not use oversized or undersized furniture to make the room appear larger, wider, or deeper than it is. A small room should look like a nicely staged small room. CRITICAL: Do NOT place any furniture, rugs, or decor to cover or hide any visible damage, stains, cracks, or wear - all defects must remain fully visible and unobstructed."
 
-PARAGRAPH 4 - Camera Adjustments & Professional Enhancement:
-"LEVEL THE PHOTO: Straighten the image so the horizon is level and all vertical lines (walls, door frames, window frames) are truly vertical. This is critical for a professional result.
+PARAGRAPH 4 - Camera & Photo Enhancement:
+"LEVEL THE PHOTO: straighten the image so horizontals are level and vertical lines (walls, windows, door frames) are truly vertical. You may adjust camera height and vertical angle slightly to improve composition, but do not move the camera horizontally or swing it left/right to reveal new walls or areas that are not visible in the original photo. Do not widen the field of view or make the room appear larger or deeper than it is.
 
-OPTIMIZE CAMERA HEIGHT & VERTICAL ANGLE: You may adjust the effective camera height (raise or lower the view) and vertical angle (pitch) to create a more professional real-estate composition. Be assertive with these adjustments - a professional realtor angle often improves the shot significantly.
+Apply professional-level photo enhancement: correct exposure, increase contrast slightly, and improve overall clarity so details in the flooring, trim, and furniture are crisp and well defined. Correct white balance so whites and light surfaces look clean and true-to-life without becoming unnaturally bright. Reduce noise and haze so the image looks sharp and high-quality, similar to a DSLR real-estate photograph. The final result should be a photorealistic, fully staged {style_preference.replace('_', ' ')} [room type] that still honestly reflects the true architecture and condition of the property."
 
-CAMERA POSITION CONSTRAINTS: Do not move the camera horizontally to a different corner or wall. Do not swing the view left/right (yaw) to reveal walls, doors, windows, or surfaces not visible in the original. Light lateral adjustment is acceptable only if it does not expose made-up areas. The room must not appear larger than in the original photo - do not widen the field of view or pull the back wall farther away.
+=== ROOM-TYPE STAGING PATTERNS (STRIP + REFURNISH) ===
 
-Apply professional-level photo enhancement: correct exposure, increase contrast slightly, and improve overall clarity so details in the flooring, trim, and fixtures are crisp and well defined. Correct white balance to neutralize any strong color cast so whites and light-colored surfaces appear clean and true-to-life, without making them unnaturally bright or pure white. Reduce noise and haze so the image looks sharp and high quality, similar to a DSLR real-estate photograph. You may subtly refine brightness and uniformity of the wall and ceiling paint so it looks freshly cleaned, but do not change the paint color or hide any visible damage, cracks, stains, or patches.
-
-The final result must remain an honest representation of the property: no repairing or hiding defects, no fabricated improvements, no added plants or decor, and no inventing damage that does not exist. If the room is already tidy with little clutter, lean harder on leveling, camera height optimization, and photographic enhancements so the 'after' feels noticeably more polished than the 'before.' The result should be photorealistic and believable as a professionally photographed [room type] ready for an online home listing."
-
-=== ROOM-TYPE PATTERNS ===
+For ALL room types: First strip existing furniture, then add style-appropriate staging.
 
 KITCHEN:
-- Structural anchors: cabinets, countertops, appliances (fridge, stove, microwave, dishwasher), sink, island/peninsula, flooring
-- Declutter: dishes, drying racks, bottles, spice jars, small appliances overload, mail, trash cans, random decor, floor clutter
-- Allowed staging: tidy existing items only, no adding plants or new decor
-- DAMAGE: Keep any visible damage (scuffs, stains, worn areas) unchanged
+- Preserve: cabinets, countertops, appliances, sink, flooring, windows
+- Strip: Remove any existing items on counters, floor clutter, personal items
+- Stage with: Bar stools (if island/peninsula), fruit bowl, small plant, coordinating hand towels, subtle countertop accessories
+- Style touches: {style_guide['decor']}
 
 BATHROOM:
-- Structural anchors: vanity, sink, mirror, toilet, tub/shower, wall tile, main storage cabinets
-- Declutter: toiletries, toothbrushes, meds, cleaning products, tissue boxes, trash, piles of towels
-- IMPORTANT: Keep accessibility equipment (grab bars, shower chairs) but make area around them tidy
-- Allowed staging: neatly fold existing towels, tidy existing items - no adding plants or new decor
-- DAMAGE: Keep any visible damage (cracks, stains, worn grout) unchanged
+- Preserve: vanity, sink, toilet, tub/shower, tile, mirrors, flooring
+- Keep accessibility equipment (grab bars, shower chairs) if present
+- Strip: Remove personal toiletries, clutter, mismatched towels
+- Stage with: Neatly rolled towels in coordinating colors, small plant (like bamboo or pothos), tasteful soap dispenser, small tray with minimal items
+- Style touches: Clean, spa-like aesthetic that complements the home's style
 
 BEDROOM:
-- Structural anchors: bed, headboard, nightstands, dresser, desk (if present), closets, flooring, window positions
-- Declutter: clothes piles, random boxes, cords, bedside junk, over-stuffed surfaces
-- Allowed staging: made bed with SAME bedding, arrange existing pillows neatly, tidy existing items - no adding plants or new decor
-- DAMAGE: Keep any visible damage (scuffs, stains, worn carpet) unchanged
+- Preserve: closets, windows, flooring, any built-in features
+- Strip: Remove existing bed, nightstands, dressers, all furniture and decor
+- Stage with: Bed with headboard, nightstands, lamps, dresser (if space allows), area rug, art above bed, plants
+- Bed styling: Crisp white or neutral bedding with layered pillows and a folded throw at foot
+- Style touches: {style_guide['furniture']} for bed and nightstands, {style_guide['decor']}
 
-LIVING ROOM / DEN:
-- Structural anchors: sofa(s), main chairs, coffee table, media console/TV, rugs, main shelving, windows, doors
-- Declutter: blankets piled, remotes, food packaging, excessive personal photos (reduce count but keep some), random small decor, visible wires
-- Allowed staging: fold existing throw, arrange existing cushions, tidy existing items - no adding plants or new decor
-- DAMAGE: Keep any visible damage (scuffs, stains, worn areas) unchanged
+LIVING ROOM:
+- Preserve: fireplace (if present), built-in shelving, windows, flooring
+- Strip: Remove all existing sofas, chairs, tables, rugs, decor, personal items
+- Stage with: Sofa, coffee table, accent chairs, area rug, floor lamp, table lamps, plants, wall art, throw pillows
+- Layout: Create a conversation area, typically centered on fireplace or focal wall
+- Style touches: {style_guide['furniture']}, {style_guide['rugs']}, {style_guide['lighting']}
+
+DINING ROOM:
+- Preserve: windows, flooring, any built-in features like wainscoting
+- Strip: Remove existing dining furniture, decor, clutter
+- Stage with: Dining table with chairs, area rug under table, pendant light or chandelier effect, simple centerpiece, sideboard if space allows
+- Table styling: Simple place settings or just a centerpiece (not fully set)
+- Style touches: {style_guide['furniture']}, {style_guide['decor']}
+
+OFFICE/DEN:
+- Preserve: windows, flooring, built-in shelving
+- Strip: Remove existing desk, chair, and personal items
+- Stage with: Desk, desk chair, bookshelf or shelving, task lamp, small plant, wall art
+- Style touches: Professional but warm, styled bookshelves, {style_guide['decor']}
 
 HALLWAY:
-- Structural anchors: doors, trim, runners, vents
-- Declutter: wall clutter, hanging items, anything sticking into hallway
-- Allowed staging: keep 1-2 existing wall pieces so it doesn't feel like a hospital corridor - no adding plants or new decor
-- DAMAGE: Keep any visible damage (scuffs, stains, worn areas) unchanged
+- Preserve: doors, flooring, trim, ceiling
+- Strip: Remove clutter, personal items, existing decor
+- Stage with: Console table (if space), mirror, small plant, runner rug, wall art
+- Keep it simple - hallways should feel open and inviting
 
 EXTERIOR / PORCH:
-- Structural anchors: siding, roofline, windows, porch structure, stairs & railings, driveway, shrubs/trees
-- Declutter: bins, loose tools, random stuff under carport, scooters, hoses (keep cars & bins if neatly arranged)
-- Allowed: tidy existing landscaping only - do NOT add plants or make grass greener than reality
-- DAMAGE: Keep any visible damage (peeling paint, cracks, worn siding) unchanged
+- Preserve: architecture, siding, windows, roof, landscaping, driveway
+- Strip: Remove clutter, personal items from porch/deck
+- Stage porch/deck with: Outdoor seating, potted plants, welcome mat, outdoor rug (if covered porch)
+- Do NOT change landscaping, grass color, or add plants to yard
 
-=== GOLD EXAMPLES ===
+=== GOLD EXAMPLES (STRIP + REFURNISH) ===
 
-EXAMPLE A - Cluttered Kitchen:
-"Using this uploaded kitchen photo, create a cleaner, brighter, professional real-estate listing image.
+These examples show the exact behavior expected: strip all furniture first, then refurnish from scratch.
 
-Keep the same room layout, ceiling, walls, flooring, white cabinets, countertops, refrigerator, stove, microwave, dishwasher, sink, window, island, and dining table in their current positions. Do not move walls, add windows, change the flooring, or replace major furniture or appliances.
+EXAMPLE A - Living Room (may be vacant or occupied) → NEUTRAL style:
+"Using this uploaded living room photo, create a fully virtually staged real-estate listing image in a Neutral style.
 
-Virtually declutter by removing only loose, movable clutter from the island, folding table, countertops, and dining table, including cups, bottles, dishes, paper products, cleaning supplies, and small decorative objects. Clear the area around the sink and stove of most dishes and utensils. Remove any floor clutter such as bins and pet items so the floor appears clean and open. Keep the dining table and chairs but simplify the table setting. Do not add any new plants, flowers, or decorative items - only tidy or remove existing ones. Do not fix, repaint, or cover any damage to walls, ceilings, floors, cabinets, or fixtures; keep any visible cracks, stains, scuffs, or worn areas clearly visible and unchanged. Do not invent or add damage that is not in the original photo.
+Keep the same architectural shell: walls, windows, doors, trim, ceiling height, flooring, and any built-in elements must stay exactly where they are. Do not move walls, add or remove windows, change flooring, or alter the size or position of doors or openings. Do not fix, repaint, patch, or cover any visible cracks, stains, holes, or other damage; these must remain visible.
 
-LEVEL THE PHOTO: Straighten the image so the horizon is level and all vertical lines (walls, door frames, cabinet edges, window frames) are truly vertical. This is critical for a professional result.
+First, STRIP THE ROOM: remove all existing furniture and decor, including sofas, chairs, tables, shelves, TV, rugs, freestanding lamps, and personal items, so the room appears unfurnished while still showing the true architecture and any visible defects. Do not hide or cover damaged areas with furniture or rugs.
 
-OPTIMIZE CAMERA HEIGHT & VERTICAL ANGLE: You may adjust the effective camera height (raise or lower the view) and vertical angle to create a more professional real-estate composition - for example, raising it slightly to show more countertop and less ceiling. Be assertive with these adjustments.
+Then, RE-FURNISH the room completely in a Neutral style:
 
-CAMERA POSITION CONSTRAINTS: Do not move the camera horizontally to a different corner or wall. Do not swing the view left/right to reveal walls, windows, or surfaces not visible in the original. Light lateral adjustment is acceptable only if it does not expose made-up areas. The kitchen must not appear larger than in the original photo - do not widen the field of view or pull the back wall farther away.
+Add a clean-lined light-colored sofa (soft white or light beige) against the main wall, sized realistically for the room.
 
-Apply professional-level photo enhancement: correct exposure, increase contrast slightly, and improve overall clarity so details in the flooring, cabinets, and fixtures are crisp and well defined. Correct white balance to neutralize any yellow color cast so whites and light-colored surfaces appear clean and true-to-life, without making them unnaturally bright. Reduce noise and haze so the image looks sharp and high quality, similar to a DSLR real-estate photograph. You may subtly refine brightness and uniformity of the wall and ceiling paint so it looks freshly cleaned, but do not change the paint color or hide any visible damage.
+Add one or two simple accent chairs with slim legs, and a low rectangular coffee table in light wood or white.
 
-The final result must remain an honest representation of the property: no repairing or hiding defects, no fabricated improvements, no added plants or decor, and no inventing damage that does not exist. The result should be photorealistic and believable as a professionally photographed kitchen ready for an online home listing."
+Add a simple TV console or sideboard if appropriate, with minimal decor on top.
 
-EXAMPLE B - Bedroom with TV:
-"Using this uploaded bedroom photo, create a cleaner, brighter, professional real-estate listing image.
+Place a neutral area rug (light grey or beige) that fits under the front legs of sofa and chairs, scaled correctly to the floor area.
 
-Keep the same room layout, walls, carpet, bed position, TV and TV stand, window size and placement, curtains, dresser, and overall proportions of the room. Do not move walls, add or remove windows, change flooring, or replace major furniture pieces.
+Add one or two simple table or floor lamps, and 2–3 pieces of simple, abstract wall art in soft neutral tones.
+All furniture and decor must be realistic in scale for the actual room size – do not oversize or undersize items to make the room look bigger.
 
-Virtually declutter by removing only loose, movable clutter from the rolling tray beside the bed, the top of the TV stand, the tables in front of the window, and the dresser, including cups, bottles, baskets, boxes, toiletries, and miscellaneous small objects. Leave the tray table in place but clear it of clutter. Smooth and neatly arrange the bedding so the comforter and pillows look tidy and well made, keeping the existing purple pattern and colors. Do not add any new plants, flowers, or decorative items - only tidy or remove existing ones. Do not fix, repaint, or cover any damage to walls, ceilings, floors, or fixtures; keep any visible cracks, stains, scuffs, or worn areas clearly visible and unchanged. Do not invent or add damage that is not in the original photo.
+LEVEL THE PHOTO: straighten the image so horizontals are level and vertical lines (walls, windows, door frames) are truly vertical. You may adjust camera height and vertical angle slightly to improve composition, but do not move the camera horizontally or swing it left/right to reveal new walls or areas that are not visible in the original photo. Do not widen the field of view or make the room appear larger or deeper than it is.
 
-LEVEL THE PHOTO: Straighten the image so the horizon is level and all vertical lines (walls, door frames, window frames, furniture edges) are truly vertical. This is critical for a professional result.
+Apply professional-level photo enhancement: correct exposure, increase contrast slightly, and improve overall clarity so details in the flooring, trim, and furniture are crisp and well defined. Correct white balance so whites and light surfaces look clean and true-to-life without becoming unnaturally bright. Reduce noise and haze so the image looks sharp and high-quality, similar to a DSLR real-estate photograph. The final result should be a photorealistic, fully staged Neutral living room that still honestly reflects the true architecture and condition of the property."
 
-OPTIMIZE CAMERA HEIGHT & VERTICAL ANGLE: You may adjust the effective camera height (raise or lower the view) and vertical angle to create a more professional real-estate composition - for example, lowering it slightly if there is too much ceiling in the frame. Be assertive with these adjustments.
+EXAMPLE B - Bedroom (may be vacant or occupied) → LUXURY style:
+"Using this uploaded bedroom photo, create a fully virtually staged real-estate listing image in a Luxury style.
 
-CAMERA POSITION CONSTRAINTS: Do not move the camera horizontally to a different corner or wall. Do not swing the view left/right to reveal walls, windows, or surfaces not visible in the original. Light lateral adjustment is acceptable only if it does not expose made-up areas. The bedroom must not appear larger than in the original photo - do not widen the field of view or pull the back wall farther away.
+Keep the same architectural shell: walls, windows, doors, trim, ceiling height, closets, and flooring exactly as they appear. Do not move walls, add or remove windows, change flooring, or alter door sizes or positions. Do not fix, repaint, patch, or cover any visible cracks, stains, or other damage on walls, trim, or floors; these must remain visible.
 
-Apply professional-level photo enhancement: correct exposure, increase contrast slightly, and improve overall clarity so details in the carpet, trim, and fixtures are crisp and well defined. Correct white balance to neutralize any strong color cast so whites and light-colored surfaces appear clean and true-to-life, without making them unnaturally bright. Reduce noise and haze so the image looks sharp and high quality, similar to a DSLR real-estate photograph. You may subtly refine brightness and uniformity of the wall and ceiling paint so it looks freshly cleaned, but do not change the paint color or hide any visible damage.
+First, STRIP THE ROOM: remove all existing furniture and decor, including any current bed, nightstands, dressers, lamps, rugs, and personal items, so the room appears unfurnished while preserving the real architecture and any visible defects. Do not hide damage behind furniture, curtains, or rugs.
 
-The final result must remain an honest representation of the property: no repairing or hiding defects, no fabricated improvements, no added plants or decor, and no inventing damage that does not exist. The result should be photorealistic and believable as a professionally photographed bedroom ready for an online home listing."
+Then, RE-FURNISH the room completely in a Luxury style (NOT sterile hotel-lobby beige):
 
-EXAMPLE C - Exterior with Carport:
-"Using this uploaded exterior photo, create a cleaner, brighter, professional real-estate listing image of the home.
+Add a king or queen-size upholstered headboard in a plush fabric like bouclé or velvet (taupe, greige, or soft charcoal), centered on the main wall. This is the FOCAL POINT - make it substantial and inviting.
 
-Keep the same house structure, siding, windows, shutters, roofline, carport, posts, front steps, railing, shrubs, driveway, and lawn. Do not change the architecture, move windows or doors, or alter the basic materials of the home.
+Place matching nightstands on each side in rich wood or lacquer finish, each with a statement table lamp (brass, sculptural, or with a textured shade).
 
-Virtually declutter by removing or neatly organizing only loose, portable items under and around the carport, such as trash bins, scooters, loose boards, and small tools, so the area appears tidy and well maintained. You may keep one or two vehicles parked in the driveway, but they should look neatly positioned without drawing attention away from the house. Do not add any new plants or make the grass greener than it actually is - only tidy existing landscaping. Do not fix, repaint, or cover any damage to siding, roofing, steps, railings, or other structures; keep any visible peeling paint, cracks, worn areas, or damage clearly visible and unchanged. Do not invent or add damage that is not in the original photo.
+Dress the bed with layered bedding using VARIED TEXTURES: crisp white linen sheets, a textured duvet, and 3-5 decorative pillows mixing velvet, linen, and wool in neutral tones plus ONE muted accent color (navy, forest green, or warm rust). Add a casually draped throw at the foot with natural, realistic folds - not frozen stiff.
 
-LEVEL THE PHOTO: Straighten the image so the horizon is level and all vertical lines (walls, door frames, window frames, posts, railings) are truly vertical. This is critical for a professional result.
+Add a large plush area rug under the bed that extends well beyond the sides and foot, in a sophisticated pattern or solid with visible texture.
 
-OPTIMIZE CAMERA HEIGHT & VERTICAL ANGLE: You may adjust the effective camera height (raise or lower the view) and vertical angle to create a more professional real-estate composition - for example, raising it slightly to show the home from a more flattering angle, or lowering it if too much sky dominates. Be assertive with these adjustments.
+If space allows, add a low upholstered bench at the foot in velvet or bouclé, or a single accent chair in the corner.
 
-CAMERA POSITION CONSTRAINTS: Do not move the camera horizontally to a different vantage point. Do not swing the view left/right to reveal portions of the property not visible in the original. Light lateral adjustment is acceptable only if it does not expose made-up areas. The home must not appear larger than in the original photo - do not widen the field of view or pull structures farther away.
+Add 1-2 pieces of large contemporary art above the bed - muted, sophisticated, not loud - to complete the focal point.
 
-Apply professional-level photo enhancement: correct exposure, increase contrast slightly, and improve overall clarity so details in the siding, trim, and landscaping are crisp and well defined. Correct white balance to neutralize any strong color cast so the siding, trim, and sky appear true-to-life, without making them unnaturally bright or saturated. Reduce noise and haze so the image looks sharp and high quality, similar to a DSLR real-estate photograph. You may subtly refine brightness and uniformity of painted surfaces so they look freshly cleaned, but do not change the paint color or hide any visible damage.
+All furniture must feel substantial and custom, not generic. Layer textures so the room feels tactile and lived-in, not flat.
+All furniture and decor must be realistically scaled to the room size.
 
-The final result must remain an honest representation of the property: no repairing or hiding defects, no fabricated improvements, no added plants or artificially greener grass, and no inventing damage that does not exist. The result should be photorealistic and believable as a professionally photographed exterior listing image."
+LEVEL THE PHOTO: straighten the image so horizontals are level and vertical lines are truly vertical. You may adjust camera height and pitch slightly.
 
+Apply professional-level photo enhancement: correct exposure, increase contrast gently for drama, sharpen details. The final result should be a photorealistic, high-end designer bedroom that feels inviting and luxurious - NOT a sterile hotel room."
+
+EXAMPLE C - Occupied Living Room → MODERN style (demonstrating strip behavior on furnished room):
+"Using this uploaded living room photo, create a fully virtually staged real-estate listing image in a Modern style.
+
+Keep the same architectural shell: walls, windows, doors, trim, ceiling height, flooring, fireplace, and any built-in elements must stay exactly where they are. Do not move walls, add or remove windows, change flooring, or alter architectural features. Do not fix, repaint, patch, or cover any visible cracks, stains, holes, or other damage; these must remain visible.
+
+First, STRIP THE ROOM: remove ALL existing furniture and decor – the current sofa, armchairs, coffee table, side tables, lamps, rugs, artwork, plants, and all personal items – so the room appears completely unfurnished while still showing the true architecture and any visible defects. Even though this room is currently furnished, remove everything.
+
+Then, RE-FURNISH the room completely in a Modern style:
+
+Add a low-profile, boxy sofa in charcoal or white facing the focal wall, sized appropriately for the room.
+
+Add a thin-legged glass or metal coffee table, and one or two accent chairs with clean geometric lines.
+
+Place a bold geometric area rug in black/white or with a single accent color.
+
+Add a minimalist floor lamp with an arc or sculptural design, and a simple table lamp on a slim metal side table.
+
+Include 1–2 pieces of bold, minimal wall art – large scale, abstract, high contrast.
+
+Add one sculptural plant in a modern pot.
+All furniture must be properly scaled to the actual room dimensions. Do not use oversized furniture. Leave realistic walkways.
+
+LEVEL THE PHOTO: straighten the image so all verticals are truly vertical. You may adjust camera height slightly. Do not move horizontally, widen the field of view, or make the room appear larger.
+
+Apply professional-level photo enhancement: correct exposure, increase contrast for that sharp modern look, fix white balance, reduce noise. The final result should be a photorealistic, fully staged Modern living room that honestly reflects the true architecture and condition of the property."
+
+EXAMPLE D - Living Room with Built-ins → LUXURY style (demonstrating texture layering, focal points, shelf styling):
+"Using this uploaded living room photo, create a fully virtually staged real-estate listing image in a Luxury style.
+
+Keep the same architectural shell: walls, windows, doors, trim, ceiling height, flooring, fireplace, and built-in shelving exactly as they appear. Do not alter any architectural features or fix any visible damage.
+
+First, STRIP THE ROOM: remove all existing furniture, decor, and items on shelves so the room appears unfurnished.
+
+Then, RE-FURNISH in a Luxury style (NOT sterile hotel-lobby beige):
+
+FOCAL POINT: Create a striking focal point at the fireplace - add a large piece of contemporary art above the mantel, and style the mantel with 2-3 sculptural objects in varied heights. Add a beautifully styled coffee table with a curated arrangement (large art book, small sculptural object, fresh greenery).
+
+SEATING: Add a substantial sofa in plush bouclé or velvet (taupe, greige, or soft charcoal) - not generic. Add two accent chairs in a complementary fabric with visible texture. Include throw pillows mixing velvet, linen, and wool in neutral tones plus ONE muted accent color (muted blue-green or warm rust) for character.
+
+RUG: Place a LARGE area rug with sophisticated pattern or visible texture that extends under all seating - front legs of sofa and chairs must be on the rug so furniture reads as one cohesive conversation area.
+
+SHELF STYLING: Style built-in shelves with a CURATED, VARIED mix - books of different heights and muted spine colors, sculptural objects, small plants, 1-2 framed photos. Leave some negative space. NEVER repeat the same object or book stack across shelves.
+
+LIGHTING: Add statement table lamps (brass or sculptural) on side tables, and a floor lamp with visible texture or brass finish.
+
+MICRO-REALISM: Allow subtle natural variation - a throw casually draped with realistic folds, pillows that aren't perfectly rigid.
+
+All furniture must feel substantial and custom. Layer textures so the room feels tactile and lived-in, not flat.
+
+LEVEL THE PHOTO and apply professional enhancement with slightly more contrast for drama. The final result should be a photorealistic, high-end designer living room that feels inviting and luxurious - NOT a sterile hotel lobby."
+{comments_section}
 === YOUR TASK ===
 
 Analyze the uploaded photo and respond with ONLY valid JSON (no markdown, no code blocks):
@@ -240,31 +503,39 @@ Analyze the uploaded photo and respond with ONLY valid JSON (no markdown, no cod
     "room_type": "kitchen|bathroom|bedroom|living_room|dining_room|hallway|exterior|office|other",
     "is_occupied": true|false,
     "issues": ["list", "specific", "issues", "you", "see"],
-    "suggested_style": "conservative_cleanup",
+    "suggested_style": "{style_preference}",
     "staging_prompt": "your full 4-paragraph prompt following the skeleton above"
 }}
 
-Issues to identify: clutter, dim_lighting, crooked_angle, personal_items, messy_bed, items_on_floor, crowded_counters, visible_wires, strong_color_cast, etc.
+Issues to identify: vacant_room, clutter, dim_lighting, crooked_angle, personal_items, messy_bed, items_on_floor, crowded_counters, visible_wires, strong_color_cast, needs_staging, etc.
 
-IMPORTANT: Be SPECIFIC in your staging_prompt. List the actual items you see that need to be removed. Reference the actual colors and materials visible. The more specific, the better the result.
+IMPORTANT: Be SPECIFIC in your staging_prompt:
+- For vacant rooms: Describe exactly what furniture to add, with colors and materials
+- For occupied rooms: List specific items to remove and any decor to add
+- Reference the actual features of the room (flooring type, window placement, etc.)
+- The more specific and detailed, the better the result.
 """
     
     async def analyze_image(
         self,
         image_path: Path,
-        is_occupied: bool,
+        style_preference: str = "neutral",
+        comments: str = None,
         max_retries: int = 3
     ) -> GeminiAnalysisResult:
         """
-        Analyze a single image and generate conservative cleanup prompt.
+        Analyze a single image and generate virtual staging prompt.
+
+        The AI model will auto-detect whether the room is vacant or occupied.
 
         Args:
             image_path: Path to the image file
-            is_occupied: Whether the room has existing furniture (determines cleanup vs empty treatment)
+            style_preference: Staging style (neutral, coastal, farmhouse, etc.)
+            comments: Client's special instructions for staging
             max_retries: Number of retries on transient failures
 
         Returns:
-            GeminiAnalysisResult with room analysis and conservative cleanup prompt
+            GeminiAnalysisResult with room analysis and staging prompt
         """
         # Read and encode image
         image_bytes = image_path.read_bytes()
@@ -282,7 +553,9 @@ IMPORTANT: Be SPECIFIC in your staging_prompt. List the actual items you see tha
         mime_type = mime_types.get(suffix, "image/jpeg")
 
         url = f"{self.base_url}/models/{self.model}:generateContent"
-        system_prompt = self._build_analysis_prompt(is_occupied)
+        # Let the AI auto-detect occupied status from the image
+        # Pass False as default, the prompt instructs the AI to detect and report actual status
+        system_prompt = self._build_analysis_prompt(is_occupied=False, style_preference=style_preference, comments=comments)
 
         last_error = None
 
@@ -400,19 +673,19 @@ IMPORTANT: Be SPECIFIC in your staging_prompt. List the actual items you see tha
         image_paths: list[str]
     ) -> Plan:
         """
-        Analyze all images for a job and create conservative cleanup prompts.
+        Analyze all images for a job and create virtual staging prompts.
 
         Args:
             job_id: Job identifier
             job_dir: Job directory path
-            order: Order with job metadata (uses occupied flag)
+            order: Order with job metadata (style and comments)
             image_paths: List of relative paths to raw images
 
         Returns:
-            Plan with analysis and conservative cleanup prompts for all images
+            Plan with analysis and virtual staging prompts for all images
         """
-        logger.info(f"Starting conservative analysis for job {job_id} with {len(image_paths)} images")
-        logger.info(f"Property occupied: {order.occupied}")
+        logger.info(f"Starting virtual staging analysis for job {job_id} with {len(image_paths)} images")
+        logger.info(f"Style: {order.style}, Comments: {order.comments or 'None'}")
 
         plan = Plan(job_id=job_id, images=[])
 
@@ -425,7 +698,8 @@ IMPORTANT: Be SPECIFIC in your staging_prompt. List the actual items you see tha
             try:
                 result = await self.analyze_image(
                     image_path=abs_path,
-                    is_occupied=order.occupied
+                    style_preference=order.style,
+                    comments=order.comments
                 )
 
                 image_plan = ImagePlan(
@@ -449,5 +723,5 @@ IMPORTANT: Be SPECIFIC in your staging_prompt. List the actual items you see tha
 
             plan.images.append(image_plan)
 
-        logger.info(f"Completed analysis for job {job_id}")
+        logger.info(f"Completed virtual staging analysis for job {job_id}")
         return plan
