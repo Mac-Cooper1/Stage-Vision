@@ -139,6 +139,47 @@ class GeminiPlannerClient:
                 "rugs": "oriental patterns, Persian-style designs",
                 "lighting": "chandeliers, brass table lamps, classic sconces",
                 "overall": "elegant and formal, especially for older or more stately homes"
+            },
+            "architecture_digest": {
+                "description": "Editorial-quality transformation inspired by Adam Potts. NOT just warmer staging - requires dramatic lighting transformation + curated designer furniture + magazine-cover quality.",
+                "palette": "warm woods (cedar, walnut, oak, teak), CREAM/IVORY whites only (never stark/cool white), brass/bronze ONLY (no chrome/silver), muted earth accents (terracotta, sage, rust, charcoal). NEVER cool/blue tones anywhere.",
+                "colors": "warm woods (cedar, walnut, white oak, teak in golden-brown tones), warm whites (cream, ivory, warm plaster), natural stone (travertine, limestone, warm concrete), metals in brass/bronze only, accents in terracotta, sage green, rust, charcoal",
+                "furniture": """LIVING: CURVED WHITE BOUCLÉ sofa (signature silhouette), organic coffee table (woven/wood slab/sculptural glass), cream swivel chairs OR cognac leather lounge chairs.
+DINING: Solid light oak table with clean lines, Hans Wegner wishbone chairs in natural ash (6 chairs), large natural jute rug, ONE large abstract art (36x48 min, earth tones).
+KITCHEN: Olive wood cutting board angled near stove, 6-8 lemons in shallow wooden bowl, dark ceramic vase with pink PROTEA - MINIMAL accessories only.
+BEDROOM: Low platform bed with cream linen upholstered headboard, layered white/cream bedding with textured throw, sculptural/floating natural wood nightstands, ceramic lamps.""",
+                "decor": """SIGNATURE ELEMENTS (include 1-2 per room, VARY across property - NOT every room needs an olive tree):
+- Pink/coral PROTEA in sculptural dark ceramic vase
+- Sculptural ceramic objects
+- Art books (LIVING ROOM ONLY)
+- Woven basket or natural texture element
+
+PLANT VARIETY (do NOT use olive tree in every room):
+- Living room: Olive tree OR fiddle leaf fig (choose one, not both)
+- Dining room: Olive BRANCHES in vase (not full tree unless room is very large)
+- Bedroom: Small plant on nightstand OR olive tree (not both) - tree only if room is large
+- Kitchen: Small herb plant OR protea (small, not tree)
+- Bathroom: Small architectural plant only (no large trees)
+- Hallway: Small plant in terracotta OR nothing""",
+                "rugs": "Large natural jute with subtle texture for dining/living, muted vintage Persian as alternative, natural fiber in warm browns and creams",
+                "lighting": """DRAMATIC LIGHTING (CRITICAL - this separates 'nice staging' from 'editorial'):
+1. Golden hour quality (1 hour before sunset feeling)
+2. Visible warm light rays streaming through windows
+3. Rich dimensional shadows (warm-toned brown/amber, NOT flat/gray)
+4. Interior glow effect (space feels lit from within)
+5. Color temp 2700K-3000K throughout - NO cool/blue tones
+6. Windows should glow with soft golden light""",
+                "overall": "Editorial, dramatic, warm, curated - magazine-cover quality. NOT just 'warmer' - truly transformed with dramatic lighting + designer furniture + cohesive styling.",
+                "photo_treatment": """THREE TRANSFORMATION LAYERS:
+1. LIGHTING: Golden hour rays, dimensional shadows, interior glow, 2700K warmth
+2. COLOR GRADING: Push entire image warm/golden, whites=cream, shadows=warm brown/amber (never gray), wood=rich honey/amber
+3. ATMOSPHERE: Magazine-cover drama, every image looks like 1 hour before sunset""",
+                "exterior_requirements": """CRITICAL - Exteriors need MOST transformation:
+- SKY: Golden hour gradient (blue at top → gold → pink/peach at horizon)
+- WINDOWS: MUST show warm interior glow (amber light visible through every window)
+- TREES: Catching golden side-light, warm highlights
+- SIGNATURE: Olive tree in aged terracotta pot near entry
+- OVERALL: 'Dwell magazine cover at sunset' quality"""
             }
         }
 
@@ -389,6 +430,176 @@ EXTERIOR / PORCH:
 - Stage porch/deck with: Outdoor seating, potted plants, welcome mat, outdoor rug (if covered porch)
 - Do NOT change landscaping, grass color, or add plants to yard
 
+=== ARCHITECTURE DIGEST STYLE - SPECIAL ROOM GUIDANCE ===
+
+IF the selected style is "architecture_digest", use these SPECIFIC staging patterns instead of the generic ones above.
+This style requires THREE transformation layers: DRAMATIC LIGHTING + DESIGNER STAGING + WARM COLOR GRADING.
+
+=============================================================================
+⚠️ CRITICAL: STRUCTURAL PRESERVATION (HIGHEST PRIORITY) ⚠️
+=============================================================================
+
+YOU MUST PRESERVE ALL ARCHITECTURAL FEATURES EXACTLY AS THEY APPEAR IN THE
+ORIGINAL IMAGE. This is a legal requirement for real estate photography.
+
+NEVER ALTER, REMOVE, OR INVENT:
+- Doorways and door openings (even if no door is visible)
+- Archways and passages between rooms
+- Windows and window placements
+- Walls and wall positions
+- Room openings to adjacent spaces
+- Columns, pillars, or structural elements
+- Built-in shelving, niches, or alcoves
+- Ceiling heights or configurations
+- Floor levels or transitions
+- Fireplaces or fireplace openings
+- Stairways or stair openings
+
+SPECIFICALLY:
+- If there is an opening to another room, it MUST remain an opening
+- If you can see into a kitchen, hallway, or other space, that view MUST remain
+- Do NOT fill in doorways with walls
+- Do NOT extend walls where there are openings
+- Do NOT remove or alter any architectural pass-throughs
+- Do NOT add walls or structural elements that don't exist
+
+WHY THIS MATTERS:
+Altering the structure of a room misrepresents the property to potential buyers.
+This violates real estate disclosure laws and MLS compliance requirements.
+Our customers could face lawsuits if structural features are misrepresented.
+
+BEFORE GENERATING: Carefully identify ALL openings, doorways, and passages
+to adjacent spaces in the original image. These MUST appear in your output.
+
+=============================================================================
+
+*** ADDITIONAL: ARCHITECTURAL PRESERVATION (APPLIES TO ALL ARCHITECTURE DIGEST ROOMS) ***
+The dramatic lighting transformation is PHOTO ENHANCEMENT ONLY - you are NOT changing the physical structure:
+- Do NOT move, add, remove, or resize any windows
+- Do NOT fill in, move, or alter any doorways or door openings
+- Do NOT move, add, or remove any walls or change wall positions
+- Do NOT change flooring materials, patterns, or boundaries
+- Do NOT alter ceiling height, beams, or ceiling features
+- Do NOT change room dimensions or make the space appear larger/smaller
+- Do NOT add architectural features that don't exist (arches, columns, skylights, etc.)
+- Do NOT remove or alter any built-in features (cabinets, fireplaces, shelving, etc.)
+- The "golden hour lighting" effect is applied TO the existing architecture, not by changing it
+- Every window, door, wall, and architectural element must remain EXACTLY where it is in the original photo
+
+ARCHITECTURE DIGEST - LIGHTING (CRITICAL FOR ALL ROOMS):
+Apply ALL of these lighting transformations TO THE EXISTING ARCHITECTURE (do not alter structure):
+1. Golden hour quality - entire scene looks like 1 hour before sunset
+2. Visible warm light rays streaming through EXISTING windows (do not add/move windows)
+3. Rich dimensional shadows (warm brown/amber tones, NOT flat gray)
+4. Interior glow effect - space feels lit from within
+5. Color temperature 2700K-3000K - NO cool/blue tones anywhere
+6. All whites become cream/ivory, all shadows become warm amber
+
+ARCHITECTURE DIGEST - LIVING ROOM:
+- PRESERVE: All walls, windows, doors, flooring, fireplace, built-ins EXACTLY as they are
+SOFA (signature element - choose one):
+  □ Curved serpentine sofa in ivory/cream bouclé, low profile, rounded arms, no visible legs or short tapered oak legs. 84-96" length. Vladimir Kagan inspired organic shape.
+  □ OR curved sofa in warm charcoal or mushroom velvet. Same silhouette.
+  □ OR deep slope-arm sofa in oatmeal Belgian linen, loose cushions, white oak base. 90-108" length.
+COFFEE TABLE (choose one):
+  □ Organic curved shape (kidney/cloud/freeform) in bleached white oak or natural ash. Thick 2-3" top, rounded edges. Noguchi inspired.
+  □ OR round drum in natural woven rattan or seagrass, 36-42" diameter.
+  □ OR round hammered brass/bronze with aged patina, 36-40" diameter.
+ACCENT CHAIRS (always pair, angled 45° toward sofa):
+  □ Pair of barrel swivel chairs in cream/ivory bouclé, brass swivel base. 30-32" width.
+  □ OR pair of mid-century lounge chairs in cognac/saddle leather, walnut frames.
+RUG: Vintage Persian in FADED earth tones (muted rust, cream, sage, soft blue) 9x12 or 10x14. OR chunky woven jute in natural honey 8x10+.
+ART: One large abstract 48x60" minimum (ideally 60x72") in earth tones. Thin natural oak or walnut float frame. Hung 6-8" above sofa.
+ACCESSORIES: Stack of 3-4 art/architecture books on coffee table, small sculptural ceramic beside books, chunky knit throw in cream draped on sofa arm, 2-3 accent pillows (cream, sage, warm taupe), large woven seagrass basket on floor.
+PLANT (large tree allowed here): Olive tree 6-7 ft in aged terracotta pot 18-24" diameter OR fiddle leaf fig 6-7 ft in woven seagrass basket. One corner only.
+LIGHTING: Arc floor lamp with brass arm, linen shade, behind sofa.
+
+ARCHITECTURE DIGEST - DINING ROOM:
+- PRESERVE: All walls, windows, doors, flooring, wainscoting, built-ins EXACTLY as they are
+TABLE (choose one):
+  □ Solid white oak rectangular, Parsons-style legs, natural finish. 72-84" for 6 seats.
+  □ OR walnut slab with natural live edge, blackened steel trestle base. 84-96" length.
+  □ OR round travertine/limestone on sculptural pedestal, 54-60" diameter.
+CHAIRS (all must match):
+  □ Hans Wegner CH24 Wishbone chairs in natural ash/oak, paper cord seats. 6 standard.
+  □ OR sculptural solid wood (ash/pine) with curved back, carved seat.
+PENDANT (centered over table, 30-34" above surface):
+  □ Brass drum pendant 18-24" diameter, aged/patinated finish.
+  □ OR large ceramic pendant in matte cream, conical/dome shape.
+RUG: Natural jute in chunky weave, 9x12, extending 24-30" beyond chairs all sides.
+CENTERPIECE: Table EMPTY (preferred) OR single sculptural cream ceramic vase (10-14" height) with 3-5 dried olive branches, slightly off-center.
+ART: One large piece on focal wall. Abstract in earth tones 40x50" to 48x60".
+PLANT (NO full tree - branches only): Tall floor vase (24-36") with dried branches/pampas in corner. Vase in cream, terracotta, or charcoal.
+
+ARCHITECTURE DIGEST - KITCHEN (Occupied - Styling Enhancement Only):
+- PRESERVE: All cabinets, countertops, appliances, sink, windows, flooring EXACTLY as they are
+KEEP MINIMAL - 3-4 items maximum:
+VIGNETTE 1 (Near Stove): Large olive wood cutting board (16x20"+) at casual angle with rustic sourdough loaf. Small ceramic pinch bowl with flaky salt.
+VIGNETTE 2 (Island/Counter): Shallow wooden bowl (12-14" diameter) with 6-8 whole Meyer lemons. Position casually, not centered.
+VIGNETTE 3 (Near Sink): Small terracotta pot (4-6") with fresh rosemary or thyme.
+SIGNATURE FLOWER: Single pink king protea stem in sculptural ceramic vase (round/bulbous, 8-10" height, matte charcoal or terracotta). ONE STEM ONLY.
+BAR STOOLS (if island, 2-3): Woven saddle leather on light oak frame OR natural rattan with black metal legs.
+DO NOT ADD: Books, large plants/trees, excessive accessories.
+
+ARCHITECTURE DIGEST - BEDROOM:
+- PRESERVE: All walls, windows, doors, closets, flooring, ceiling EXACTLY as they are
+BED (choose one):
+  □ Low platform with tall upholstered headboard (48-54" height) in oatmeal/cream Belgian linen. Tight upholstery, no tufting, rounded top corners.
+  □ OR solid walnut/oak platform with integrated headboard. Low profile, clean lines.
+  □ OR natural cane/rattan paneled headboard in light oak frame.
+BEDDING (layered, lived-in): White/cream LINEN sheets slightly rumpled, cream linen duvet pulled back casually on one side, chunky knit or waffle-weave throw in oatmeal at foot draped casually. 2-3 Euro shams in cream, 2-3 accent pillows (cream/sage/warm taupe).
+NIGHTSTANDS (matching pair): Sculptural hourglass or drum shape in natural white oak 22-24" height. OR floating wall-mounted shelves in walnut.
+LAMPS (matching pair): Ceramic with sculptural organic base in warm cream or sage, natural linen drum shade, 24-28" height.
+RUG: Vintage Persian in faded earth tones extending 24-36" beyond bed. 9x12 for queen, 10x14 for king. OR natural jute 8x10+.
+CURTAINS: Flowing linen in warm white/cream, mounted high, puddling on floor.
+ART: Large calming abstract above bed (40x50" to 60x40") in soft muted tones. Natural oak float frame.
+PLANT (small or none): Small plant on ONE nightstand (trailing pothos, succulent) OR nothing. Large tree only if room is very spacious.
+
+ARCHITECTURE DIGEST - BATHROOM:
+- PRESERVE: All vanity, sink, toilet, tub/shower, tile, mirrors, flooring EXACTLY as they are
+SIGNATURE (essential - non-negotiable): Sculptural ceramic vase in matte charcoal/black/terracotta, round/bulbous organic shape 8-12" height, with 1-2 pink king protea stems. Position prominently on vanity.
+VANITY TRAY: Black slate, gray marble, or dark stone tray (8x12" or 10" round) containing: natural artisan bar soap (cream colored), small brass dish. Maximum 3 items on tray.
+TOWELS: Charcoal gray (preferred) OR cream OR soft sage. Plush, high-quality. Hung neatly on brass ring/bar OR rolled in basket OR folded stack.
+SMALL ACCENT (pick 1-2 only): Single pillar candle in cream, OR small maidenhair fern in ceramic pot, OR eucalyptus stems in clear glass vase.
+BASKET: Woven seagrass on floor with neatly rolled extra towels.
+
+ARCHITECTURE DIGEST - EXTERIOR (LIGHTING TRANSFORMATION ONLY):
+*** CRITICAL: The exterior transformation is LIGHTING/ATMOSPHERE ONLY - do NOT alter the home's structure ***
+- PRESERVE: The home's exact structure, all windows in their exact positions, all doors, roof, siding, landscaping layout, driveway
+- Do NOT add windows, remove windows, change window sizes, or alter window positions
+- Do NOT change the home's footprint, roofline, or architectural features
+- Do NOT alter the landscaping layout (you may enhance lighting on existing plants)
+SKY TRANSFORMATION: Golden hour gradient - soft cornflower blue at top → warm golden/amber in middle → soft peach/pink at horizon. Wispy clouds catching golden light. Sun below frame or at horizon.
+WINDOW GLOW (critical - non-negotiable): EVERY visible window must show warm amber interior light (2700K warm incandescent look). Windows become beacons of warmth against twilight.
+SIGNATURE LANDSCAPING: Mature olive tree (6-8 ft) in large aged terracotta pot (20-26") near front entry, beside garage, or on porch. ONE tree only.
+ADDITIONAL: String lights (Edison bulbs) on deck/patio if appropriate. Outdoor furniture: teak or weathered wood with gray/cream cushions.
+LANDSCAPE ENHANCEMENT: Lawn warmer golden-green tone, trees catching golden side-light, long shadows across lawn.
+OVERALL EFFECT: "Dwell magazine cover at sunset" quality through LIGHTING, not structural changes
+
+=== PROPERTY-WIDE CONSISTENCY RULES (ARCHITECTURE DIGEST) ===
+
+PLANT DISTRIBUTION: Maximum 2 large trees per property.
+- Living room: Large tree allowed (olive OR fiddle leaf)
+- Dining room: BRANCHES in vase ONLY - NOT full tree
+- Kitchen: Small herb OR protea flower - NOT tree
+- Bedroom: Small plant OR nothing - tree only if very large room
+- Bathroom: Small fern OR eucalyptus stems - NOT tree
+- Exterior: Olive tree at entry - ONE location only
+- If olive tree in living room, use BRANCHES in dining vase
+
+METALS (choose one family for entire property):
+- Warm: brass, bronze, aged gold throughout
+- OR Dark: matte black, oil rubbed bronze throughout
+- DO NOT mix chrome with brass
+
+RUGS (one family):
+- All vintage Persian (varied but complementary)
+- OR all natural fiber (jute, sisal, seagrass)
+- OR all neutral modern (solid textures)
+
+CERAMICS (consistent palette, choose 3-4):
+- Cream/warm white, charcoal/matte black, terracotta, sage (accent)
+
 === GOLD EXAMPLES (STRIP + REFURNISH) ===
 
 These examples show the exact behavior expected: strip all furniture first, then refurnish from scratch.
@@ -495,6 +706,77 @@ MICRO-REALISM: Allow subtle natural variation - a throw casually draped with rea
 All furniture must feel substantial and custom. Layer textures so the room feels tactile and lived-in, not flat.
 
 LEVEL THE PHOTO and apply professional enhancement with slightly more contrast for drama. The final result should be a photorealistic, high-end designer living room that feels inviting and luxurious - NOT a sterile hotel lobby."
+
+EXAMPLE E - Dining Room → ARCHITECTURE DIGEST style (demonstrating dramatic lighting + designer furniture):
+"Using this uploaded dining room photo, create a fully virtually staged real-estate listing image in an Architecture Digest style.
+
+ARCHITECTURAL PRESERVATION (CRITICAL): Keep the same architectural shell: walls, windows, doors, trim, ceiling height, and flooring exactly as they appear. Do NOT move, add, remove, or resize any windows or doors. Do NOT alter any architectural features. Do NOT fill in doorways or openings. Do NOT fix, repaint, patch, or cover any visible cracks, stains, holes, or other damage - these must remain visible.
+
+First, STRIP THE ROOM: remove all existing furniture and decor so the room appears unfurnished while preserving the exact architecture.
+
+Then, RE-FURNISH in the Architecture Digest style with THREE TRANSFORMATION LAYERS:
+
+LAYER 1 - DRAMATIC LIGHTING (CRITICAL - this is PHOTO ENHANCEMENT, not structural change):
+Transform the lighting to golden hour quality - the entire scene should look like 1 hour before sunset. Add visible warm light rays streaming through the EXISTING windows (do not add/move windows). Create rich dimensional shadows in warm brown/amber tones (NOT flat gray). Apply an interior glow effect so the space feels lit from within. Use color temperature 2700K-3000K throughout - absolutely NO cool or blue tones anywhere. All whites become cream/ivory, all shadows become warm amber.
+
+LAYER 2 - DESIGNER STAGING (furniture only, not architectural):
+Add a solid light oak dining table with clean lines, surrounded by 6 Hans Wegner wishbone chairs in natural ash.
+Place a large natural jute rug with subtle texture under the table.
+Add ONE large abstract artwork (at least 36x48 inches) in earth tones (terracotta, sage, cream) with a simple float frame on the main wall.
+Include an olive tree (5-6 feet tall) in an aged terracotta pot in the corner as the SIGNATURE element.
+Add a brass or ceramic pendant light with warm glow above the table.
+Keep the table centerpiece MINIMAL - either empty or a single sculptural vase with olive branches.
+
+LAYER 3 - COLOR GRADING:
+Push the entire image warm/golden. Whites = cream (never stark). Shadows = warm brown/amber (never gray). Wood tones = rich honey/amber.
+
+All furniture must be realistically scaled. Do NOT use books as decor in the dining room. Do NOT alter the room's architecture. The walls, windows, doors, and floor must be IDENTICAL to the original photo. The final result should be a photorealistic, magazine-cover quality dining room with dramatic golden-hour lighting that honestly represents the actual space."
+
+EXAMPLE F - Exterior → ARCHITECTURE DIGEST style (demonstrating LIGHTING transformation - NOT structural):
+"Using this uploaded exterior photo, create a fully virtually staged real-estate listing image in an Architecture Digest style.
+
+*** CRITICAL ARCHITECTURAL PRESERVATION ***
+This is a LIGHTING transformation ONLY. The home's structure must remain EXACTLY as photographed:
+- Do NOT move, add, remove, or resize ANY windows
+- Do NOT alter the home's footprint, roofline, or siding
+- Do NOT change the landscaping layout or add/remove trees (you may enhance lighting on existing plants)
+- Do NOT fill in or alter any doors, openings, or architectural features
+- Every window must remain in its EXACT original position
+- The home must be immediately recognizable as the same property
+
+TRANSFORM THE LIGHTING AND ATMOSPHERE with THREE LAYERS:
+
+LAYER 1 - GOLDEN HOUR SKY (LIGHTING CHANGE ONLY):
+Transform the sky to a dramatic golden hour gradient: blue at the top transitioning to warm gold in the middle, then pink/peach tones at the horizon. This is the 'magic hour' - 1 hour before sunset.
+
+LAYER 2 - WINDOW GLOW (LIGHTING CHANGE ONLY):
+EVERY EXISTING window must show warm amber interior glow - light should be visibly emanating from within the home. This is applied to the windows that ALREADY EXIST - do not add windows or change their positions.
+
+LAYER 3 - LIGHTING ON ARCHITECTURE:
+Apply golden side-light to EXISTING trees and landscaping, with warm highlights on foliage. The home's exterior surfaces should catch warm evening light.
+
+ADDED ELEMENTS (decor only, not structural):
+Add an olive tree in an aged terracotta pot near the entry (this is portable decor).
+If there's a porch, add natural wood or woven outdoor furniture (this is furniture).
+
+COLOR GRADING:
+Push the entire image warm. Eliminate any cool/blue tones except in the upper sky. Whites on the home become warm cream in the golden light.
+
+The overall effect should be 'Dwell magazine cover at sunset' quality achieved through LIGHTING AND ATMOSPHERE, not structural changes. The home must be the EXACT SAME home - just photographed at magic hour with beautiful lighting.
+
+LEVEL THE PHOTO so all verticals are truly vertical. The final result should be a photorealistic, magazine-cover quality exterior that honestly represents the actual property."
+
+=============================================================================
+⚠️ FINAL STRUCTURAL CHECK (ARCHITECTURE DIGEST) ⚠️
+=============================================================================
+Before finalizing ANY Architecture Digest image, verify:
+✓ All doorways and openings to adjacent rooms are preserved exactly
+✓ All windows remain in their exact original positions
+✓ All walls remain exactly where they were in the original
+✓ No architectural features have been added or removed
+✓ If you could see into another room (kitchen, hallway, etc.), that view is still visible
+✓ The room is immediately recognizable as the same space from the original photo
+=============================================================================
 {comments_section}
 === YOUR TASK ===
 

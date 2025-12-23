@@ -45,6 +45,7 @@ class StylePreference(str, Enum):
     MODERN = "modern"
     LUXURY = "luxury"
     NEOCLASSICAL = "neoclassical"
+    ARCHITECTURE_DIGEST = "architecture_digest"
 
 
 # Style mapping from Airtable dropdown text to internal enum values
@@ -57,6 +58,7 @@ STYLE_MAPPING = {
     "Farmhouse": "farmhouse",
     "Luxury": "luxury",
     "Neoclassical": "neoclassical",
+    "Architecture Digest": "architecture_digest",
     # Full dropdown values with descriptions
     "Default (Clean, simple, light colors that work in almost any home.)": "neutral",
     "Cozy Traditional (Warm, comfortable, classic furniture that feels lived-in but tidy.)": "traditional",
@@ -65,6 +67,7 @@ STYLE_MAPPING = {
     "Farmhouse (Relaxed, country-style wood tones and simple rustic details.)": "farmhouse",
     "Luxury (Higher-end furniture, richer textures, and more dramatic styling for upscale homes.)": "luxury",
     "Neoclassical (Elegant, formal styling with traditional shapes and refined detailing.)": "neoclassical",
+    "Architecture Digest (Editorial, warm, sophisticated - California wine country aesthetic with golden-hour lighting.)": "architecture_digest",
 }
 
 
