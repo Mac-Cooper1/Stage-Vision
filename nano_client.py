@@ -337,11 +337,11 @@ class NanoBananaClient:
         # Detect if this is a vacant room needing staging or occupied room needing declutter
         is_vacant = "stage this empty" in original_prompt.lower() or "vacant" in original_prompt.lower()
 
-        # Detect style preference from original prompt (matches the 8 client-facing styles)
-        style = "neutral"
-        for s in ["traditional", "farmhouse", "coastal", "modern", "luxury", "neoclassical", "architecture_digest", "architecture digest"]:
+        # Detect style preference from original prompt (matches the 6 client-facing styles)
+        style = "modern"
+        for s in ["modern", "scandinavian", "coastal", "farmhouse", "midcentury", "mid-century", "architecture_digest", "architecture digest"]:
             if s in original_prompt.lower():
-                style = s.replace(" ", "_")  # Normalize to underscore format
+                style = s.replace(" ", "_").replace("-", "")  # Normalize to underscore format
                 break
 
         if is_vacant:
@@ -489,7 +489,435 @@ CRITICAL: Walls, windows, doors, floor must be IDENTICAL to original. Do NOT cov
 
 Result: Magazine-cover worthy through lighting + staging, not structural changes. Room must be recognizable as the same space."""
 
-            # Standard staging fallback for vacant rooms
+            # MODERN STYLE - COOL + CRISP + MINIMAL (opposite of warm AD)
+            if style == "modern":
+                furniture_by_room_modern = {
+                    "living room": """SOFA: Low-profile sectional in COOL gray, white, or charcoal. Clean lines, chrome or hidden legs. NOT warm tones.
+COFFEE TABLE: Glass with chrome base OR white marble with black steel frame. NOT warm walnut.
+ACCENT CHAIRS: Pair in white, gray, or black leather. Chrome legs. Clean, architectural.
+RUG: SOLID color - white, cream, or gray. Low pile, clean edges. NO patterns, NO warm tones. 8x10+.
+ART: Large-scale minimalist piece in BLACK frame - geometric, B&W photography. Gallery-like.
+ACCESSORIES: MINIMAL - one sculptural ceramic in white or black. 2-3 design books max. Chrome or black metal accents ONLY.
+PLANT: Snake plant in WHITE or BLACK ceramic cylinder. OR skip entirely - modern is MINIMAL.
+LIGHTING: Arc floor lamp in CHROME or BLACK (not brass).""",
+                    "dining room": """TABLE: Glass with chrome base OR white lacquer. NOT warm walnut. 72-84" for 6.
+CHAIRS: Molded chairs in WHITE, BLACK, or GRAY. Chrome legs. All matching.
+PENDANT: Sculptural chrome or black pendant. NO brass.
+RUG: Solid gray, white, or black. Low pile.
+CENTERPIECE: Empty (preferred) OR single white/black sculptural object.""",
+                    "bedroom": """BED: LOW platform in WHITE, light gray, or BLACK. Upholstered headboard in COOL gray or WHITE.
+□ NO warm wood tones - use lacquer, white, or matte gray
+□ Chrome or hidden legs
+
+BEDDING: CRISP white, smooth and tailored (not rumpled). 1-2 accent pillows in charcoal or cool gray only.
+NIGHTSTANDS: WHITE lacquer cube OR glass/chrome OR matte BLACK geometric. NOT warm walnut.
+LAMPS: Ceramic cylinder in white/gray/black. Chrome accents.
+RUG: Solid white, cream, or gray. NOT warm-toned.
+ART: Single abstract in BLACK frame.""",
+                    "kitchen": """MINIMAL - clear counters:
+- One cutting board (BLACK or white)
+- Single fruit in matte BLACK or white bowl
+- Sculptural vase in matte white/black (empty or single stem)
+BAR STOOLS: Black leather with CHROME or black metal frame. Clean lines.""",
+                    "bathroom": """ULTRA MINIMAL:
+- Soap dispenser in matte BLACK or white
+- Small stone tray
+- Towels in WHITE or gray only, neatly folded
+- NO plants (keep it minimal)""",
+                    "exterior": """LIGHTING: COOL, clean - blue hour or bright daylight.
+- Interior glow through windows (WHITE/neutral, NOT warm amber)
+- Architectural lighting emphasized
+LANDSCAPING: Clean, geometric. Ornamental grasses, boxwood. Concrete or black metal planters.
+FURNITURE: Modern outdoor - clean lines. Gray, black, or white cushions. NO warm woods.""",
+                    "room": """MODERN = COOL + MINIMAL + GALLERY-LIKE:
+SEATING: Low-profile in cool gray/white/charcoal, chrome legs
+TABLES: Glass, white marble, or white lacquer - NOT warm walnut
+RUG: Solid white/gray - NO patterns, NO warm tones
+ACCESSORIES: Ultra minimal - one sculptural ceramic, chrome accents
+PLANT: Skip in most rooms, or snake plant in white/black pot"""
+                }
+                furniture = furniture_by_room_modern.get(room_type, furniture_by_room_modern["room"])
+
+                return f"""MODERN STAGING (COOL + CRISP + MINIMAL): Stage this {room_type} with gallery-like contemporary design.
+
+⚠️ CRITICAL RULES:
+- NEVER invent wall damage, cracks, or imperfections
+- NEVER shift camera angle - maintain EXACT perspective
+- NOT every room needs a plant - Modern is MINIMAL
+
+⚠️ STRUCTURAL PRESERVATION - NEVER alter walls, doorways, windows, or architectural features.
+
+MODERN STYLE DNA (What makes Modern DIFFERENT):
+- COOL, CRISP lighting (4000-5000K) - NO warm golden tones
+- WHITE, cool gray, charcoal, BLACK palette
+- WHITE OAK (bleached) or white lacquer - NO warm walnut (that's Mid-Century!)
+- CHROME and matte black metals - NO brass (that's Mid-Century!)
+- Gallery-like minimal aesthetic
+
+FORBIDDEN: Warm amber, golden tones, earth tones, rattan, wicker, walnut, brass
+
+FURNITURE:
+{furniture}
+
+CRITICAL: Keep architecture identical to original. Do NOT cover damage/defects.
+
+Result: COOL + MINIMAL + GALLERY-LIKE. Sophisticated, clean, NOT warm or cozy."""
+
+            # SCANDINAVIAN STYLE - LIGHT BLONDE WOOD + SOFT PASTELS + HYGGE
+            if style == "scandinavian":
+                furniture_by_room_scandi = {
+                    "living room": """SOFA: Clean-lined in light gray or SOFT BLUSH. Slim BLONDE wood legs (birch/ash). Bouclé or linen.
+COFFEE TABLE: Round/oval in LIGHT OAK or BIRCH. NOT dark walnut!
+ACCENT CHAIRS: Wishbone or shell chair in BLONDE wood. OR sheepskin-draped chair.
+RUG: Cream wool with texture. SHEEPSKIN layered (SIGNATURE!). Soft, cozy.
+ACCESSORIES (MUST INCLUDE 2-3):
+□ SHEEPSKIN throw or accent (ESSENTIAL!)
+□ CHUNKY KNIT throw in cream/gray
+□ CANDLES in simple holders (HYGGE - ESSENTIAL!)
+□ PASTEL accent - blush pillow or sage vase
+PLANT: Trailing pothos in white ceramic OR eucalyptus in vase.
+LIGHTING: Paper pendant, fabric shade lamp. CANDLES essential!
+ART: Simple line drawings in LIGHT wood frames.""",
+                    "dining room": """TABLE: LIGHT OAK or BIRCH, round/oval preferred. BLONDE wood - NOT walnut!
+CHAIRS: Wishbone (CH24 style) in NATURAL/BLONDE. Paper cord seats.
+PENDANT: PH5 style layered OR paper lantern (Noguchi). Soft diffused light.
+RUG: Natural wool flatweave in cream. OR sheepskin.
+CENTERPIECE: Single pillar CANDLE in wooden holder. CANDLES are essential for Scandinavian!""",
+                    "bedroom": """BED: LIGHT BLONDE wood frame (birch, ash, or blonde oak) OR white/cream upholstered.
+□ NO dark walnut - that's Mid-Century!
+□ Light, airy presence
+
+BEDDING: White linen, relaxed texture. CHUNKY KNIT throw (cream/gray). Mix linen/wool pillows.
+NIGHTSTANDS: LIGHT BLONDE wood (SIGNATURE!). Simple, functional.
+LAMPS: Ceramic in white/soft gray with linen shade.
+RUG: SHEEPSKIN beside bed (SIGNATURE!) OR cream wool.
+ACCESSORIES (MUST INCLUDE):
+□ CANDLE on nightstand (HYGGE!)
+□ Stack of books
+□ Soft PASTEL accent if any (blush, sage)""",
+                    "kitchen": """Functional hygge:
+- LIGHT wood cutting boards (birch/blonde oak)
+- Ceramic canisters in white or SOFT PASTELS
+- Herbs in terracotta or white pots
+- Linen tea towels
+- CANDLE on counter (hygge!)
+BAR STOOLS: LIGHT BLONDE wood. Simple Scandinavian design.""",
+                    "bathroom": """Spa-like with hygge:
+- Wooden tray with natural bar soap
+- Eucalyptus stems in ceramic vase
+- White linen towels, waffle weave
+- CANDLE (ESSENTIAL for Scandinavian bathrooms!)
+- Woven basket for storage""",
+                    "exterior": """LIGHTING: Bright Nordic daylight OR soft overcast.
+- WARM interior glow through windows (candles visible!)
+LANDSCAPING: Natural, slightly wild. Simple wood/concrete planters.
+FURNITURE: Light wood outdoor furniture. Cozy throws, CANDLES in lanterns.""",
+                    "room": """SCANDINAVIAN = BLONDE WOOD + PASTELS + HYGGE:
+SEATING: Light gray/blush, BLONDE wood legs
+TABLES: LIGHT OAK/BIRCH - NOT dark walnut
+RUG: Cream wool, SHEEPSKIN layered
+ACCESSORIES: CHUNKY KNIT, CANDLES, PASTEL accents
+PLANT: In woven basket or white ceramic"""
+                }
+                furniture = furniture_by_room_scandi.get(room_type, furniture_by_room_scandi["room"])
+
+                return f"""SCANDINAVIAN STAGING (BLONDE WOOD + PASTELS + HYGGE): Stage this {room_type} with Nordic warmth.
+
+⚠️ CRITICAL RULES:
+- NEVER invent wall damage, cracks, or imperfections
+- NEVER shift camera angle - maintain EXACT perspective
+- Use soft, organic plants - NOT architectural (that's Modern)
+
+⚠️ STRUCTURAL PRESERVATION - NEVER alter walls, doorways, windows, or architectural features.
+
+SCANDINAVIAN STYLE DNA (What makes Scandinavian DIFFERENT from Mid-Century):
+- LIGHT BLONDE wood (birch, ash, light oak) - NOT DARK WALNUT (that's Mid-Century!)
+- Soft PASTELS (blush pink, sage green) - NOT bold colors (that's Mid-Century!)
+- COZY textures (sheepskin, chunky knit) - NOT sleek/sculptural
+- Bright, airy Nordic light (3200-3500K)
+- CANDLES are ESSENTIAL for hygge!
+
+SIGNATURE ELEMENTS (must include 2-3):
+□ SHEEPSKIN throw or rug (ESSENTIAL!)
+□ CHUNKY KNIT throw blanket
+□ CANDLES in simple holders (HYGGE!)
+□ Soft PASTEL accent (blush, sage)
+
+FORBIDDEN: Dark walnut, black iron, bold colors (mustard/orange), chrome
+
+FURNITURE:
+{furniture}
+
+CRITICAL: Keep architecture identical to original. Do NOT cover damage/defects.
+
+Result: BLONDE WOOD + PASTELS + COZY HYGGE + CANDLES. Bright, airy, warm but light."""
+
+            # COASTAL STYLE - BLUE + WOVEN TEXTURES + BEACH LIGHT
+            if style == "coastal":
+                furniture_by_room_coastal = {
+                    "living room": """SOFA: Deep comfortable in white, cream, or SOFT BLUE linen. Slipcovered, relaxed fit.
+COFFEE TABLE: Round WOVEN RATTAN with glass top (SIGNATURE!) OR whitewashed wood.
+ACCENT CHAIRS: RATTAN/WICKER armchairs with white cushions (SIGNATURE!)
+RUG: JUTE or SISAL in natural sandy tone (SIGNATURE!) OR BLUE and white stripe.
+ACCESSORIES (MUST INCLUDE):
+□ BLUE and white throw pillows (ESSENTIAL!)
+□ WOVEN texture somewhere (basket, lamp)
+□ Ocean art in WHITE frame
+□ Light cotton/linen throw
+PLANT: Palm in WOVEN SEAGRASS basket. Keep it airy - less is more for coastal.
+LIGHTING: RATTAN or WOVEN pendant (SIGNATURE!). White ceramic lamps.""",
+                    "dining room": """TABLE: Reclaimed wood OR white-washed trestle. Casual, beachy.
+CHAIRS: WOVEN RATTAN/WICKER dining chairs (SIGNATURE!) OR slipcovered parsons in white.
+PENDANT: Large WOVEN RATTAN/SEAGRASS pendant (SIGNATURE!)
+RUG: Natural JUTE, large.
+CENTERPIECE: White pitcher with eucalyptus OR hurricane lantern.""",
+                    "bedroom": """BED: WHITE upholstered headboard OR RATTAN/CANE headboard (SIGNATURE!)
+□ NO dark wood frames - light and airy
+□ Fresh, breezy appearance
+
+BEDDING: Crisp WHITE base. BLUE and white accent pillows (ESSENTIAL!). Light throw in blue or white.
+NIGHTSTANDS: RATTAN or WICKER (SIGNATURE!) OR white/whitewashed wood.
+LAMPS: White ceramic with WOVEN or linen shade.
+RUG: Natural JUTE at bedside OR soft BLUE.
+ACCESSORIES: SKIP plants in bedroom - keep it airy and breezy.""",
+                    "kitchen": """Light, fresh, LESS IS MORE:
+- Light wood cutting board
+- White ceramic canisters
+- Lemons in wooden bowl
+- WOVEN basket with fruit
+- NO large plants - keep counters clear
+BAR STOOLS: WOVEN RATTAN/SEAGRASS counter stools (SIGNATURE!)""",
+                    "bathroom": """Fresh and spa-like:
+- White tray with natural soap
+- Eucalyptus stems in glass vase
+- White towels, SOFT BLUE accent towel
+- WOVEN basket for storage
+- SKIP plants - keep it clean and breezy""",
+                    "exterior": """LIGHTING: BRIGHT beach daylight OR sunset with pink/orange sky.
+- Warm interior glow through windows
+LANDSCAPING: Coastal plants, ornamental grasses, palms. White/natural planters.
+FURNITURE: Teak or white-washed wood. White and BLUE cushions (SIGNATURE!)""",
+                    "room": """COASTAL = BLUE + WOVEN/RATTAN + BEACH BRIGHT:
+SEATING: White/cream/BLUE linen, slipcovered
+TABLES: RATTAN, whitewashed, or driftwood
+RUG: JUTE/SISAL (essential!) or BLUE/white stripe
+ACCESSORIES: BLUE + white required, WOVEN textures
+PLANT: In woven basket - or SKIP for airy feel"""
+                }
+                furniture = furniture_by_room_coastal.get(room_type, furniture_by_room_coastal["room"])
+
+                return f"""COASTAL STAGING (BLUE + WOVEN TEXTURES + BEACH LIGHT): Stage this {room_type} with beach house elegance.
+
+⚠️ CRITICAL RULES:
+- NEVER invent wall damage, cracks, or imperfections
+- NEVER shift camera angle - maintain EXACT perspective
+- SKIP plants in many rooms - Coastal is AIRY and breezy
+
+⚠️ STRUCTURAL PRESERVATION - NEVER alter walls, doorways, windows, or architectural features.
+
+COASTAL STYLE DNA (What makes Coastal DIFFERENT):
+- BLUE is REQUIRED - at least one blue element per room (pillow, throw, rug)
+- RATTAN/WICKER textures are ESSENTIAL (furniture, pendant, basket)
+- JUTE/SISAL rugs in natural sandy tones
+- Bright, sun-drenched beach light (3500-4000K)
+- Whitewashed wood, driftwood - NOT warm walnut
+
+SIGNATURE ELEMENTS (must include 2-3):
+□ BLUE and white pillows (ESSENTIAL!)
+□ RATTAN or WICKER furniture piece
+□ JUTE or SISAL rug
+□ WOVEN pendant or lamp
+
+FORBIDDEN: Dark walnut, warm amber, chrome, black iron, cozy knits
+
+FURNITURE:
+{furniture}
+
+CRITICAL: Keep architecture identical to original. Do NOT cover damage/defects.
+
+Result: BLUE + WOVEN/RATTAN + BEACH BRIGHT. Relaxed, airy, refined coastal - not kitschy."""
+
+            # FARMHOUSE STYLE - RECLAIMED WOOD + BLACK IRON + VINTAGE
+            if style == "farmhouse":
+                furniture_by_room_farmhouse = {
+                    "living room": """SOFA: Deep comfortable in cream/warm gray. Linen/cotton slipcover. Substantial comfort.
+COFFEE TABLE: RECLAIMED WOOD with visible character (SIGNATURE!). Substantial, rustic.
+ACCENT CHAIRS: Leather club chairs in cognac. OR wingback in linen.
+RUG: VINTAGE-style in FADED muted tones (faded reds, blues, creams). Shows character.
+ACCESSORIES (MUST INCLUDE 2-3):
+□ BLACK IRON element (lamp, hardware) - ESSENTIAL!
+□ VINTAGE/antique piece
+□ Grain sack or ticking stripe pattern
+□ Ceramic pitcher or crock
+PLANT: Eucalyptus stems in ceramic PITCHER (SIGNATURE!) OR cotton stems in vintage vessel.
+LIGHTING: Industrial floor lamp in BLACK METAL (SIGNATURE!). Lanterns.
+ART: Vintage botanical prints in simple frames.""",
+                    "dining room": """TABLE: Large RECLAIMED WOOD farmhouse table (SIGNATURE!). Substantial trestle base.
+CHAIRS: Cross-back (X-back) in BLACK (SIGNATURE!) OR Windsor in black.
+PENDANT: Large BLACK METAL chandelier (SIGNATURE!) - linear or round.
+RUG: Vintage-style OR natural jute.
+CENTERPIECE: Ceramic pitcher with dried flowers OR wooden dough bowl.""",
+                    "bedroom": """BED: BLACK IRON or metal bed frame (SIGNATURE!) OR reclaimed wood headboard with character.
+□ Can show wear/age in FURNITURE (not walls!)
+□ Substantial, sturdy presence
+
+BEDDING: White base with texture. VINTAGE QUILT at foot (SIGNATURE!). Linen/cotton in cream.
+NIGHTSTANDS: MISMATCHED VINTAGE pieces (charming!) OR distressed wood.
+LAMPS: Ceramic in white/cream with linen shade.
+RUG: VINTAGE-style with FADED pattern.
+ACCESSORIES: Candlestick, flowers in small pitcher, vintage books.""",
+                    "kitchen": """Rustic charm:
+- Butcher block cutting board
+- Ceramic crock with wooden utensils
+- VINTAGE canisters or glass jars
+- Fresh produce in basket
+- BLACK IRON pot rack or hardware visible
+BAR STOOLS: Industrial BLACK METAL (SIGNATURE!) OR cross-back in black/natural.""",
+                    "bathroom": """Vintage charm:
+- Wooden tray with natural bar soap
+- Glass jars or vintage containers
+- WHITE waffle weave towels on vintage hooks/ladder
+- GALVANIZED metal or wire basket
+- Small candle in vintage holder""",
+                    "exterior": """LIGHTING: WARM golden hour, barn-like glow.
+- Interior windows showing warm light
+LANDSCAPING: Cottage garden - lavender, hydrangeas. Galvanized or terracotta planters.
+FURNITURE: Rocking chairs, Adirondack, vintage metal. Lanterns, string lights.""",
+                    "room": """FARMHOUSE = RECLAIMED WOOD + BLACK IRON + VINTAGE:
+SEATING: Cream/gray slipcovered, substantial
+TABLES: RECLAIMED wood with character
+RUG: VINTAGE-style or jute
+ACCESSORIES: BLACK IRON, ceramic pitchers, galvanized
+PLANT: Eucalyptus in pitcher or cotton stems"""
+                }
+                furniture = furniture_by_room_farmhouse.get(room_type, furniture_by_room_farmhouse["room"])
+
+                return f"""FARMHOUSE STAGING (RECLAIMED WOOD + BLACK IRON + VINTAGE): Stage this {room_type} with rustic charm.
+
+⚠️ CRITICAL RULES:
+- NEVER invent wall damage, cracks, or imperfections
+- Distressed FURNITURE is style. Damaged WALLS is fraud.
+- NEVER shift camera angle - maintain EXACT perspective
+
+⚠️ STRUCTURAL PRESERVATION - NEVER alter walls, doorways, windows, or architectural features.
+
+FARMHOUSE STYLE DNA (What makes Farmhouse DIFFERENT):
+- BLACK IRON is REQUIRED (bed frame, lamp, chandelier, hardware)
+- RECLAIMED WOOD with visible character
+- VINTAGE elements (quilt, mismatched nightstands)
+- Warm barn/candlelit light (2700-3000K)
+- White, cream + BLACK IRON accents
+
+SIGNATURE ELEMENTS (must include 2-3):
+□ BLACK IRON element (ESSENTIAL!)
+□ RECLAIMED WOOD furniture
+□ VINTAGE/antique piece
+□ Eucalyptus in ceramic PITCHER
+
+FORBIDDEN: Chrome, high-gloss, sleek modern, blonde wood, brass
+
+⚠️ DAMAGE PREVENTION:
+- Show CHARACTER in FURNITURE (distressed, worn) = STYLE
+- Do NOT invent damage on WALLS (cracks, holes) = FRAUD
+- Preserve wall condition EXACTLY
+
+FURNITURE:
+{furniture}
+
+CRITICAL: Keep architecture identical to original. Do NOT cover damage/defects.
+
+Result: RECLAIMED WOOD + BLACK IRON + VINTAGE CHARACTER. Rustic warmth, not country kitsch."""
+
+            # MID-CENTURY MODERN STYLE - DARK WALNUT + BOLD COLORS + TAPERED LEGS
+            if style == "midcentury":
+                furniture_by_room_mcm = {
+                    "living room": """SOFA: Low-profile in BOLD COLOR - MUSTARD, OLIVE, or BURNT ORANGE (SIGNATURE!). TAPERED WALNUT legs.
+COFFEE TABLE: Surfboard shape in DARK WALNUT (SIGNATURE!) OR Noguchi-inspired. TAPERED LEGS essential.
+ACCENT CHAIRS: Eames Lounge Chair and Ottoman in leather (SIGNATURE!). OR shell chairs. OR womb chair in bold color.
+RUG: SHAG rug in cream, GOLD, or OLIVE (SIGNATURE!) OR bold geometric in warm tones.
+ACCESSORIES (MUST INCLUDE 2-3):
+□ STARBURST element (clock, mirror, wall art) - SIGNATURE!
+□ BOLD COLOR accent - mustard, olive, or orange - ESSENTIAL!
+□ BRASS accent (lamp, candleholder)
+□ Sculptural ceramic in period color
+PLANT: Snake plant in BULLET PLANTER (period ceramic!) in white, orange, or olive.
+LIGHTING: Arc floor lamp in BRASS (Arco style). SPUTNIK chandelier (SIGNATURE!)
+ART: Large abstract expressionist or bold graphic print.""",
+                    "dining room": """TABLE: Oval DARK WALNUT with TAPERED LEGS (SIGNATURE!). OR Saarinen tulip.
+CHAIRS: Eames molded plastic in colors OR Wegner Wishbone in WALNUT. All matching.
+PENDANT: SPUTNIK chandelier in BRASS (SIGNATURE!) OR PH Artichoke. BRASS essential.
+RUG: Bold geometric in period colors OR SHAG in gold/olive.
+CENTERPIECE: Sculptural ceramic bowl in period color.""",
+                    "bedroom": """BED: DARK WALNUT platform with TAPERED LEGS (SIGNATURE!)
+□ Low profile, panel/slat headboard
+□ NO light wood - that's Scandinavian!
+□ Substantial, iconic presence
+
+BEDDING: White/cream base. BOLD accent throw - MUSTARD, OLIVE, or BURNT ORANGE (ESSENTIAL!)
+NIGHTSTANDS: DARK WALNUT with TAPERED LEGS (SIGNATURE!). BRASS hardware.
+LAMPS: Ceramic in period color (mustard, olive, cream). BRASS accents.
+RUG: SHAG in cream, gold, or olive.
+ACCESSORIES: STARBURST clock or mirror (SIGNATURE!), BRASS candleholder.""",
+                    "kitchen": """Period-appropriate:
+- Teak cutting board
+- Ceramic canisters in period colors (white, ORANGE, OLIVE)
+- Fruit in sculptural bowl
+- Dansk or Scandinavian ceramics
+BAR STOOLS: DARK WALNUT with TAPERED LEGS. OR molded seats in period colors.""",
+                    "bathroom": """Bold, period-appropriate:
+- Simple tray with soap
+- Ceramic vessel in BOLD period color (MUSTARD, OLIVE, orange)
+- Snake plant in bullet planter
+- Towels in bold solid color
+- BRASS accents (essential!)""",
+                    "exterior": """LIGHTING: WARM golden hour, rich and saturated.
+- Dramatic sky
+- Interior glow showing warm amber tones
+LANDSCAPING: Desert modern (agave, succulents) OR structured. Gravel, concrete.
+FURNITURE: Emphasize period features. DARK WALNUT or teak.""",
+                    "room": """MID-CENTURY = DARK WALNUT + BOLD COLORS + TAPERED LEGS:
+SEATING: BOLD color (mustard/olive/orange), TAPERED walnut legs
+TABLES: DARK WALNUT with TAPERED LEGS
+RUG: SHAG or bold geometric
+ACCESSORIES: STARBURST, BRASS, period ceramics
+PLANT: In ceramic BULLET PLANTER"""
+                }
+                furniture = furniture_by_room_mcm.get(room_type, furniture_by_room_mcm["room"])
+
+                return f"""MID-CENTURY MODERN STAGING (DARK WALNUT + BOLD COLORS + TAPERED LEGS): Stage this {room_type} with iconic 1950s-60s design.
+
+⚠️ CRITICAL RULES:
+- NEVER invent wall damage, cracks, or imperfections
+- NEVER shift camera angle - maintain EXACT perspective
+- Use DARK WALNUT - NOT light blonde wood (that's Scandinavian!)
+
+⚠️ STRUCTURAL PRESERVATION - NEVER alter walls, doorways, windows, or architectural features.
+
+MID-CENTURY STYLE DNA (What makes Mid-Century DIFFERENT from Scandinavian):
+- DARK WALNUT with TAPERED LEGS (NOT light blonde wood!)
+- BOLD COLORS: mustard yellow, olive green, burnt orange (NOT soft pastels!)
+- SLEEK, sculptural (NOT cozy chunky knit)
+- Rich, saturated amber lighting (2700-3000K)
+- BRASS accents essential (NOT black iron!)
+
+SIGNATURE ELEMENTS (must include 2-3):
+□ DARK WALNUT furniture with TAPERED LEGS (ESSENTIAL!)
+□ BOLD COLOR accent - mustard, olive, or orange (ESSENTIAL!)
+□ STARBURST element (clock, mirror, art)
+□ BRASS accent
+□ SHAG texture (rug or pillow)
+□ Ceramic BULLET PLANTER
+
+FORBIDDEN: Light blonde wood (Scandinavian!), soft pastels, black iron, chunky knits, chrome
+
+FURNITURE:
+{furniture}
+
+CRITICAL: Keep architecture identical to original. Do NOT cover damage/defects.
+
+Result: DARK WALNUT + BOLD COLORS + TAPERED LEGS + BRASS + STARBURST. Iconic, warm, statement-making."""
+
+            # Standard staging fallback for vacant rooms (default/unknown style)
             furniture_by_room = {
                 "bedroom": "a queen bed with headboard (standard size, not oversized), matching nightstands with lamps, and an area rug under the bed",
                 "living room": "a sofa (sized appropriately for the room), coffee table, accent chairs, area rug, and floor lamp",

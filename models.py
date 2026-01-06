@@ -38,35 +38,31 @@ class ImageStatus(str, Enum):
 
 class StylePreference(str, Enum):
     """Available style preferences for staging."""
-    NEUTRAL = "neutral"
-    TRADITIONAL = "traditional"
-    FARMHOUSE = "farmhouse"
-    COASTAL = "coastal"
     MODERN = "modern"
-    LUXURY = "luxury"
-    NEOCLASSICAL = "neoclassical"
+    SCANDINAVIAN = "scandinavian"
+    COASTAL = "coastal"
+    FARMHOUSE = "farmhouse"
+    MIDCENTURY = "midcentury"
     ARCHITECTURE_DIGEST = "architecture_digest"
 
 
 # Style mapping from Airtable dropdown text to internal enum values
 STYLE_MAPPING = {
     # Short names
-    "Neutral": "neutral",
-    "Cozy Traditional": "traditional",
     "Modern": "modern",
+    "Scandinavian": "scandinavian",
     "Coastal": "coastal",
     "Farmhouse": "farmhouse",
-    "Luxury": "luxury",
-    "Neoclassical": "neoclassical",
+    "Mid-Century Modern": "midcentury",
+    "Mid-Century": "midcentury",
+    "Midcentury": "midcentury",
     "Architecture Digest": "architecture_digest",
     # Full dropdown values with descriptions
-    "Default (Clean, simple, light colors that work in almost any home.)": "neutral",
-    "Cozy Traditional (Warm, comfortable, classic furniture that feels lived-in but tidy.)": "traditional",
-    "Modern (Sleek lines, minimal clutter, and bolder contrast for a more updated look.)": "modern",
-    "Coastal (Bright, beachy, light woods and soft blues for an airy feel.)": "coastal",
-    "Farmhouse (Relaxed, country-style wood tones and simple rustic details.)": "farmhouse",
-    "Luxury (Higher-end furniture, richer textures, and more dramatic styling for upscale homes.)": "luxury",
-    "Neoclassical (Elegant, formal styling with traditional shapes and refined detailing.)": "neoclassical",
+    "Modern (Clean contemporary design with warm minimalism. Sophisticated but livable.)": "modern",
+    "Scandinavian (Nordic-inspired warmth and simplicity. Light woods, cozy textures, hygge atmosphere.)": "scandinavian",
+    "Coastal (Relaxed beach house elegance. Natural textures, ocean-inspired palette.)": "coastal",
+    "Farmhouse (Modern farmhouse with rustic warmth. Shiplap, reclaimed wood, vintage charm.)": "farmhouse",
+    "Mid-Century Modern (Iconic 1950s-60s design. Organic forms, tapered legs, statement furniture.)": "midcentury",
     "Architecture Digest (Editorial, warm, sophisticated - California wine country aesthetic with golden-hour lighting.)": "architecture_digest",
 }
 
