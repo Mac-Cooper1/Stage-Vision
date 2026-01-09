@@ -42,7 +42,6 @@ wheels/
 venv/
 ENV/
 env/
-.python-version
 
 # PyInstaller
 *.manifest

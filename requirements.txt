@@ -1,5 +1,5 @@
-# Stager Agent - Requirements
-# Python 3.11+
+# Stage Vision - Virtual Staging Backend
+# Python 3.12+ (Render deployment uses 3.12.8)
 
 # Web Framework
 fastapi>=0.109.0

@@ -1,0 +1,31 @@
+services:
+  - type: web
+    name: stage-vision
+    runtime: python
+    region: oregon
+    plan: starter
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn main:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: PYTHON_VERSION
+        value: "3.12.8"
+      - key: GOOGLE_API_KEY
+        sync: false
+      - key: NANO_API_KEY
+        sync: false
+      - key: NANO_PROJECT_ID
+        sync: false
+      - key: SMTP_HOST
+        sync: false
+      - key: SMTP_PORT
+        sync: false
+      - key: SMTP_USERNAME
+        sync: false
+      - key: SMTP_PASSWORD
+        sync: false
+      - key: EMAIL_FROM
+        sync: false
+      - key: BASE_JOBS_DIR
+        value: "/tmp/stager_jobs"
+    healthCheckPath: /health
+    autoDeploy: true
