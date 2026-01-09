@@ -67,110 +67,154 @@ class GeminiPlannerClient:
         Uses a 4-paragraph prompt skeleton with room-type specific staging patterns and gold examples.
         """
         # ============================================================================
-        # UNIVERSAL RULES (Apply to ALL styles)
+        # UNIVERSAL RULES (Apply to ALL styles) - 2026 Enhanced
         # ============================================================================
         universal_rules = """
-⚠️ CRITICAL UNIVERSAL RULES (ALL STYLES):
+⚠️ CRITICAL RULES FOR ALL STYLES:
 
-DAMAGE PREVENTION - DO NOT INVENT DEFECTS:
-- NEVER invent, add, or enhance wall damage, cracks, or imperfections
-- If original has no damage, output must have NO damage
-- Do NOT add scratches, stains, or wear that doesn't exist
-- Preserve wall condition EXACTLY as original
+STRUCTURAL INTEGRITY:
+- NEVER invent, add, or enhance wall damage, cracks, stains, or imperfections
+- NEVER alter walls, doorways, windows, or architectural openings
+- If original has no damage, output MUST have no damage
+- Preserve exact room dimensions and proportions
 
-CAMERA PRESERVATION - MAINTAIN EXACT PERSPECTIVE:
+⚠️ DAMAGE INVENTION PREVENTION (CRITICAL):
+- When removing items (TVs, furniture, clutter), the surface behind them must appear CLEAN and UNDAMAGED
+- NEVER invent holes, mounting marks, discoloration, or damage where items were removed
+- If a TV is removed from a wall, that wall section must look like a normal, clean wall
+- If furniture is removed, the floor/wall behind it must be pristine
+- The ONLY damage allowed in output is damage that was CLEARLY VISIBLE in the original photo
+- Creating fake damage is FRAUD and violates MLS compliance
+
+CAMERA PRESERVATION:
 - Maintain EXACT camera position and angle from original
-- Do NOT shift, tilt, or reframe the view
-- Furniture should fit the original perspective
-- Do NOT widen field of view or alter depth perception
+- Do not shift, tilt, rotate, or reframe the view
+- No horizontal movement, no yaw rotation
+- Furniture must fit original perspective naturally
 
-PLANT LIMITS - VARIETY IS KEY:
+PLANT DISCIPLINE:
 - NOT every room needs a plant
-- Maximum 1 plant per bedroom
-- Vary plant types across property - don't repeat same plant in every room
-- Some rooms should have NO plants (especially small bathrooms, hallways)
+- Maximum 1-2 plants per room, vary types across property
+- Some rooms should have ZERO plants
+- Plants must match the specific style aesthetic
 
-BED POSITIONING:
-- Keep bed in approximately same position/wall as original
-- Do NOT dramatically shift bed to different wall
-- Maintain room's original layout logic
+BED/FURNITURE POSITIONING:
+- Keep major furniture in approximately same position as logical for room
+- Do not dramatically shift furniture to different walls
+- Maintain room's original layout logic and flow
 """
 
         # ============================================================================
-        # STYLE-SPECIFIC DESIGN BRIEFS
-        # Each style has UNIQUE DNA: Signature Lighting + Signature Furniture + Signature Colors
+        # STYLE-SPECIFIC DESIGN BRIEFS - 2026 RADICAL DIFFERENTIATION
+        # Each style has UNIQUE DNA that is IMMEDIATELY RECOGNIZABLE
         # ============================================================================
         style_guides = {
             # ============================================================================
-            # MODERN: COOL + CRISP + MINIMAL (opposite of warm AD)
+            # MODERN 2026: "Ultra-Simple Holographic Minimalism"
+            # COOL + ETHEREAL + SCULPTURAL + VOID
             # ============================================================================
             "modern": {
-                "description": "Clean contemporary with COOL, crisp aesthetic. Minimal, gallery-like, sophisticated. NOT warm - this is the opposite of AD's warm editorial look.",
-                "palette": "white, cool gray, charcoal, BLACK - NO warm earth tones",
-                "colors": "white, cool gray, charcoal, BLACK; wood in WHITE OAK (bleached) or white lacquer ONLY - NO warm walnut; metals in chrome, polished nickel, matte BLACK only; NO brass, NO warm amber tones",
+                "description": "2026 Vision: Ultra-simple minimalist manifesto with holographic, ethereal atmosphere. Digital perfection meets organic unpredictability. Post-material sculptural forms. The OPPOSITE of warm AD.",
+                "palette": "Pure white, concrete gray, deep charcoal, black. ONE iridescent/holographic element. NO warm earth tones.",
+                "colors": "Foundation: pure white, concrete gray, deep charcoal, BLACK. Materials: brushed steel, chrome, black matte, polished nickel, glass, resin, concrete. NO warm wood tones, NO brass, NO earth tones.",
 
-                "signature_lighting": """MODERN LIGHTING (COOL & CRISP - Different from warm AD):
-- Bright, clean, WHITE light (4000-5000K color temperature)
-- COOL undertones, NOT warm
-- Crisp, even illumination - gallery-like quality
-- Soft shadows but NOT warm-toned
-- NO golden hour, NO warm amber tones
-- This is the OPPOSITE of AD's warm editorial look""",
+                "signature_lighting": """MODERN 2026 LIGHTING - "The Architecture of Silence":
+- COOL, ethereal light quality (4500-5500K)
+- Crisp white light with subtle holographic shimmer
+- Light as sculptural element - visible rays creating geometric patterns
+- Dramatic interplay of deep shadow and brilliant illumination
+- "Empty light backgrounds" contrasting with "rough implied textures"
+- Glass boundaries dissolving indoor/outdoor
+- NO warm amber tones - this is the OPPOSITE of AD""",
 
-                "furniture": """MODERN FURNITURE (COOL TONES - NO WARM WALNUT):
+                "signature_atmosphere": """MODERN 2026 ATMOSPHERE - "The Triangular Void":
+- Empty space is as important as furniture - "negative space as design"
+- Monochromatic foundations with stark contrasts
+- "Geospatial Extremes" - exaggerated sharp angles and diagonals
+- Dynamism and movement in static imagery
+- Biophilic connection - nature pulled INTO the space
+- Ethereal, almost "digital" quality to the render""",
 
-BED (Modern-specific):
-□ LOW platform bed in WHITE, light gray, or BLACK
-□ Minimal frame, almost floating appearance
-□ Clean upholstered headboard in COOL gray or WHITE
-□ NO warm wood tones - use lacquer, white, or matte gray
-□ Tapered metal legs OR hidden legs
+                "furniture": """MODERN 2026 FURNITURE - "Post-Material Sculptural Forms":
 
-NIGHTSTANDS (Modern-specific):
-□ WHITE lacquer cube or cylinder
-□ OR glass and chrome/black metal
-□ OR matte BLACK geometric shape
-□ NOT warm walnut - that's Mid-Century
+THE PHILOSOPHY: Furniture is "post-material" - liquid forms, amorphous shapes,
+unexpected material hybrids. Tactile contrasts.
 
-LIVING: Low-profile sectional in cool gray/white/charcoal, clean lines, chrome or hidden legs. Glass and chrome coffee table OR white marble with black steel base.
+BED:
+□ Low-profile platform that appears to FLOAT (gravity-defying)
+□ Headboard: Sculptural curved form OR dramatic angular geometry
+□ Materials: Matte lacquer, brushed metal, OR unexpected hybrid
+□ Colors: Pure white, charcoal, or iridescent/shifting tones
+□ NO traditional wood grain - too conventional
 
-DINING: Glass table with chrome base OR white lacquer, molded chairs in white/black/gray, sculptural chrome pendant.""",
+NIGHTSTANDS:
+□ Sculptural pedestals - geometric or organic blob forms
+□ Materials: Glass, polished metal, concrete, resin
+□ Could be asymmetric or mismatched intentionally
+□ One floating shelf, other sculptural object
 
-                "decor": """MODERN SIGNATURES:
-□ Abstract art in BLACK frame (not warm wood)
-□ Minimal accessories - LESS IS MORE
-□ ONE sculptural object (white/black ceramic or metal)
-□ NO chunky knits, NO cozy textures
-□ CRISP white bedding, tailored (not rumpled)
-□ Chrome or black metal accents ONLY
+SEATING (if space allows):
+□ Amorphous, "liquid" form chair - looks poured rather than built
+□ OR severe geometric sculptural seat
+□ Plush curves against cold industrial backdrop
 
-FORBIDDEN: Warm amber, golden tones, earth tones, rattan, wicker, walnut, brass""",
+RUG:
+□ SOLID color - pure white, deep charcoal, or concrete gray
+□ OR bold geometric with sharp diagonals
+□ Low pile, architectural edges
+□ Could be asymmetric or custom-shaped""",
 
-                "rugs": "SOLID color - white, cream, or gray. OR subtle geometric in BLACK/WHITE/GRAY only. LOW pile, clean edges. NOT vintage, NOT patterned, NOT warm-toned.",
+                "decor": """MODERN 2026 SIGNATURES (include 2-3):
+□ Floor-to-ceiling glass with indoor-outdoor dissolution
+□ ONE sculptural furniture piece as "functional art"
+□ Diagonal compositional lines creating dynamism
+□ Stark light/shadow interplay
+□ Empty space as intentional design element
+□ Material hybrid (unexpected combination like wicker against concrete)
+□ Floating/gravity-defying element
 
-                "lighting": """MODERN LIGHTING FIXTURES:
-- Arc floor lamp in chrome or BLACK (not brass)
-- Sculptural pendants in white, chrome, or black
-- Recessed or minimal fixtures
-- Gallery track lighting aesthetic""",
+ART:
+□ Large-scale minimal - single bold gesture or empty canvas
+□ OR holographic/iridescent piece
+□ OR nothing - the architecture IS the art
 
-                "overall": "COOL + MINIMAL + GALLERY-LIKE. Sophisticated, clean, NOT warm or cozy.",
+FORBIDDEN: Warm wood tones, earth tones, cozy textures, traditional patterns, brass""",
 
-                "plants": """MODERN PLANTS (ARCHITECTURAL, MINIMAL):
-□ Snake plant in WHITE or BLACK ceramic cylinder
-□ OR fiddle leaf in WHITE pot
-□ Architectural, sculptural plants ONLY
-□ SKIP plants in 50% of rooms - keep it minimal
-□ NOT in woven baskets - that's Coastal/Scandi""",
+                "rugs": "SOLID color - pure white, deep charcoal, concrete gray. OR bold geometric with sharp diagonals. Architectural edges, could be asymmetric.",
 
-                "what_makes_it_different": """MODERN vs OTHER STYLES:
-- vs AD: COOL light (not warm golden), WHITE furniture (not warm wood), chrome (not brass)
-- vs Scandinavian: No cozy textures, no blonde wood, MORE minimal, COOL not warm
-- vs Mid-Century: No walnut, no bold colors, no retro shapes, chrome not brass
-- vs Coastal: No rattan/wicker, no blue, no natural fibers
-- vs Farmhouse: No reclaimed wood, no vintage, no rustic texture, no black iron
+                "lighting": """MODERN 2026 LIGHTING FIXTURES:
+- Sculptural pendants in chrome, white, or black
+- Track lighting or recessed - gallery aesthetic
+- NO brass, NO warm metals
+- Light itself as sculptural element""",
 
-MODERN = COOL + MINIMAL + GALLERY-LIKE""",
+                "overall": "ETHEREAL + SCULPTURAL + COOL + VOID. Post-material minimalism with holographic shimmer.",
+
+                "plants": """MODERN 2026 PLANTS (SELECTIVE - be dramatic):
+□ Single architectural specimen - sculptural, dramatic
+□ In geometric container (cube, sphere, cylinder) - white/black/chrome
+□ Snake plant, bird of paradise, or single dramatic branch
+□ NOT cozy or organic - sharp and intentional
+□ SKIP plants in most rooms - let the void breathe""",
+
+                "what_makes_it_different": """MODERN 2026 vs OTHER STYLES:
+
+vs AD: COOL ethereal light (not warm golden), post-material furniture
+       (not natural wood), holographic shimmer (not earth tones)
+
+vs Coastal: No natural textures, no blue, no woven materials,
+            sharp geometry (not soft/breezy)
+
+vs Farmhouse: Opposite aesthetic - sleek vs rustic, cool vs warm,
+              synthetic vs natural, future vs heritage
+
+vs Scandinavian: No cozy hygge, no blonde wood, no soft textiles,
+                 dramatic (not serene), angular (not curved)
+
+vs Mid-Century: No retro nostalgia, no walnut, no bold primary colors,
+                post-material (not vintage), ethereal (not saturated)
+
+MODERN 2026 = ETHEREAL + SCULPTURAL + COOL + VOID""",
 
                 "structural_rules": """⚠️ CRITICAL - STRUCTURAL PRESERVATION:
 NEVER alter walls, doorways, openings, or architectural features.
@@ -180,90 +224,133 @@ Identify ALL openings before generating - preserve exactly."""
             },
 
             # ============================================================================
-            # SCANDINAVIAN: LIGHT BLONDE WOOD + SOFT PASTELS + HYGGE
+            # SCANDINAVIAN 2026: "Nordic Ethereal - Spiritual Hygge"
+            # BLONDE WOOD + EARTH-SHADOWS + SHEEPSKIN + CANDLES
             # ============================================================================
             "scandinavian": {
-                "description": "Nordic simplicity with warmth. LIGHT BLONDE woods (birch, ash), soft PASTELS, cozy hygge textures. Bright and serene - NOT dark walnut like Mid-Century.",
-                "palette": "white, cream, light gray, SOFT PASTELS (blush pink, sage green, dusty blue)",
-                "colors": "white, cream, light gray; LIGHT woods ONLY - birch, ash, BLONDE oak, whitewashed pine; brass/copper accents; SOFT PASTEL accents - blush pink, sage green, dusty blue",
+                "description": "2026 Vision: Nordic Ethereal - radical preservation of light, spiritual pursuit of Hygge. Monastic devotion to Quiet Luxury. Every pixel engineered to lower heart rate.",
+                "palette": "Stone gray, sage, dried-bone beige, blue-white Nordic glow. LIGHT woods ONLY.",
+                "colors": "Atmospheric Neutrals: stone gray, sage (muted dusty), dried-bone beige, blue-white. Wood: LIGHT ONLY - bleached ash, raw oak, light birch, knotted pine. Accents: dusty rose, pale sage, soft blue-gray. NO bold colors.",
 
-                "signature_lighting": """SCANDINAVIAN LIGHTING (BRIGHT NORDIC - Diffused daylight):
-- BRIGHT, diffused, Nordic daylight quality (3200-3500K)
-- Light and airy, maximizing natural light
-- Soft, even illumination
-- Windows unobstructed, light flowing in
-- CANDLES for hygge warmth (SIGNATURE ELEMENT!)
-- Think: bright Scandinavian afternoon""",
+                "signature_lighting": """SCANDINAVIAN 2026 LIGHTING - "The Aqueous Atmosphere":
+- Captures the specific BLUE-WHITE glow of Nordic winter
+- "Atmospheric Neutrals" - not just white, a symphony
+- Diffused brilliance - shadows obliterated
+- AI-rendered sheer GHOST-LIKE linen curtains catching light
+- Light sprayed softly across the room
+- "The room feels as though it is EXHALING"
+- Fireplace glow as the room's "soul" (if applicable)
+- Cool but not cold - serene, spiritual""",
 
-                "furniture": """SCANDINAVIAN FURNITURE (LIGHT BLONDE WOOD - Not walnut!):
+                "signature_atmosphere": """SCANDINAVIAN 2026 ATMOSPHERE - "The Luminous Void":
+- "Negative space as structural element"
+- Vacuum of clutter - room is breathing
+- Sharp corners replaced by gentle "eroded" curves
+- Mimicking stones smoothed by a river
+- "Tactile rebellion against the digital"
+- Raw and honest materials
+- "Heavily Light" - substantial presence but weightless feel
+- Framed wildness through windows""",
 
-⚠️ CRITICAL: Scandinavian uses LIGHT wood (birch, ash, light oak)
-Mid-Century uses DARK walnut. This is the KEY difference.
+                "furniture": """SCANDINAVIAN 2026 FURNITURE - "Living Texture Manifesto":
 
-BED (Scandinavian-specific):
-□ LIGHT BLONDE wood frame (birch, ash, or BLONDE oak)
-□ OR simple white/cream upholstered
-□ Clean lines, slim profile
-□ NO dark walnut - that's Mid-Century!
-□ Light, airy presence
+THE PHILOSOPHY: Raw and honest materials. Imperfection of the earth.
+"Cøzy Contrast" - tactile weights preventing coldness.
+Cloud-like upholstery. Spiritual silence.
 
-NIGHTSTANDS (Scandinavian-specific):
-□ LIGHT BLONDE wood (SIGNATURE!)
-□ Simple, functional Danish design
-□ OR white painted wood
-□ Slim, delicate proportions
-□ NOT dark walnut
+⚠️ CRITICAL: Use LIGHT BLONDE WOOD (birch, bleached ash, raw oak)
+NOT dark walnut - that's Mid-Century!
 
-LIVING: Clean-lined sofa in light gray/soft blush, slim BLONDE wood legs, bouclé/linen fabric. Round coffee table in light oak. Wishbone or shell chairs.
+BED:
+□ LIGHT ASH or BLEACHED OAK frame - raw, unfinished appearance
+□ OR "cloud-like" upholstered bed - soft sculptural curves
+□ Gentle eroded curves, not sharp angles
+□ "Stones smoothed by river" aesthetic
+□ Light, airy, breathable presence
 
-DINING: Light oak/birch table (round/oval preferred). Wishbone chairs (CH24 style) in natural. PH5 or paper lantern pendant.""",
+NIGHTSTANDS:
+□ BLEACHED ASH or RAW OAK (unfinished appearance)
+□ Simple, functional Scandinavian design
+□ OR floating shelf in light wood
+□ Knotted wood visible - "imperfection of earth"
+□ NOT dark, NOT walnut
 
-                "decor": """SCANDINAVIAN SIGNATURES (must include 2-3):
-□ SHEEPSKIN throw or rug (ESSENTIAL SIGNATURE!)
-□ CHUNKY KNIT throw blanket in cream/gray
-□ CANDLES in simple holders (HYGGE - ESSENTIAL!)
-□ Soft PASTEL accent (blush pillow, sage vase)
-□ Simple line art or botanical print in LIGHT wood frame
-□ Ceramic in white or soft muted tone
-□ Cozy, touchable textures everywhere
+SEATING:
+□ "Cloud-like" sculptural upholstery
+□ Chunky, soft, inviting form
+□ In cream, gray, or "earth-shadow" tones
+□ Sheepskin draped casually
 
-FORBIDDEN: Dark walnut (Mid-Century!), black iron, bold colors, chrome""",
+RUG:
+□ Knotted wool SO THICK you can feel warmth
+□ OR layered sheepskin (SIGNATURE!)
+□ Heavy monochromatic knits
+□ Textural, tactile, warm underfoot""",
 
-                "rugs": "Cream or white wool with texture. OR SHEEPSKIN layered (SIGNATURE!). OR soft gray/blush flatweave. Soft, cozy underfoot. NOT bold patterns.",
+                "decor": """SCANDINAVIAN 2026 SIGNATURES (must include 2-3):
+□ SHEEPSKIN texture - draped or rug (ESSENTIAL!)
+□ CHUNKY KNIT throw - "accidentally" draped, not styled
+□ LIGHT BLONDE WOOD furniture (not dark!)
+□ Single-specimen botanical - ONE dramatic branch in hand-blown glass
+□ CANDLES - room's hygge soul, essential!
+□ Fireplace glow if applicable
+□ Knotted, unfinished wood texture
+□ Linen - heavy monochromatic
 
-                "lighting": """SCANDINAVIAN LIGHTING FIXTURES:
-- Paper pendant or globe lamp (Noguchi style)
-- Simple floor lamp with fabric shade
-- CANDLES throughout (ESSENTIAL for hygge!)
-- Brass or copper accents on fixtures""",
+FORBIDDEN: Dark walnut (MCM!), bold colors, bright accents, busy patterns, brass""",
 
-                "overall": "BLONDE WOOD + PASTELS + COZY HYGGE. Bright, airy, warm but light.",
+                "rugs": "Knotted wool SO THICK you can feel warmth. OR layered sheepskin. Heavy monochromatic knits. Textural, tactile.",
 
-                "plants": """SCANDINAVIAN PLANTS (SOFT, ORGANIC):
-□ Trailing pothos in simple white ceramic pot
-□ OR eucalyptus branches in ceramic vase
-□ OR small fern in terracotta
-□ Soft, organic feel
-□ NOT architectural/sculptural - that's Modern
-□ Pots: woven baskets, matte white ceramic, terracotta""",
+                "lighting": """SCANDINAVIAN 2026 LIGHTING FIXTURES:
+- Paper pendant or globe lamp diffusing light
+- CANDLES throughout (ESSENTIAL!)
+- Soft fabric shades
+- Fireplace as room's soul
+- Brass/copper accents subtle""",
 
-                "what_makes_it_different": """⚠️ SCANDINAVIAN vs MID-CENTURY (CRITICAL!):
-- Scandinavian: LIGHT BLONDE wood (birch, ash)
-- Mid-Century: DARK WALNUT
-- Scandinavian: Soft PASTELS (blush, sage)
-- Mid-Century: BOLD colors (mustard, olive, orange)
-- Scandinavian: COZY textures (sheepskin, chunky knit)
-- Mid-Century: SLEEK, sculptural
-- Scandinavian: Bright, airy
-- Mid-Century: Rich, saturated
+                "overall": "BLONDE WOOD + EARTH-SHADOWS + SHEEPSKIN + CANDLES + HYGGE. Spiritual serenity.",
 
-SCANDINAVIAN vs OTHER STYLES:
-- vs AD: Lighter, more minimal, pastels not earth tones, candles essential
-- vs Modern: COZY textures (not minimal), WARM (not cool), blonde wood
-- vs Coastal: No blue, no rattan, blonde wood not whitewash
-- vs Farmhouse: Light and airy (not rustic), no black iron, no distressed
+                "plants": """SCANDINAVIAN 2026 PLANTS (SINGLE SPECIMEN - framed wildness):
+□ Single architectural branch in hand-blown glass vase
+□ NOT a full tree - single specimen only
+□ Dried grasses or wild branches acceptable
+□ "Framed wildness" - not cultivated
+□ The negative space IS the statement""",
 
-SCANDINAVIAN = BLONDE WOOD + PASTELS + COZY HYGGE + CANDLES""",
+                "what_makes_it_different": """⚠️ SCANDINAVIAN vs MID-CENTURY (CRITICAL DIFFERENCE):
+
+SCANDINAVIAN 2026:
+- LIGHT BLONDE wood (ash, birch, raw oak)
+- MUTED earth-shadows (stone gray, sage, dried-bone)
+- Soft, "cloud-like" curves
+- COZY hygge textures (sheepskin, chunky knit)
+- CANDLES essential
+- Diffused Nordic light
+- "Heavily Light" - substantial but ethereal
+
+MID-CENTURY (different!):
+- DARK WALNUT wood
+- BOLD saturated colors (mustard, orange, avocado)
+- Sharp geometric shapes
+- Sleek, sculptural surfaces
+- BRASS/SPUTNIK essential
+- Warm amber light
+- Grounded retro energy
+
+vs OTHER STYLES:
+vs AD: Nordic light (not golden hour), light wood (not warm oak),
+       muted (not rich), hygge cozy (not editorial drama)
+
+vs Modern: COZY textures (not minimal void), organic curves (not angular),
+           warm hygge (not cool ethereal), natural (not synthetic)
+
+vs Coastal: No blue, no woven rope, no dopamine brights,
+            Nordic (not tropical), contained (not breezy)
+
+vs Farmhouse: LIGHT palette (not muddy), blonde (not forged iron),
+              ethereal (not grounded), minimal (not collected)
+
+SCANDINAVIAN 2026 = BLONDE WOOD + EARTH-SHADOWS + SHEEPSKIN + CANDLES + HYGGE""",
 
                 "structural_rules": """⚠️ CRITICAL - STRUCTURAL PRESERVATION:
 NEVER alter walls, doorways, openings, or architectural features.
@@ -273,76 +360,112 @@ Identify ALL openings before generating - preserve exactly."""
             },
 
             # ============================================================================
-            # COASTAL: BLUE + WOVEN TEXTURES + BEACH LIGHT
+            # COASTAL 2026: "Hyper-Breezy Sensory Obsession"
+            # DOPAMINE BRIGHTS + ROPE/WOVEN + HYPER-BREEZY + HERITAGE
             # ============================================================================
             "coastal": {
-                "description": "Relaxed beach house elegance. BLUE is REQUIRED. RATTAN/WICKER textures essential. Bright, airy, sun-drenched. Not kitschy - refined coastal living.",
-                "palette": "white, cream, SOFT BLUE (required!), sandy beige",
-                "colors": "white, cream, SOFT BLUE (essential!), navy accents, sandy beige; whitewashed wood, driftwood gray, light oak; brushed nickel, rope details; RATTAN, JUTE, SISAL textures required",
+                "description": "2026 Vision: Post-Nautical Maximalism meets Dopamine Tides. A meticulously engineered 'state of mind' designed to trick the brain into smelling salt air. Curated Maximalism where more is more.",
+                "palette": "Sun-washed neutrals, sand, driftwood + DOPAMINE BRIGHTS (electric cobalt, digital lavender, sun-drenched coral)",
+                "colors": "Foundation: sun-washed neutrals, sand, driftwood, warm white. DOPAMINE BRIGHTS (required!): electric cobalt blue, digital lavender, sun-drenched coral. Textures: buttery matte, sun-baked clay, hand-painted canvas. Rope/woven essential.",
 
-                "signature_lighting": """COASTAL LIGHTING (BRIGHT & AIRY - Beach daylight):
-- BRIGHT, sun-drenched natural light (3500-4000K)
-- Airy, open atmosphere
-- Soft, diffused quality like beach house
-- Light flooding in from windows
-- NO dramatic shadows, NO moody lighting
-- Think: bright summer beach day""",
+                "signature_lighting": """COASTAL 2026 LIGHTING - "AI-Simulated Coastal Light":
+- Light that feels more like a MEMORY than a photo
+- Bright, diffused, "hyper-breezy" quality (3500-4000K)
+- Sun-drenched warmth but soft, not harsh
+- Textures rendered so sharply you can FEEL them
+- The light IS the lead actor in the space
+- "Limitless glass partitions" making ocean/garden the wallpaper
+- Gauzy linen drapery with "implied movement" - caught in permanent zephyr""",
 
-                "furniture": """COASTAL FURNITURE (RATTAN & WICKER required):
+                "signature_atmosphere": """COASTAL 2026 ATMOSPHERE - "The Hyper-Breezy State":
+- Transparent boundaries - walls become glass
+- "Digital Wind" - curtains and textiles suggest movement
+- Spiritual, tranquil, hyper-realistic feel
+- Nancy Meyers "Warm Minimalism" meets wellness
+- Indoor-outdoor yoga deck energy
+- "Expensive and effortless" lifestyle suggestion
+- Curated Maximalism - "more is more" with intention""",
 
-BED (Coastal-specific):
-□ WHITE or CREAM upholstered headboard
-□ OR RATTAN/CANE headboard (SIGNATURE!)
-□ Slipcovered look acceptable
-□ Light, airy appearance
-□ NO dark wood frames
+                "furniture": """COASTAL 2026 FURNITURE - "Post-Nautical Maximalism":
 
-NIGHTSTANDS (Coastal-specific):
-□ RATTAN or WICKER nightstands (SIGNATURE!)
-□ OR WHITE/whitewashed wood
-□ OR woven seagrass with drawer
-□ NOT walnut, NOT dark wood
+THE PHILOSOPHY: Rise of "Curated Maximalism" - more is more.
+Bespoke, artisanal storytelling. Living artifacts, not mass-produced anchors.
 
-LIVING: Deep comfortable sofa in white/cream/SOFT BLUE linen, slipcovered style. Reclaimed wood OR round woven RATTAN coffee table (signature!). RATTAN/WICKER armchairs with white cushions.
+BED:
+□ Oversized slip-covered linen bed - SUBSTANTIAL presence
+□ OR dramatic RATTAN/ROPE-wrapped frame (statement piece!)
+□ Layered, luxurious bedding - white base with texture
+□ "Sophisticated Solace" - feels inherited, not bought
+□ Heritage quality, antique timber accents
 
-DINING: Reclaimed wood OR white-washed trestle table. Woven RATTAN/WICKER chairs (signature!). Large woven pendant.""",
+NIGHTSTANDS:
+□ ROPE-WRAPPED sculptural pieces (artisanal!)
+□ OR reclaimed boat timber surfaces
+□ OR woven seagrass with organic form
+□ NOT generic white - must tell a story
 
-                "decor": """COASTAL SIGNATURES (must include 2-3):
-□ BLUE and white throw pillows (ESSENTIAL!)
-□ Woven/rattan texture somewhere (basket, lamp, furniture)
-□ Ocean photography or coastal art in WHITE frame
-□ Linen or cotton textures (not wool, not velvet)
-□ Light throw blanket in white/cream/blue
-□ Glass vase or hurricane lantern
+SEATING:
+□ Oversized slip-covered linen armchair
+□ OR sculptural woven ROPE chair (signature!)
+□ Sink-in comfort, "Coastal Grandma" luxury
 
-MUST INCLUDE: At least one BLUE element (pillow, throw, or rug)
-FORBIDDEN: Dark walnut, warm amber, chrome, black, cozy knits""",
+RUG:
+□ LAYERED jute rugs - multiple textures
+□ OR hand-painted floor canvas (sun-kissed texture)
+□ OR vintage, heritage piece with patina
+□ Buttery matte surfaces - sun-baked clay feel""",
 
-                "rugs": "JUTE or SISAL in natural sandy tone (SIGNATURE!). OR BLUE and WHITE stripe. OR soft blue solid. Natural fiber is KEY to coastal.",
+                "decor": """COASTAL 2026 SIGNATURES (must include 2-3):
+□ ROPE-WRAPPED sculptural light fixture (art installation!)
+□ Boat-shaped or nautical-form bookcase/furniture
+□ Giant organic glass lighting
+□ Gauzy drapery with "implied movement" - caught in breeze
+□ Rough grain of driftwood - textured and tactile
+□ Living greenery wall or spa-inspired feature
+□ DOPAMINE BRIGHT accent - electric cobalt, coral, or lavender (ESSENTIAL!)
+□ Heritage/antique timber piece
 
-                "lighting": """COASTAL LIGHTING FIXTURES:
-- RATTAN or woven pendant (SIGNATURE!)
-- White ceramic table lamps with linen/woven shades
-- Brushed nickel or rope details
-- NO black iron, NO brass""",
+ART:
+□ Large-scale ocean photography or coastal abstract
+□ In weathered driftwood or rope-detailed frame
 
-                "overall": "BLUE + WOVEN TEXTURES + BEACH BRIGHT. Relaxed, airy, refined coastal.",
+MUST INCLUDE: At least one DOPAMINE BRIGHT accent
+FORBIDDEN: Generic "blue and white," mass-produced wicker, basic seashell decor""",
 
-                "plants": """COASTAL PLANTS (LESS IS MORE - keep it airy):
-□ Palm or tropical plant in WOVEN BASKET
-□ OR eucalyptus stems in glass vase
-□ SKIP plants in most bedrooms - keep it airy
-□ Coastal aesthetic is clean and breezy
-□ NOT in black pots - use woven/white/terracotta""",
+                "rugs": "LAYERED jute rugs - multiple textures. OR hand-painted floor canvas. OR vintage heritage piece. Sun-baked clay feel.",
 
-                "what_makes_it_different": """COASTAL vs OTHER STYLES:
-- vs AD: Bright beach light (not golden hour), BLUE required, rattan, no earth tones
-- vs Modern: Natural textures (not minimal), warm not cool, BLUE accents
-- vs Scandinavian: BLUE tones (not pastels), wicker/RATTAN, no blonde wood
-- vs Mid-Century: No walnut, no bold retro colors, beach vibe not retro
-- vs Farmhouse: No reclaimed barn wood, lighter palette, woven not rustic
+                "lighting": """COASTAL 2026 LIGHTING FIXTURES:
+- ROPE-WRAPPED sculptural pendant (signature!)
+- Giant organic glass fixtures
+- Woven/seagrass elements
+- NO brass, minimal metal""",
 
-COASTAL = BLUE + WOVEN/RATTAN + BEACH BRIGHT""",
+                "overall": "DOPAMINE BRIGHTS + ROPE/WOVEN + HYPER-BREEZY + HERITAGE. Post-Nautical Maximalism.",
+
+                "plants": """COASTAL 2026 PLANTS (LESS than other styles - keep it airy):
+□ LESS plants than other styles - the VIEW and LIGHT are the focus
+□ If used: palm, tropical, or dramatic architectural
+□ In woven or terracotta vessel
+□ Keep it airy and breezy - don't crowd the light""",
+
+                "what_makes_it_different": """COASTAL 2026 vs OTHER STYLES:
+
+vs AD: DOPAMINE BRIGHTS (not earth tones), rope/woven textures,
+       hyper-breezy light (not golden hour), spiritual/tranquil
+
+vs Modern: WARM and welcoming (not cool/ethereal), natural materials,
+           maximalist (not minimal void), soft (not angular)
+
+vs Farmhouse: Coastal is AIRY (farmhouse is grounded/earthy),
+              brighter palette, ocean heritage (not barn heritage)
+
+vs Scandinavian: DOPAMINE color pops (not muted pastels),
+                 rope/woven maximalism (not minimal), warm (not cool)
+
+vs Mid-Century: No retro colors, no walnut, no atomic shapes,
+                organic/natural (not geometric), breezy (not grounded)
+
+COASTAL 2026 = DOPAMINE BRIGHTS + ROPE/WOVEN + HYPER-BREEZY + HERITAGE""",
 
                 "structural_rules": """⚠️ CRITICAL - STRUCTURAL PRESERVATION:
 NEVER alter walls, doorways, openings, or architectural features.
@@ -352,71 +475,101 @@ Identify ALL openings before generating - preserve exactly."""
             },
 
             # ============================================================================
-            # FARMHOUSE: RECLAIMED WOOD + BLACK IRON + VINTAGE
+            # FARMHOUSE 2026: "Neo-Farmhouse - Storied Sanctuary"
+            # MUDDY PALETTE + BLACK IRON + PLASTERED/LIMEWASH + HACIENDA
             # ============================================================================
             "farmhouse": {
-                "description": "Modern farmhouse with rustic charm. BLACK IRON accents required. RECLAIMED WOOD essential. Vintage character in furniture - NOT wall damage. Not country kitsch.",
-                "palette": "white, cream, warm gray + BLACK IRON accents",
-                "colors": "white, cream, warm gray; RECLAIMED wood, distressed finishes; BLACK IRON (essential!), aged brass, galvanized metal; muted blue, sage green, faded red accents",
+                "description": "2026 Vision: Neo-Farmhouse - less movie set, more storied, soulful sanctuary. Earthy Emotionalism meets Artisanal Grit. Hacienda fusion with cast iron and plastered walls.",
+                "palette": "MUDDY richness - mushroom, putty, weathered taupe + color-drenched accents (olive, oxblood, deep sable, terracotta)",
+                "colors": "Foundation: mushroom (gray-brown), putty (warm gray-beige), weathered taupe. Accents: olive green, oxblood (deep red-brown), deep sable brown, terracotta. Metals: BLACK IRON (forged), bronze, antique brass. Textures: limewash, plaster, cast iron, linen, wide-plank oak.",
 
-                "signature_lighting": """FARMHOUSE LIGHTING (WARM & COZY - Barn/candlelit feel):
-- WARM, golden, inviting light (2700-3000K)
-- Cozy, lived-in atmosphere
-- Soft, diffused like lantern light
-- Warm shadows in corners
-- Evening/golden hour feel welcome
-- Think: warm barn with string lights""",
+                "signature_lighting": """FARMHOUSE 2026 LIGHTING - "Warm and Wise Glow":
+- Sun-drenched, golden, EARTHY quality (2400-2800K)
+- Cozy lantern-light atmosphere
+- Warm shadows creating depth and security
+- "Cocoon-like feeling of security"
+- Tactile immersion - you can SENSE the softness of linen
+- Candlelit evening ambiance welcome
+- Deep, rich, grounding quality""",
 
-                "furniture": """FARMHOUSE FURNITURE (RECLAIMED WOOD + BLACK IRON):
+                "signature_atmosphere": """FARMHOUSE 2026 ATMOSPHERE - "Grounded Earthy Emotionalism":
+- "Muddy" palette instead of stark white - NO white shiplap!
+- Color drenched walls - olive, oxblood, deep sable
+- "A life in progress rather than a house for sale"
+- Intentional imperfection - hand-touched finishes
+- Organic chaos over rigid symmetry
+- "Collected, not just curated" aesthetic
+- Emotional well-being zones (reading corners, breakfast nooks)
+- Hacienda fusion influence - rustic meets terracotta""",
 
-BED (Farmhouse-specific):
-□ BLACK IRON or metal bed frame (SIGNATURE!)
-□ OR reclaimed wood headboard with visible character
-□ OR white/cream upholstered with rustic wood frame
-□ Substantial, sturdy presence
-□ Can show wear, age, character in FURNITURE (not walls!)
+                "furniture": """FARMHOUSE 2026 FURNITURE - "Artisanal Grit + Modern Heritage":
 
-NIGHTSTANDS (Farmhouse-specific):
-□ RECLAIMED or distressed wood (SIGNATURE!)
-□ OR painted/chippy white vintage table
-□ OR industrial metal and wood
-□ Mismatched pair is OK (adds character)
-□ NOT matching modern set
+THE PHILOSOPHY: "Playful Maximalism" for the countryside.
+Clean lines AND inherited soul. Post-Industrial Relics.
+Sculptural Utility. Farmhouse-Hacienda fusion.
 
-LIVING: Deep comfortable sofa in cream/warm gray, linen/cotton slipcover. RECLAIMED wood coffee table (signature!). Leather club chairs in cognac OR wingback in linen.
+BED:
+□ BLACK IRON bed frame - heavy, forged appearance (SIGNATURE!)
+□ OR reclaimed timber headboard with visible character/history
+□ OR limewashed plaster effect headboard
+□ Substantial, GROUNDED presence - not delicate
+□ "Quietly luxurious" focal point
 
-DINING: Large RECLAIMED wood farmhouse table with trestle base. Cross-back (X-back) chairs in BLACK OR natural. Large BLACK metal chandelier (signature!).""",
+NIGHTSTANDS:
+□ Heavy cast iron hardware accents
+□ Reclaimed wood with visible history and patina
+□ OR terracotta/stucco inspired form (Hacienda twist)
+□ Mismatched pair adds authenticity
+□ Bronze finishes that feel "forged not manufactured"
 
-                "decor": """FARMHOUSE SIGNATURES (must include 2-3):
-□ BLACK IRON element (bed frame, lamp, hardware) - ESSENTIAL!
-□ VINTAGE/ANTIQUE piece or accent
-□ Grain sack or ticking stripe pattern (pillow, bedding)
-□ Linen texture in natural/cream
-□ Vintage quilt or patchwork throw at foot of bed
-□ Ceramic pitcher or crock
-□ Galvanized metal accent
+SEATING:
+□ Oversized stone or terracotta form
+□ OR vintage leather club chair with patina
+□ OR sculptural wooden stool/bench
+□ "Sculptural Utility" - everyday objects as art
 
-MUST INCLUDE: Black metal/iron somewhere (bed, lamp, hardware)
-FORBIDDEN: Chrome, high-gloss, sleek modern finishes, blonde wood""",
+RUG:
+□ Vintage with FADED pattern - mushroom, terracotta, olive tones
+□ OR terracotta tiles visible (Hacienda influence)
+□ OR wide-plank oak floors with coarse grain texture
+□ Worn, storied appearance - NOT new""",
 
-                "rugs": "VINTAGE-style in FADED MUTED tones (faded reds, blues, creams) - shows character. OR natural jute/sisal. OR cotton rag rug style. Worn, lived-in appearance.",
+                "decor": """FARMHOUSE 2026 SIGNATURES (must include 2-3):
+□ BLACK IRON element (bed frame, hardware, hooks, lamp) - ESSENTIAL!
+□ Cast iron or bronze "forged" hardware detail
+□ Limewashed or plastered wall texture effect
+□ Railroad spike hooks or antler sculptural piece
+□ Oversized apron-front stone sink (if kitchen visible)
+□ Giant lantern pendant
+□ Terracotta floor or accent (Hacienda fusion)
+□ Indoor olive tree or trailing plants (organic chaos)
+□ Vintage quilt or heritage textile
 
-                "lighting": """FARMHOUSE LIGHTING FIXTURES:
-- Industrial floor lamp (BLACK metal) - SIGNATURE!
-- Large BLACK metal chandelier (linear or round)
-- Lantern-style fixtures
-- Edison bulb accents
+ART:
+□ Antique or vintage piece with patina
+□ OR landscape in weathered frame
+□ OR architectural salvage as wall art
+
+MUST INCLUDE: Black iron AND muddy/color-drenched element
+FORBIDDEN: Stark white shiplap, gray/white palette, anything "new" or "trendy", chrome""",
+
+                "rugs": "Vintage with FADED pattern in mushroom/terracotta/olive. OR terracotta tiles visible. Worn, storied - NOT new.",
+
+                "lighting": """FARMHOUSE 2026 LIGHTING FIXTURES:
+- Giant lantern pendant (SIGNATURE!)
+- BLACK IRON fixtures
+- Forged bronze or cast iron details
+- Edison bulb warmth
 - NO chrome, NO modern minimal""",
 
-                "overall": "RECLAIMED WOOD + BLACK IRON + VINTAGE CHARACTER. Rustic warmth, not kitsch.",
+                "overall": "MUDDY PALETTE + BLACK IRON + PLASTERED/LIMEWASH + HACIENDA. Storied sanctuary.",
 
-                "plants": """FARMHOUSE PLANTS (gathered-from-garden feel):
-□ Eucalyptus stems in ceramic PITCHER (SIGNATURE!)
-□ OR cotton stems in vintage vessel
-□ OR lavender/herbs in terracotta
-□ Gathered-from-garden feel
-□ NOT tropical plants - that's Coastal/Modern
-□ Pots: terracotta, galvanized, ceramic pitchers""",
+                "plants": """FARMHOUSE 2026 PLANTS (organic chaos):
+□ Indoor olive tree (storied, ancient feel)
+□ Trailing plants creating organic chaos
+□ Herbs in terracotta (functional beauty)
+□ NOT perfectly placed - "collected" feel
+□ Galvanized or terracotta containers""",
 
                 "damage_prevention": """⚠️ CRITICAL FOR FARMHOUSE:
 - Show CHARACTER in FURNITURE (distressed, worn) - STYLE
@@ -425,14 +578,24 @@ FORBIDDEN: Chrome, high-gloss, sleek modern finishes, blonde wood""",
 - Damaged WALLS is misrepresentation
 - Original wall condition must be preserved EXACTLY""",
 
-                "what_makes_it_different": """FARMHOUSE vs OTHER STYLES:
-- vs AD: RECLAIMED wood (not polished oak), BLACK IRON (not brass), more rustic
-- vs Modern: Vintage character (not minimal), warm (not cool), rustic textures
-- vs Scandinavian: Darker, more rustic, BLACK IRON not blonde wood, distressed finishes
-- vs Mid-Century: No walnut tapered legs, no bold colors, rustic not sleek
-- vs Coastal: No wicker/rattan, no blue, more substantial, BLACK IRON not rope
+                "what_makes_it_different": """FARMHOUSE 2026 vs OTHER STYLES:
 
-FARMHOUSE = RECLAIMED WOOD + BLACK IRON + VINTAGE CHARACTER""",
+vs AD: GROUNDED and heavy (not floating/airy), cast iron (not brass),
+       muddy palette (not warm amber), rustic heritage (not editorial)
+
+vs Modern: WARM soul (not cool void), imperfect (not pristine),
+           collected chaos (not minimal), forged (not manufactured)
+
+vs Coastal: EARTHY/grounded (not breezy/light), no blue or dopamine brights,
+            landlocked heritage (not ocean heritage), heavier textures
+
+vs Scandinavian: DARK and muddy (not bright/white), heavy (not light),
+                 cast iron (not blonde wood), grounded (not ethereal)
+
+vs Mid-Century: No retro shapes, no bold primary colors,
+                rustic organic (not geometric), heritage (not vintage)
+
+FARMHOUSE 2026 = MUDDY PALETTE + BLACK IRON + PLASTERED/LIMEWASH + HACIENDA""",
 
                 "structural_rules": """⚠️ CRITICAL - STRUCTURAL PRESERVATION:
 NEVER alter walls, doorways, openings, or architectural features.
@@ -443,99 +606,140 @@ Identify ALL openings before generating - preserve exactly."""
             },
 
             # ============================================================================
-            # MID-CENTURY MODERN: DARK WALNUT + BOLD COLORS + TAPERED LEGS
+            # MID-CENTURY MODERN 2026: "Retro-Futurism - Atomic Optimism"
+            # DARK WALNUT + BOLD RETRO COLORS + TAPERED LEGS + BRASS/SPUTNIK
             # ============================================================================
             "midcentury": {
-                "description": "Iconic 1950s-60s design. DARK WALNUT with TAPERED LEGS. BOLD COLORS (mustard, olive, orange). Statement furniture. NOT Scandinavian's blonde wood.",
-                "palette": "DARK WALNUT/teak + BOLD accents (mustard yellow, olive green, burnt orange)",
-                "colors": "DARK WALNUT, teak in golden-brown tones (NOT blonde!); cream, warm gray; BOLD accents - mustard yellow, olive green, burnt orange, teal; BRASS essential, chrome accents",
+                "description": "2026 Vision: Retro-Futurism - atomic-age optimism meets 21st-century luxury. Organic geometry meets invisible technology. High-energy emotional architecture.",
+                "palette": "WARM WALNUT/cherry/burl + BOLD saturated colors (mustard, avocado, burnt orange, teal) + BRASS gold",
+                "colors": "Wood: WARM WALNUT (not blonde!), CHERRY, burl wood accents. Saturated Earth: mustard yellow, burnt orange, avocado green, deep teal. Digital Pops: digital lavender, cobalt blue, paprika red. Metals: BRASS and GOLD with hyper-realistic reflections.",
 
-                "signature_lighting": """MID-CENTURY LIGHTING (WARM AMBER - Rich & saturated):
-- WARM, rich, amber-toned light (2700-3000K)
-- Saturated, vibrant atmosphere
-- Dramatic but inviting
-- Golden tones enhancing warm wood
-- Evening cocktail party ambiance
-- Think: warm glow from Sputnik chandelier""",
+                "signature_lighting": """MCM 2026 LIGHTING - "Aerodynamic Atmosphere":
+- WARM, saturated, rich amber quality (2700-3000K)
+- Sun-drenched transparency - light flooding through large windows
+- "Indoor-outdoor connection" emphasized
+- Sheer, invisible drapery maximizing light
+- Hyper-realistic reflections on brass and metals
+- Sputnik chandeliers like "exploding stars frozen in time"
+- Lustrous, mood-lifting energy""",
 
-                "furniture": """MID-CENTURY FURNITURE (DARK WALNUT + TAPERED LEGS):
+                "signature_atmosphere": """MCM 2026 ATMOSPHERE - "Gravity-Defying Energy":
+- Clean, uncluttered lines suggesting forward motion
+- "Weightless" furniture with dramatic leg reveals
+- Wide-plank floors visible - sense of infinite space
+- Geometric tension - circles, triangles, kidney shapes vibrating
+- Bold graphic compositions
+- "Emotional architecture" - space evokes feeling
+- Sleek, atmospheric, intentional""",
 
-⚠️ CRITICAL: Mid-Century uses DARK WALNUT with tapered legs
-Scandinavian uses LIGHT blonde wood. This is the KEY difference.
+                "furniture": """MCM 2026 FURNITURE - "Sculptural Functionalism":
 
-BED (Mid-Century-specific):
-□ DARK WALNUT platform bed with TAPERED LEGS (SIGNATURE!)
-□ Low profile, clean lines
-□ Headboard: walnut panel or slats
-□ NO light wood - that's Scandinavian!
-□ Substantial, iconic presence
+THE PHILOSOPHY: Furniture as functional art. Iconic anchors that feel "touchable."
+Gravity-defying silhouettes on hairpin legs. Curated Minimalism.
+Every piece is LEGENDARY.
 
-NIGHTSTANDS (Mid-Century-specific):
-□ DARK WALNUT with TAPERED LEGS (SIGNATURE!)
-□ Classic MCM drawer design
-□ OR teak with brass hardware
-□ Period-appropriate proportions
-□ NOT light blonde wood
+⚠️ CRITICAL: Use DARK WALNUT with TAPERED LEGS
+NOT light blonde wood - that's Scandinavian!
 
-DRESSER (Mid-Century-specific):
-□ DARK WALNUT credenza/dresser (SIGNATURE!)
-□ TAPERED LEGS (essential!)
-□ Long, low silhouette
-□ Period hardware (brass pulls)
-□ This is THE signature MCM piece
+BED:
+□ DARK WALNUT or CHERRY platform with TAPERED HAIRPIN LEGS (SIGNATURE!)
+□ Dramatic leg reveal - frame lifted high showing floor beneath
+□ Headboard: walnut panel, vertical slats, or burl wood
+□ "Cocooning sleigh form" optional for drama
+□ Lustrous wood grain rendered with tactile clarity
 
-LIVING: Low-profile sofa in BOLD color (mustard, olive, burnt orange) OR warm neutral, TAPERED walnut legs. Surfboard coffee table in walnut (signature!). Eames Lounge Chair and Ottoman.
+NIGHTSTANDS:
+□ ICONIC MCM design - TAPERED LEGS essential!
+□ Walnut or cherry with brass hardware
+□ OR floating/cantilevered design
+□ Burl wood accent pieces
+□ "Brutalist heft" meets delicate legs
 
-DINING: Oval walnut table with TAPERED LEGS OR Saarinen tulip. Eames molded plastic chairs OR Wegner Wishbone in walnut. Sputnik chandelier (signature!).""",
+SEATING:
+□ EAMES LOUNGE CHAIR AND OTTOMAN (the icon!)
+□ OR molded plywood shell chair
+□ OR Womb chair style in BOLD color
+□ Tactile leather or rich upholstery
+□ ONE legendary silhouette per room
 
-                "decor": """MID-CENTURY SIGNATURES (must include 2-3):
-□ DARK WALNUT furniture piece with TAPERED LEGS (ESSENTIAL!)
-□ BOLD COLOR accent - mustard, olive, or orange (ESSENTIAL!)
-□ STARBURST element (clock, mirror, or wall art) - SIGNATURE!
-□ BRASS accent (lamp base, hardware, object)
-□ SHAG texture (rug or pillow)
-□ Ceramic in period color (mustard, olive, cream)
-□ Geometric pattern in period palette
+RUG:
+□ Bold geometric pattern in period colors
+□ OR SHAG texture in mustard, avocado, or cream
+□ OR abstract pattern with kidney/boomerang shapes
+□ Statement underfoot - conversation starter""",
 
-MUST INCLUDE: Bold color AND walnut with tapered legs
-FORBIDDEN: Light blonde wood (Scandinavian!), soft pastels, black iron, cozy chunky knits""",
+                "decor": """MCM 2026 SIGNATURES (must include 2-3):
+□ TAPERED HAIRPIN LEGS on major furniture (ESSENTIAL!)
+□ BOLD COLOR accent - mustard, orange, or avocado (ESSENTIAL!)
+□ SPUTNIK chandelier or starburst lighting (SIGNATURE!)
+□ EAMES or iconic silhouette piece
+□ Burl wood or walnut surface
+□ BRASS accent with lustrous reflection
+□ Geometric art - starburst, kidney shape, atomic motif
+□ SHAG texture element
+□ Arc floor lamp
 
-                "rugs": "SHAG rug in cream, gold, or olive (SIGNATURE!). OR BOLD GEOMETRIC pattern in warm tones. OR solid in mustard/olive/rust. Statement piece - not subtle.",
+ART:
+□ Abstract expressionist style
+□ OR bold graphic print in period colors
+□ OR vintage travel poster
+□ Teak or walnut frame
 
-                "lighting": """MID-CENTURY LIGHTING FIXTURES:
-- Arc floor lamp (Arco style) in chrome or BRASS
-- SPUTNIK chandelier (SIGNATURE!)
+MUST INCLUDE: Tapered legs + Bold color + Brass element
+FORBIDDEN: Blonde wood (Scandinavian!), soft pastels, black iron, chunky knits""",
+
+                "rugs": "Bold geometric pattern in period colors. OR SHAG in mustard, avocado, cream. Statement piece - conversation starter.",
+
+                "lighting": """MCM 2026 LIGHTING FIXTURES:
+- SPUTNIK chandelier (SIGNATURE!) - exploding star frozen in time
+- Arc floor lamp in BRASS (Arco style)
 - Nelson bubble lamp
 - Sculptural ceramic table lamps
-- BRASS essential""",
+- BRASS essential everywhere""",
 
-                "overall": "DARK WALNUT + BOLD COLORS + TAPERED LEGS + BRASS. Iconic, warm, statement-making.",
+                "overall": "DARK WALNUT + BOLD RETRO COLORS + TAPERED LEGS + BRASS/SPUTNIK. Atomic optimism.",
 
-                "plants": """MID-CENTURY PLANTS (PERIOD PLANTERS essential):
-□ Snake plant in BULLET PLANTER (period ceramic pot!) - SIGNATURE!
-□ OR rubber plant in BRASS or orange ceramic pot
-□ Sculptural, architectural plants
-□ Period-appropriate planters are KEY
-□ Colors: white, orange, olive, mustard ceramic
+                "plants": """MCM 2026 PLANTS (PERIOD PLANTERS essential):
+□ Oversized indoor tree - sculptural, dramatic
+□ Snake plant in BULLET PLANTER (period ceramic!) - SIGNATURE!
+□ Or architectural plant mimicking vertical lines
+□ Ceramic planter in PERIOD COLOR (mustard, olive, orange)
 □ NOT woven baskets - that's Scandi/Coastal""",
 
-                "what_makes_it_different": """⚠️ MID-CENTURY vs SCANDINAVIAN (CRITICAL!):
-- Mid-Century: DARK WALNUT with tapered legs
-- Scandinavian: LIGHT BLONDE wood (birch, ash)
-- Mid-Century: BOLD colors (mustard, olive, orange)
-- Scandinavian: Soft PASTELS (blush, sage)
-- Mid-Century: SLEEK, sculptural, iconic
-- Scandinavian: COZY textures (sheepskin, chunky knit)
-- Mid-Century: Rich, saturated, amber lighting
-- Scandinavian: Bright, airy, Nordic lighting
+                "what_makes_it_different": """⚠️ MID-CENTURY vs SCANDINAVIAN (CRITICAL DIFFERENCE):
 
-MID-CENTURY vs OTHER STYLES:
-- vs AD: Retro BOLD colors (not earth tones), walnut not warm oak
-- vs Modern: WARM (not cool), BOLD colors, retro shapes, brass not chrome
-- vs Coastal: No wicker, no blue, dark wood, retro not beachy
-- vs Farmhouse: Sleek (not rustic), no distressed, BRASS not black iron
+MID-CENTURY 2026:
+- DARK WALNUT with tapered hairpin legs
+- BOLD SATURATED colors (mustard, orange, avocado)
+- Sharp geometric shapes, atomic motifs
+- Sleek, sculptural surfaces
+- BRASS/SPUTNIK essential
+- Warm amber light, saturated
+- Grounded retro energy, gravity-defying legs
 
-MID-CENTURY = DARK WALNUT + BOLD COLORS + TAPERED LEGS + BRASS + STARBURST""",
+SCANDINAVIAN (different!):
+- LIGHT BLONDE wood (ash, birch, raw oak)
+- MUTED earth-shadows (stone gray, sage)
+- Soft, "cloud-like" curves
+- COZY textures (sheepskin, chunky knit)
+- CANDLES essential
+- Nordic diffused light
+- Ethereal hygge
+
+vs OTHER STYLES:
+vs AD: RETRO bold colors (not earth tones), walnut/cherry (not oak),
+       atomic shapes (not organic natural), Sputnik (not brass pendants)
+
+vs Modern: WARM and saturated (not cool/ethereal),
+           RETRO nostalgia (not future void), bold colors (not monochrome)
+
+vs Coastal: No woven textures, no blue/dopamine, no natural fiber,
+            geometric (not organic), grounded (not breezy)
+
+vs Farmhouse: SLEEK (not rustic), manufactured icon (not forged artifact),
+              bold primary (not muddy earth), levity (not weight)
+
+MCM 2026 = DARK WALNUT + BOLD RETRO COLORS + TAPERED LEGS + BRASS/SPUTNIK""",
 
                 "structural_rules": """⚠️ CRITICAL - STRUCTURAL PRESERVATION:
 NEVER alter walls, doorways, openings, or architectural features.
@@ -582,7 +786,22 @@ PLANT VARIETY (do NOT use olive tree in every room):
 - WINDOWS: MUST show warm interior glow (amber light visible through every window)
 - TREES: Catching golden side-light, warm highlights
 - SIGNATURE: Olive tree in aged terracotta pot near entry
-- OVERALL: 'Dwell magazine cover at sunset' quality"""
+- OVERALL: 'Dwell magazine cover at sunset' quality""",
+
+                "structural_rules": """⚠️ CRITICAL - STRUCTURAL PRESERVATION FOR AD STYLE:
+NEVER alter walls, doorways, openings, or architectural features.
+NEVER invent damage, cracks, holes, or imperfections that don't exist.
+
+⚠️ ITEM REMOVAL - DAMAGE PREVENTION:
+When removing items like TVs, wall art, or furniture:
+- The wall/surface behind MUST appear CLEAN and UNDAMAGED
+- Do NOT add mounting holes, screw marks, or discoloration
+- Do NOT invent paint chips, cracks, or marks where items were
+- The wall should look like it was always empty and pristine
+- If removing a TV, that wall section becomes a clean, normal wall
+
+If there is an opening to another room, it MUST remain.
+Identify ALL openings before generating - preserve exactly."""
             }
         }
 

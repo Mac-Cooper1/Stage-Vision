@@ -458,6 +458,15 @@ SPECIFICALLY:
 - Do NOT remove or alter any architectural pass-throughs
 - Do NOT add walls or structural elements that don't exist
 
+⚠️ DAMAGE INVENTION PREVENTION (CRITICAL):
+When removing items like TVs, wall art, or furniture:
+- The wall/surface behind MUST appear CLEAN and UNDAMAGED
+- Do NOT add mounting holes, screw marks, or discoloration where items were
+- Do NOT invent paint chips, cracks, or marks where items were removed
+- If removing a TV from a wall, that wall section becomes a CLEAN, NORMAL wall
+- The ONLY damage allowed is damage CLEARLY VISIBLE in the original photo
+- Creating fake damage is FRAUD and violates MLS compliance
+
 BEFORE GENERATING: Identify ALL openings to adjacent spaces. They MUST appear in output.
 
 =============================================================================
@@ -483,341 +492,374 @@ SIGNATURE ELEMENTS (1-2 per room, VARY across property):
 - Olive tree ONLY in living/dining rooms if large - NOT in every room
 - Small plants in kitchen/bathroom/bedroom instead of trees
 
-⚠️ FINAL CHECK: Verify all doorways, openings, and passages to adjacent spaces are preserved EXACTLY as in the original.
+⚠️ FINAL CHECK:
+1. Verify all doorways, openings, and passages are preserved EXACTLY
+2. Verify NO damage was invented where items were removed (TVs, art, etc.)
+3. Any removed items leave CLEAN walls behind - no holes, marks, or discoloration
 
-CRITICAL: Walls, windows, doors, floor must be IDENTICAL to original. Do NOT cover damage/defects.
+CRITICAL: Walls, windows, doors, floor must be IDENTICAL to original. Do NOT cover OR invent damage/defects.
 
 Result: Magazine-cover worthy through lighting + staging, not structural changes. Room must be recognizable as the same space."""
 
-            # MODERN STYLE - COOL + CRISP + MINIMAL (opposite of warm AD)
+            # MODERN 2026 STYLE - "Ultra-Simple Holographic Minimalism"
+            # ETHEREAL + SCULPTURAL + COOL + VOID
             if style == "modern":
                 furniture_by_room_modern = {
-                    "living room": """SOFA: Low-profile sectional in COOL gray, white, or charcoal. Clean lines, chrome or hidden legs. NOT warm tones.
-COFFEE TABLE: Glass with chrome base OR white marble with black steel frame. NOT warm walnut.
-ACCENT CHAIRS: Pair in white, gray, or black leather. Chrome legs. Clean, architectural.
-RUG: SOLID color - white, cream, or gray. Low pile, clean edges. NO patterns, NO warm tones. 8x10+.
-ART: Large-scale minimalist piece in BLACK frame - geometric, B&W photography. Gallery-like.
-ACCESSORIES: MINIMAL - one sculptural ceramic in white or black. 2-3 design books max. Chrome or black metal accents ONLY.
-PLANT: Snake plant in WHITE or BLACK ceramic cylinder. OR skip entirely - modern is MINIMAL.
-LIGHTING: Arc floor lamp in CHROME or BLACK (not brass).""",
-                    "dining room": """TABLE: Glass with chrome base OR white lacquer. NOT warm walnut. 72-84" for 6.
-CHAIRS: Molded chairs in WHITE, BLACK, or GRAY. Chrome legs. All matching.
-PENDANT: Sculptural chrome or black pendant. NO brass.
-RUG: Solid gray, white, or black. Low pile.
-CENTERPIECE: Empty (preferred) OR single white/black sculptural object.""",
-                    "bedroom": """BED: LOW platform in WHITE, light gray, or BLACK. Upholstered headboard in COOL gray or WHITE.
-□ NO warm wood tones - use lacquer, white, or matte gray
+                    "living room": """MODERN 2026 - "The Triangular Void":
+SOFA: Low sculptural form in PURE WHITE, concrete gray, or deep charcoal. POST-MATERIAL appearance - resin, molded, architectural. NO warm tones.
+COFFEE TABLE: Resin/acrylic with holographic shimmer OR concrete sculptural form OR black glass void. NOT wood of any kind.
+ACCENT CHAIRS: Sculptural forms - think Zaha Hadid. Chrome, polished nickel, or matte black. ONE piece may have iridescent/holographic element.
+RUG: NONE preferred (negative space). If needed: solid white, concrete gray. SHARP GEOMETRIC edges.
+ART: Large-scale "post-digital" piece - generative art, holographic print, or stark B&W. Float-mounted.
+ACCESSORIES: ALMOST NONE - negative space IS the design. Maximum 1 sculptural ceramic in white or black.
+PLANT: Single architectural specimen (snake plant, bird of paradise) in BLACK or WHITE cylinder. Or NONE.
+LIGHTING: Sculptural LED element. Light as architecture - visible rays creating geometric patterns.""",
+                    "dining room": """TABLE: Resin/acrylic (translucent) OR concrete slab OR black glass. NO wood. Sharp geometric form.
+CHAIRS: Sculptural molded forms in white, black, or clear. Chrome or hidden legs. All matching.
+PENDANT: Linear LED sculpture OR geometric chrome. Light as architectural element.
+RUG: NONE (preferred) OR solid concrete gray.
+CENTERPIECE: EMPTY (the void). One sculptural object maximum.""",
+                    "bedroom": """BED: LOW platform - WHITE lacquer, concrete effect, or matte charcoal. Post-material appearance.
+□ NO wood tones of any kind
+□ Architectural, sculptural presence
 □ Chrome or hidden legs
 
-BEDDING: CRISP white, smooth and tailored (not rumpled). 1-2 accent pillows in charcoal or cool gray only.
-NIGHTSTANDS: WHITE lacquer cube OR glass/chrome OR matte BLACK geometric. NOT warm walnut.
-LAMPS: Ceramic cylinder in white/gray/black. Chrome accents.
-RUG: Solid white, cream, or gray. NOT warm-toned.
-ART: Single abstract in BLACK frame.""",
-                    "kitchen": """MINIMAL - clear counters:
-- One cutting board (BLACK or white)
-- Single fruit in matte BLACK or white bowl
-- Sculptural vase in matte white/black (empty or single stem)
-BAR STOOLS: Black leather with CHROME or black metal frame. Clean lines.""",
-                    "bathroom": """ULTRA MINIMAL:
-- Soap dispenser in matte BLACK or white
-- Small stone tray
-- Towels in WHITE or gray only, neatly folded
-- NO plants (keep it minimal)""",
-                    "exterior": """LIGHTING: COOL, clean - blue hour or bright daylight.
-- Interior glow through windows (WHITE/neutral, NOT warm amber)
+BEDDING: PURE WHITE, smooth and architectural (not soft/rumpled). ONE accent in charcoal or iridescent silver.
+NIGHTSTANDS: Resin cube (translucent), white lacquer void, or floating shelf. NOT any wood.
+LAMPS: Sculptural LED, chrome, or glass. Geometric forms.
+RUG: NONE or minimal white/gray. Sharp edges.
+ART: Single post-digital piece in minimal frame.""",
+                    "kitchen": """VOID AESTHETIC - counters nearly empty:
+- NOTHING or one sculptural object in white/black
+- Clear space emphasized
+BAR STOOLS: Sculptural chrome or matte black. Architectural forms.""",
+                    "bathroom": """ARCHITECTURAL VOID:
+- Minimal stone tray with single object
+- Towels in WHITE only, architectural fold
+- NO plants - the void is the point""",
+                    "exterior": """LIGHTING: COOL blue hour OR crisp bright daylight.
+- Interior windows showing WHITE/neutral glow (NOT warm amber)
 - Architectural lighting emphasized
-LANDSCAPING: Clean, geometric. Ornamental grasses, boxwood. Concrete or black metal planters.
-FURNITURE: Modern outdoor - clean lines. Gray, black, or white cushions. NO warm woods.""",
-                    "room": """MODERN = COOL + MINIMAL + GALLERY-LIKE:
-SEATING: Low-profile in cool gray/white/charcoal, chrome legs
-TABLES: Glass, white marble, or white lacquer - NOT warm walnut
-RUG: Solid white/gray - NO patterns, NO warm tones
-ACCESSORIES: Ultra minimal - one sculptural ceramic, chrome accents
-PLANT: Skip in most rooms, or snake plant in white/black pot"""
+LANDSCAPING: Geometric, minimal. Ornamental grasses. Concrete or black metal planters.
+FURNITURE: Sculptural outdoor pieces. White, gray, black. NO warm materials.""",
+                    "room": """MODERN 2026 = ETHEREAL + SCULPTURAL + COOL + VOID:
+SEATING: Post-material sculptural forms in white/gray/charcoal
+TABLES: Resin, concrete, black glass - NO wood
+RUG: NONE or minimal geometric
+ACCESSORIES: Almost none - negative space IS the design
+PLANT: One architectural plant or NONE"""
                 }
                 furniture = furniture_by_room_modern.get(room_type, furniture_by_room_modern["room"])
 
-                return f"""MODERN STAGING (COOL + CRISP + MINIMAL): Stage this {room_type} with gallery-like contemporary design.
+                return f"""MODERN 2026 STAGING - "Ultra-Simple Holographic Minimalism": Stage this {room_type} with post-material ethereal design.
 
 ⚠️ CRITICAL RULES:
 - NEVER invent wall damage, cracks, or imperfections
 - NEVER shift camera angle - maintain EXACT perspective
-- NOT every room needs a plant - Modern is MINIMAL
+- MINIMAL to NO plants - Modern 2026 embraces the VOID
 
 ⚠️ STRUCTURAL PRESERVATION - NEVER alter walls, doorways, windows, or architectural features.
 
-MODERN STYLE DNA (What makes Modern DIFFERENT):
-- COOL, CRISP lighting (4000-5000K) - NO warm golden tones
-- WHITE, cool gray, charcoal, BLACK palette
-- WHITE OAK (bleached) or white lacquer - NO warm walnut (that's Mid-Century!)
-- CHROME and matte black metals - NO brass (that's Mid-Century!)
-- Gallery-like minimal aesthetic
+MODERN 2026 STYLE DNA - "The Architecture of Silence":
+- COOL, ethereal light quality (4500-5500K) - crisp white with subtle holographic shimmer
+- Light as SCULPTURAL element - visible rays creating geometric patterns
+- Pure white, concrete gray, deep charcoal, BLACK palette
+- ONE iridescent/holographic element allowed
+- POST-MATERIAL furniture - resin, acrylic, concrete, chrome, glass
+- "Negative space as design" - empty space is as important as furniture
+- "Geospatial Extremes" - exaggerated sharp angles and diagonals
+- Ethereal, almost "digital" quality
 
-FORBIDDEN: Warm amber, golden tones, earth tones, rattan, wicker, walnut, brass
+SIGNATURE ELEMENTS:
+□ Holographic or iridescent accent (ONE per room)
+□ Sculptural furniture with architectural presence
+□ Visible light rays/geometric patterns
+□ Dramatic interplay of shadow and brilliant illumination
+
+FORBIDDEN: ANY warm tones, ANY wood (walnut, oak, teak), brass, earth tones, rattan, wicker, soft textures, cozy elements
 
 FURNITURE:
 {furniture}
 
 CRITICAL: Keep architecture identical to original. Do NOT cover damage/defects.
 
-Result: COOL + MINIMAL + GALLERY-LIKE. Sophisticated, clean, NOT warm or cozy."""
+Result: ETHEREAL + SCULPTURAL + COOL + VOID. Post-material digital perfection meets organic unpredictability."""
 
-            # SCANDINAVIAN STYLE - LIGHT BLONDE WOOD + SOFT PASTELS + HYGGE
+            # SCANDINAVIAN 2026 STYLE - "Nordic Ethereal - Spiritual Hygge"
+            # BLONDE WOOD + EARTH-SHADOWS + SHEEPSKIN + CANDLES + HYGGE
             if style == "scandinavian":
                 furniture_by_room_scandi = {
-                    "living room": """SOFA: Clean-lined in light gray or SOFT BLUSH. Slim BLONDE wood legs (birch/ash). Bouclé or linen.
-COFFEE TABLE: Round/oval in LIGHT OAK or BIRCH. NOT dark walnut!
-ACCENT CHAIRS: Wishbone or shell chair in BLONDE wood. OR sheepskin-draped chair.
-RUG: Cream wool with texture. SHEEPSKIN layered (SIGNATURE!). Soft, cozy.
-ACCESSORIES (MUST INCLUDE 2-3):
-□ SHEEPSKIN throw or accent (ESSENTIAL!)
-□ CHUNKY KNIT throw in cream/gray
-□ CANDLES in simple holders (HYGGE - ESSENTIAL!)
-□ PASTEL accent - blush pillow or sage vase
-PLANT: Trailing pothos in white ceramic OR eucalyptus in vase.
-LIGHTING: Paper pendant, fabric shade lamp. CANDLES essential!
-ART: Simple line drawings in LIGHT wood frames.""",
-                    "dining room": """TABLE: LIGHT OAK or BIRCH, round/oval preferred. BLONDE wood - NOT walnut!
-CHAIRS: Wishbone (CH24 style) in NATURAL/BLONDE. Paper cord seats.
-PENDANT: PH5 style layered OR paper lantern (Noguchi). Soft diffused light.
-RUG: Natural wool flatweave in cream. OR sheepskin.
-CENTERPIECE: Single pillar CANDLE in wooden holder. CANDLES are essential for Scandinavian!""",
-                    "bedroom": """BED: LIGHT BLONDE wood frame (birch, ash, or blonde oak) OR white/cream upholstered.
+                    "living room": """SCANDINAVIAN 2026 - "Spiritual Hygge":
+SOFA: Soft curved form in warm cream, SOFT TERRACOTTA, or muted sage. Bouclé or heavyweight linen. BLONDE wood legs (birch/ash).
+COFFEE TABLE: Organic curved shape in LIGHT BLONDE OAK or BIRCH. Soft rounded edges. NOT walnut!
+ACCENT CHAIRS: Wishbone or shell chair in BLONDE wood. SHEEPSKIN draped over chair (ESSENTIAL!).
+RUG: Natural wool in cream/oatmeal. SHEEPSKIN layered (SIGNATURE!). Soft, enveloping texture.
+ACCESSORIES (MUST INCLUDE 3-4):
+□ SHEEPSKIN throw or accent (ESSENTIAL - spiritual warmth!)
+□ CHUNKY KNIT throw in cream/oatmeal
+□ CANDLES - multiple, varying heights (HYGGE ESSENTIAL!)
+□ SOFT TERRACOTTA or MUTED SAGE accent
+□ Dried botanicals in ceramic vase
+PLANT: Trailing pothos in handmade ceramic OR dried pampas/botanicals. Organic, imperfect.
+LIGHTING: Paper pendant (Noguchi-inspired), fabric shade lamps. CANDLELIGHT is ESSENTIAL!
+ART: Soft abstract in EARTH-SHADOW tones. Light wood frame.""",
+                    "dining room": """TABLE: LIGHT BLONDE OAK or BIRCH, round/oval organic shape. NOT walnut!
+CHAIRS: Wishbone (CH24 style) in NATURAL BLONDE. Paper cord seats.
+PENDANT: Paper lantern (Noguchi), PH5 layered. Soft, diffused, spiritual light.
+RUG: Natural wool flatweave. SHEEPSKIN on chairs.
+CENTERPIECE: Multiple CANDLES of varying heights (ESSENTIAL!) OR single sculptural ceramic with dried botanicals.""",
+                    "bedroom": """BED: LIGHT BLONDE wood frame (birch, ash) OR soft linen upholstered in warm cream.
 □ NO dark walnut - that's Mid-Century!
-□ Light, airy presence
+□ Soft, enveloping, spiritual presence
 
-BEDDING: White linen, relaxed texture. CHUNKY KNIT throw (cream/gray). Mix linen/wool pillows.
-NIGHTSTANDS: LIGHT BLONDE wood (SIGNATURE!). Simple, functional.
-LAMPS: Ceramic in white/soft gray with linen shade.
-RUG: SHEEPSKIN beside bed (SIGNATURE!) OR cream wool.
+BEDDING: White/cream heavyweight linen, LIVED-IN texture. CHUNKY KNIT throw (oatmeal). Mix of soft pillows in cream/sage/terracotta.
+NIGHTSTANDS: LIGHT BLONDE wood with organic curves (SIGNATURE!). Simple, handmade feel.
+LAMPS: Handmade ceramic in matte cream with linen shade.
+RUG: SHEEPSKIN beside bed (ESSENTIAL!) layered on natural wool.
 ACCESSORIES (MUST INCLUDE):
-□ CANDLE on nightstand (HYGGE!)
-□ Stack of books
-□ Soft PASTEL accent if any (blush, sage)""",
-                    "kitchen": """Functional hygge:
-- LIGHT wood cutting boards (birch/blonde oak)
-- Ceramic canisters in white or SOFT PASTELS
-- Herbs in terracotta or white pots
-- Linen tea towels
-- CANDLE on counter (hygge!)
-BAR STOOLS: LIGHT BLONDE wood. Simple Scandinavian design.""",
-                    "bathroom": """Spa-like with hygge:
-- Wooden tray with natural bar soap
-- Eucalyptus stems in ceramic vase
-- White linen towels, waffle weave
-- CANDLE (ESSENTIAL for Scandinavian bathrooms!)
+□ CANDLES on nightstand (HYGGE - spiritual warmth!)
+□ Stack of books with soft covers
+□ SOFT TERRACOTTA or SAGE ceramic
+□ Dried botanical arrangement""",
+                    "kitchen": """Spiritual hygge functionality:
+- LIGHT BLONDE wood cutting boards (birch)
+- Handmade ceramic vessels in soft neutrals or TERRACOTTA
+- Fresh herbs in terracotta pots
+- Linen tea towels in oatmeal
+- CANDLE in simple holder (hygge!)
+BAR STOOLS: LIGHT BLONDE wood with woven paper cord seats.""",
+                    "bathroom": """Spa sanctuary with spiritual hygge:
+- Natural wood tray with artisan bar soap
+- Dried eucalyptus or botanicals in ceramic vase
+- White/cream linen towels, waffle weave
+- Multiple CANDLES (ESSENTIAL!)
 - Woven basket for storage""",
-                    "exterior": """LIGHTING: Bright Nordic daylight OR soft overcast.
-- WARM interior glow through windows (candles visible!)
-LANDSCAPING: Natural, slightly wild. Simple wood/concrete planters.
-FURNITURE: Light wood outdoor furniture. Cozy throws, CANDLES in lanterns.""",
-                    "room": """SCANDINAVIAN = BLONDE WOOD + PASTELS + HYGGE:
-SEATING: Light gray/blush, BLONDE wood legs
-TABLES: LIGHT OAK/BIRCH - NOT dark walnut
-RUG: Cream wool, SHEEPSKIN layered
-ACCESSORIES: CHUNKY KNIT, CANDLES, PASTEL accents
-PLANT: In woven basket or white ceramic"""
+                    "exterior": """LIGHTING: Soft Nordic daylight, diffused and gentle. OR warm golden hour.
+- Interior windows showing warm candlelit glow
+LANDSCAPING: Natural, slightly wild. Native plants. Terracotta planters.
+FURNITURE: Light wood outdoor. SHEEPSKIN throws, CANDLES in lanterns.""",
+                    "room": """SCANDINAVIAN 2026 = BLONDE WOOD + EARTH-SHADOWS + SHEEPSKIN + CANDLES + HYGGE:
+SEATING: Soft curves in cream/terracotta/sage, BLONDE wood
+TABLES: LIGHT OAK/BIRCH organic shapes - NOT walnut
+RUG: Natural wool, SHEEPSKIN layered
+ACCESSORIES: CHUNKY KNIT, multiple CANDLES, dried botanicals
+PLANT: Organic trailing plants or dried botanicals"""
                 }
                 furniture = furniture_by_room_scandi.get(room_type, furniture_by_room_scandi["room"])
 
-                return f"""SCANDINAVIAN STAGING (BLONDE WOOD + PASTELS + HYGGE): Stage this {room_type} with Nordic warmth.
+                return f"""SCANDINAVIAN 2026 STAGING - "Nordic Ethereal - Spiritual Hygge": Stage this {room_type} with soul-nourishing Nordic warmth.
 
 ⚠️ CRITICAL RULES:
 - NEVER invent wall damage, cracks, or imperfections
 - NEVER shift camera angle - maintain EXACT perspective
-- Use soft, organic plants - NOT architectural (that's Modern)
+- Use soft, organic, IMPERFECT elements - handmade aesthetic
 
 ⚠️ STRUCTURAL PRESERVATION - NEVER alter walls, doorways, windows, or architectural features.
 
-SCANDINAVIAN STYLE DNA (What makes Scandinavian DIFFERENT from Mid-Century):
-- LIGHT BLONDE wood (birch, ash, light oak) - NOT DARK WALNUT (that's Mid-Century!)
-- Soft PASTELS (blush pink, sage green) - NOT bold colors (that's Mid-Century!)
-- COZY textures (sheepskin, chunky knit) - NOT sleek/sculptural
-- Bright, airy Nordic light (3200-3500K)
-- CANDLES are ESSENTIAL for hygge!
+SCANDINAVIAN 2026 STYLE DNA - "Spiritual Hygge":
+- LIGHT BLONDE wood (birch, ash, light oak) - NOT DARK WALNUT!
+- EARTH-SHADOW palette: warm cream, SOFT TERRACOTTA, MUTED SAGE, oatmeal
+- Deep shadows as design element - "earth-shadows" creating depth
+- SHEEPSKIN textures are ESSENTIAL (spiritual warmth)
+- CANDLES EVERYWHERE - multiple heights, spiritual light
+- CHUNKY KNIT throws - enveloping comfort
+- Handmade, organic, imperfect ceramics
+- Dried botanicals alongside fresh
 
-SIGNATURE ELEMENTS (must include 2-3):
-□ SHEEPSKIN throw or rug (ESSENTIAL!)
-□ CHUNKY KNIT throw blanket
-□ CANDLES in simple holders (HYGGE!)
-□ Soft PASTEL accent (blush, sage)
+SIGNATURE ELEMENTS (MUST include 3-4):
+□ SHEEPSKIN throw or rug (ESSENTIAL - spiritual warmth!)
+□ CHUNKY KNIT throw blanket in oatmeal
+□ Multiple CANDLES - varying heights (HYGGE ESSENTIAL!)
+□ SOFT TERRACOTTA or MUTED SAGE accent
+□ Dried botanicals/pampas
 
-FORBIDDEN: Dark walnut, black iron, bold colors (mustard/orange), chrome
+FORBIDDEN: Dark walnut, black iron, bold colors (mustard/orange), chrome, sleek modern materials
 
 FURNITURE:
 {furniture}
 
 CRITICAL: Keep architecture identical to original. Do NOT cover damage/defects.
 
-Result: BLONDE WOOD + PASTELS + COZY HYGGE + CANDLES. Bright, airy, warm but light."""
+Result: BLONDE WOOD + EARTH-SHADOWS + SHEEPSKIN + CANDLES. Soul-nourishing spiritual hygge with Nordic serenity."""
 
-            # COASTAL STYLE - BLUE + WOVEN TEXTURES + BEACH LIGHT
+            # COASTAL 2026 STYLE - "Hyper-Breezy Sensory Obsession"
+            # DOPAMINE BRIGHTS + ROPE/WOVEN + HYPER-BREEZY + HERITAGE
             if style == "coastal":
                 furniture_by_room_coastal = {
-                    "living room": """SOFA: Deep comfortable in white, cream, or SOFT BLUE linen. Slipcovered, relaxed fit.
-COFFEE TABLE: Round WOVEN RATTAN with glass top (SIGNATURE!) OR whitewashed wood.
-ACCENT CHAIRS: RATTAN/WICKER armchairs with white cushions (SIGNATURE!)
-RUG: JUTE or SISAL in natural sandy tone (SIGNATURE!) OR BLUE and white stripe.
-ACCESSORIES (MUST INCLUDE):
-□ BLUE and white throw pillows (ESSENTIAL!)
-□ WOVEN texture somewhere (basket, lamp)
-□ Ocean art in WHITE frame
-□ Light cotton/linen throw
-PLANT: Palm in WOVEN SEAGRASS basket. Keep it airy - less is more for coastal.
-LIGHTING: RATTAN or WOVEN pendant (SIGNATURE!). White ceramic lamps.""",
-                    "dining room": """TABLE: Reclaimed wood OR white-washed trestle. Casual, beachy.
-CHAIRS: WOVEN RATTAN/WICKER dining chairs (SIGNATURE!) OR slipcovered parsons in white.
-PENDANT: Large WOVEN RATTAN/SEAGRASS pendant (SIGNATURE!)
-RUG: Natural JUTE, large.
-CENTERPIECE: White pitcher with eucalyptus OR hurricane lantern.""",
-                    "bedroom": """BED: WHITE upholstered headboard OR RATTAN/CANE headboard (SIGNATURE!)
-□ NO dark wood frames - light and airy
-□ Fresh, breezy appearance
+                    "living room": """COASTAL 2026 - "Hyper-Breezy Sensory":
+SOFA: Deep comfortable in crisp WHITE or natural linen. Slipcovered, RELAXED BREEZY fit. Sinks-into comfort.
+COFFEE TABLE: ROPE-wrapped base with weathered wood top (SIGNATURE!) OR driftwood sculptural.
+ACCENT CHAIRS: WOVEN ROPE or RATTAN armchairs (SIGNATURE!) with white/cream cushions.
+RUG: Natural JUTE or SISAL - sandy, textured (ESSENTIAL!). Or BLUE/white stripe.
+ACCESSORIES (MUST INCLUDE 3-4):
+□ DOPAMINE BRIGHT accent - CORAL, TURQUOISE, or SUNNY YELLOW (ESSENTIAL!)
+□ ROPE element - lamp base, basket, or decor
+□ NAUTICAL HERITAGE piece - vintage buoy, ship detail, lighthouse art
+□ WOVEN texture - seagrass basket, rattan tray
+□ Ocean/coastal art in weathered wood frame
+PLANT: Palm or bird of paradise in WOVEN SEAGRASS basket. Tropical, breezy feel.
+LIGHTING: ROPE-wrapped lamp base OR WOVEN pendant (SIGNATURE!). Natural materials.""",
+                    "dining room": """TABLE: Weathered reclaimed wood OR whitewashed trestle. HERITAGE feel.
+CHAIRS: WOVEN ROPE or RATTAN dining chairs (SIGNATURE!). Natural materials.
+PENDANT: Large WOVEN SEAGRASS or ROPE pendant (SIGNATURE!)
+RUG: Natural JUTE, large, textured.
+CENTERPIECE: Hurricane lantern (HERITAGE!) OR white coral sculpture.""",
+                    "bedroom": """BED: WHITE linen upholstered OR RATTAN/CANE headboard (SIGNATURE!)
+□ Light, BREEZY appearance
+□ Relaxed beach-house feel
 
-BEDDING: Crisp WHITE base. BLUE and white accent pillows (ESSENTIAL!). Light throw in blue or white.
-NIGHTSTANDS: RATTAN or WICKER (SIGNATURE!) OR white/whitewashed wood.
-LAMPS: White ceramic with WOVEN or linen shade.
-RUG: Natural JUTE at bedside OR soft BLUE.
-ACCESSORIES: SKIP plants in bedroom - keep it airy and breezy.""",
-                    "kitchen": """Light, fresh, LESS IS MORE:
-- Light wood cutting board
-- White ceramic canisters
-- Lemons in wooden bowl
-- WOVEN basket with fruit
-- NO large plants - keep counters clear
-BAR STOOLS: WOVEN RATTAN/SEAGRASS counter stools (SIGNATURE!)""",
-                    "bathroom": """Fresh and spa-like:
-- White tray with natural soap
-- Eucalyptus stems in glass vase
-- White towels, SOFT BLUE accent towel
-- WOVEN basket for storage
-- SKIP plants - keep it clean and breezy""",
-                    "exterior": """LIGHTING: BRIGHT beach daylight OR sunset with pink/orange sky.
-- Warm interior glow through windows
-LANDSCAPING: Coastal plants, ornamental grasses, palms. White/natural planters.
-FURNITURE: Teak or white-washed wood. White and BLUE cushions (SIGNATURE!)""",
-                    "room": """COASTAL = BLUE + WOVEN/RATTAN + BEACH BRIGHT:
-SEATING: White/cream/BLUE linen, slipcovered
-TABLES: RATTAN, whitewashed, or driftwood
-RUG: JUTE/SISAL (essential!) or BLUE/white stripe
-ACCESSORIES: BLUE + white required, WOVEN textures
-PLANT: In woven basket - or SKIP for airy feel"""
+BEDDING: Crisp WHITE base, LIVED-IN linen texture. DOPAMINE accent pillows - CORAL, TURQUOISE, or YELLOW (ESSENTIAL!).
+NIGHTSTANDS: RATTAN, WICKER, or ROPE-detailed (SIGNATURE!). Natural textures.
+LAMPS: ROPE-wrapped base with linen shade (SIGNATURE!).
+RUG: Natural JUTE or SISAL.
+ACCESSORIES: DOPAMINE BRIGHT accent, seashells in bowl, coastal art.""",
+                    "kitchen": """Fresh, breezy, LESS IS MORE:
+- Weathered wood cutting board
+- White ceramic with ROPE detail
+- Lemons in WOVEN basket (DOPAMINE yellow!)
+- NAUTICAL element - rope coil, lighthouse print
+BAR STOOLS: WOVEN ROPE or SEAGRASS counter stools (SIGNATURE!)""",
+                    "bathroom": """Spa-like coastal retreat:
+- ROPE-trimmed mirror or accessories
+- White/cream towels in WOVEN basket
+- DOPAMINE accent - CORAL or TURQUOISE soap dish
+- Eucalyptus stems, seashells
+- NAUTICAL heritage element""",
+                    "exterior": """LIGHTING: BRIGHT golden beach sunset OR brilliant blue-sky daylight.
+- Warm glowing windows
+LANDSCAPING: Coastal plants - palms, ornamental grasses. Weathered planters.
+FURNITURE: Weathered teak or whitewashed wood. ROPE details. DOPAMINE accent cushions.""",
+                    "room": """COASTAL 2026 = DOPAMINE BRIGHTS + ROPE/WOVEN + HYPER-BREEZY + HERITAGE:
+SEATING: White/cream linen, slipcovered, relaxed
+TABLES: ROPE-wrapped, weathered wood, driftwood
+RUG: JUTE/SISAL essential - sandy texture
+ACCESSORIES: DOPAMINE BRIGHT accent (coral/turquoise/yellow), ROPE textures, NAUTICAL heritage
+PLANT: Tropical in woven seagrass basket"""
                 }
                 furniture = furniture_by_room_coastal.get(room_type, furniture_by_room_coastal["room"])
 
-                return f"""COASTAL STAGING (BLUE + WOVEN TEXTURES + BEACH LIGHT): Stage this {room_type} with beach house elegance.
+                return f"""COASTAL 2026 STAGING - "Hyper-Breezy Sensory Obsession": Stage this {room_type} with dopamine-inducing beach house joy.
 
 ⚠️ CRITICAL RULES:
 - NEVER invent wall damage, cracks, or imperfections
 - NEVER shift camera angle - maintain EXACT perspective
-- SKIP plants in many rooms - Coastal is AIRY and breezy
+- HYPER-BREEZY means light, airy, relaxed - not cluttered
 
 ⚠️ STRUCTURAL PRESERVATION - NEVER alter walls, doorways, windows, or architectural features.
 
-COASTAL STYLE DNA (What makes Coastal DIFFERENT):
-- BLUE is REQUIRED - at least one blue element per room (pillow, throw, rug)
-- RATTAN/WICKER textures are ESSENTIAL (furniture, pendant, basket)
-- JUTE/SISAL rugs in natural sandy tones
-- Bright, sun-drenched beach light (3500-4000K)
-- Whitewashed wood, driftwood - NOT warm walnut
+COASTAL 2026 STYLE DNA - "Hyper-Breezy Sensory Obsession":
+- DOPAMINE BRIGHTS are ESSENTIAL - CORAL, TURQUOISE, or SUNNY YELLOW pop
+- ROPE textures required (lamp base, basket, furniture detail)
+- WOVEN natural materials - seagrass, rattan, wicker
+- JUTE/SISAL rugs - sandy, textured, natural
+- NAUTICAL HERITAGE elements - vintage buoys, maritime details, lighthouse motifs
+- Bright, sun-drenched HYPER-BREEZY light (4000-5000K)
+- Weathered wood, driftwood, whitewashed finishes
 
-SIGNATURE ELEMENTS (must include 2-3):
-□ BLUE and white pillows (ESSENTIAL!)
-□ RATTAN or WICKER furniture piece
-□ JUTE or SISAL rug
-□ WOVEN pendant or lamp
+SIGNATURE ELEMENTS (MUST include 3-4):
+□ DOPAMINE BRIGHT accent - coral, turquoise, or sunny yellow (ESSENTIAL!)
+□ ROPE element - lamp, basket, furniture detail
+□ WOVEN RATTAN or SEAGRASS piece
+□ NAUTICAL HERITAGE detail (buoy, lighthouse, maritime)
+□ Natural JUTE or SISAL rug
 
-FORBIDDEN: Dark walnut, warm amber, chrome, black iron, cozy knits
+FORBIDDEN: Dark walnut, warm amber, brass, black iron, heavy cozy textures
 
 FURNITURE:
 {furniture}
 
 CRITICAL: Keep architecture identical to original. Do NOT cover damage/defects.
 
-Result: BLUE + WOVEN/RATTAN + BEACH BRIGHT. Relaxed, airy, refined coastal - not kitschy."""
+Result: DOPAMINE BRIGHTS + ROPE/WOVEN + HYPER-BREEZY + HERITAGE. Sun-drenched sensory joy with nautical soul."""
 
-            # FARMHOUSE STYLE - RECLAIMED WOOD + BLACK IRON + VINTAGE
+            # FARMHOUSE 2026 STYLE - "Neo-Farmhouse - Storied Sanctuary"
+            # MUDDY PALETTE + BLACK IRON + PLASTERED/LIMEWASH + HACIENDA
             if style == "farmhouse":
                 furniture_by_room_farmhouse = {
-                    "living room": """SOFA: Deep comfortable in cream/warm gray. Linen/cotton slipcover. Substantial comfort.
-COFFEE TABLE: RECLAIMED WOOD with visible character (SIGNATURE!). Substantial, rustic.
-ACCENT CHAIRS: Leather club chairs in cognac. OR wingback in linen.
-RUG: VINTAGE-style in FADED muted tones (faded reds, blues, creams). Shows character.
-ACCESSORIES (MUST INCLUDE 2-3):
-□ BLACK IRON element (lamp, hardware) - ESSENTIAL!
-□ VINTAGE/antique piece
-□ Grain sack or ticking stripe pattern
-□ Ceramic pitcher or crock
-PLANT: Eucalyptus stems in ceramic PITCHER (SIGNATURE!) OR cotton stems in vintage vessel.
-LIGHTING: Industrial floor lamp in BLACK METAL (SIGNATURE!). Lanterns.
-ART: Vintage botanical prints in simple frames.""",
-                    "dining room": """TABLE: Large RECLAIMED WOOD farmhouse table (SIGNATURE!). Substantial trestle base.
-CHAIRS: Cross-back (X-back) in BLACK (SIGNATURE!) OR Windsor in black.
-PENDANT: Large BLACK METAL chandelier (SIGNATURE!) - linear or round.
-RUG: Vintage-style OR natural jute.
-CENTERPIECE: Ceramic pitcher with dried flowers OR wooden dough bowl.""",
-                    "bedroom": """BED: BLACK IRON or metal bed frame (SIGNATURE!) OR reclaimed wood headboard with character.
-□ Can show wear/age in FURNITURE (not walls!)
-□ Substantial, sturdy presence
+                    "living room": """FARMHOUSE 2026 - "Storied Sanctuary":
+SOFA: Deep, substantial comfort in MUDDY TONES - mushroom, olive brown, warm clay. Heavyweight linen, LIVED-IN texture.
+COFFEE TABLE: MASSIVE reclaimed wood with visible STORY (character marks, aged patina). NOT refinished.
+ACCENT CHAIRS: Leather club chairs in aged cognac/saddle. OR linen wingback in muddy tone.
+RUG: Vintage-style in FADED MUDDY TONES - aged aubergine, faded rust, muted olive. Shows generations of life.
+ACCESSORIES (MUST INCLUDE 3-4):
+□ BLACK IRON element (lamp, hardware, hooks) - ESSENTIAL!
+□ CERAMIC PITCHER with dried botanicals (SIGNATURE!)
+□ VINTAGE/antique piece with PROVENANCE
+□ Grain sack or ticking stripe in MUDDY tones
+□ Terracotta or CLAY vessel
+PLANT: Dried botanicals in vintage PITCHER OR olive branches in clay pot. Natural, aged feel.
+LIGHTING: BLACK IRON industrial lamp (SIGNATURE!). CANDLES in iron holders. Warm, flickering light.
+ART: Vintage botanical prints OR aged mirrors in weathered frames.""",
+                    "dining room": """TABLE: MASSIVE reclaimed wood farmhouse table (SIGNATURE!). Shows STORY - age marks, patina.
+CHAIRS: Cross-back (X-back) in BLACK (SIGNATURE!) OR Windsor in aged black.
+PENDANT: BLACK IRON chandelier (linear or candelabra style) - ESSENTIAL!
+RUG: Vintage-style in FADED MUDDY palette.
+CENTERPIECE: CERAMIC PITCHER with dried florals OR aged wooden dough bowl.""",
+                    "bedroom": """BED: BLACK IRON bed frame (SIGNATURE!) OR massive reclaimed wood headboard.
+□ Shows age/character in FURNITURE (STYLE)
+□ Substantial, grounded presence
 
-BEDDING: White base with texture. VINTAGE QUILT at foot (SIGNATURE!). Linen/cotton in cream.
-NIGHTSTANDS: MISMATCHED VINTAGE pieces (charming!) OR distressed wood.
-LAMPS: Ceramic in white/cream with linen shade.
-RUG: VINTAGE-style with FADED pattern.
-ACCESSORIES: Candlestick, flowers in small pitcher, vintage books.""",
-                    "kitchen": """Rustic charm:
-- Butcher block cutting board
-- Ceramic crock with wooden utensils
-- VINTAGE canisters or glass jars
-- Fresh produce in basket
-- BLACK IRON pot rack or hardware visible
-BAR STOOLS: Industrial BLACK METAL (SIGNATURE!) OR cross-back in black/natural.""",
-                    "bathroom": """Vintage charm:
-- Wooden tray with natural bar soap
-- Glass jars or vintage containers
-- WHITE waffle weave towels on vintage hooks/ladder
-- GALVANIZED metal or wire basket
-- Small candle in vintage holder""",
-                    "exterior": """LIGHTING: WARM golden hour, barn-like glow.
-- Interior windows showing warm light
-LANDSCAPING: Cottage garden - lavender, hydrangeas. Galvanized or terracotta planters.
-FURNITURE: Rocking chairs, Adirondack, vintage metal. Lanterns, string lights.""",
-                    "room": """FARMHOUSE = RECLAIMED WOOD + BLACK IRON + VINTAGE:
-SEATING: Cream/gray slipcovered, substantial
-TABLES: RECLAIMED wood with character
-RUG: VINTAGE-style or jute
-ACCESSORIES: BLACK IRON, ceramic pitchers, galvanized
-PLANT: Eucalyptus in pitcher or cotton stems"""
+BEDDING: White linen base, LIVED-IN texture. VINTAGE QUILT in muddy tones at foot (SIGNATURE!). Layered pillows in clay/olive/cream.
+NIGHTSTANDS: MISMATCHED VINTAGE pieces (PROVENANCE!) - aged, storied.
+LAMPS: Ceramic in aged cream OR BLACK IRON candlestick.
+RUG: FADED VINTAGE in muddy aubergine/olive tones.
+ACCESSORIES: Iron candlestick, flowers in ceramic PITCHER, vintage leather-bound books.""",
+                    "kitchen": """Storied rustic charm:
+- Massive butcher block cutting board
+- CERAMIC CROCKS with wooden utensils (SIGNATURE!)
+- VINTAGE glass jars, aged containers
+- Fresh produce in weathered basket
+- BLACK IRON pot rack or hooks visible
+BAR STOOLS: BLACK IRON industrial (SIGNATURE!) OR cross-back in aged black.""",
+                    "bathroom": """Vintage hacienda charm:
+- Aged wooden tray with artisan bar soap
+- CLAY or terracotta vessels
+- White linen towels on BLACK IRON ladder/hooks
+- Aged galvanized metal or wire basket
+- CANDLE in iron or clay holder""",
+                    "exterior": """LIGHTING: WARM golden hour, HACIENDA glow.
+- Windows showing warm candlelit interior
+LANDSCAPING: Cottage garden - lavender, rosemary, heritage roses. TERRACOTTA and aged clay planters.
+FURNITURE: Weathered wood rockers, aged metal bistro. BLACK IRON lanterns, string lights.""",
+                    "room": """FARMHOUSE 2026 = MUDDY PALETTE + BLACK IRON + STORY + HACIENDA:
+SEATING: Substantial comfort in mushroom/olive/clay tones
+TABLES: Massive RECLAIMED wood with visible STORY
+RUG: FADED VINTAGE in muddy palette
+ACCESSORIES: BLACK IRON, CERAMIC PITCHERS, aged vintage pieces
+PLANT: Dried botanicals in vintage vessels"""
                 }
                 furniture = furniture_by_room_farmhouse.get(room_type, furniture_by_room_farmhouse["room"])
 
-                return f"""FARMHOUSE STAGING (RECLAIMED WOOD + BLACK IRON + VINTAGE): Stage this {room_type} with rustic charm.
+                return f"""FARMHOUSE 2026 STAGING - "Neo-Farmhouse - Storied Sanctuary": Stage this {room_type} with soulful heritage warmth.
 
 ⚠️ CRITICAL RULES:
 - NEVER invent wall damage, cracks, or imperfections
-- Distressed FURNITURE is style. Damaged WALLS is fraud.
+- CHARACTER in FURNITURE (worn, aged) = STYLE. Damage on WALLS = FRAUD.
 - NEVER shift camera angle - maintain EXACT perspective
 
 ⚠️ STRUCTURAL PRESERVATION - NEVER alter walls, doorways, windows, or architectural features.
 
-FARMHOUSE STYLE DNA (What makes Farmhouse DIFFERENT):
-- BLACK IRON is REQUIRED (bed frame, lamp, chandelier, hardware)
-- RECLAIMED WOOD with visible character
-- VINTAGE elements (quilt, mismatched nightstands)
-- Warm barn/candlelit light (2700-3000K)
-- White, cream + BLACK IRON accents
+FARMHOUSE 2026 STYLE DNA - "Storied Sanctuary":
+- MUDDY PALETTE is ESSENTIAL: mushroom, olive brown, aged aubergine, warm clay, faded rust
+- BLACK IRON required (bed frames, chandeliers, hardware, hooks)
+- CERAMIC PITCHERS with dried botanicals (SIGNATURE!)
+- Massive RECLAIMED WOOD with visible STORY (age marks, patina)
+- VINTAGE pieces with PROVENANCE - items that tell a story
+- HACIENDA influence: terracotta, clay, limewash aesthetic
+- Warm, candlelit light quality (2700K)
 
-SIGNATURE ELEMENTS (must include 2-3):
+SIGNATURE ELEMENTS (MUST include 3-4):
 □ BLACK IRON element (ESSENTIAL!)
-□ RECLAIMED WOOD furniture
-□ VINTAGE/antique piece
-□ Eucalyptus in ceramic PITCHER
+□ CERAMIC PITCHER with dried botanicals
+□ MASSIVE reclaimed wood with visible STORY
+□ VINTAGE piece with provenance
+□ MUDDY PALETTE accent (mushroom/olive/clay)
+□ Terracotta or CLAY vessel
 
-FORBIDDEN: Chrome, high-gloss, sleek modern, blonde wood, brass
+FORBIDDEN: Chrome, high-gloss, sleek modern, blonde wood, brass, bright colors
 
 ⚠️ DAMAGE PREVENTION:
-- Show CHARACTER in FURNITURE (distressed, worn) = STYLE
+- Show CHARACTER in FURNITURE (distressed, worn, aged) = AUTHENTIC STYLE
 - Do NOT invent damage on WALLS (cracks, holes) = FRAUD
 - Preserve wall condition EXACTLY
 
@@ -826,65 +868,68 @@ FURNITURE:
 
 CRITICAL: Keep architecture identical to original. Do NOT cover damage/defects.
 
-Result: RECLAIMED WOOD + BLACK IRON + VINTAGE CHARACTER. Rustic warmth, not country kitsch."""
+Result: MUDDY PALETTE + BLACK IRON + STORY + HACIENDA. Soulful heritage sanctuary, not country kitsch."""
 
-            # MID-CENTURY MODERN STYLE - DARK WALNUT + BOLD COLORS + TAPERED LEGS
+            # MID-CENTURY 2026 STYLE - "Retro-Futurism - Atomic Optimism"
+            # DARK WALNUT + BOLD RETRO COLORS + TAPERED LEGS + BRASS/SPUTNIK
             if style == "midcentury":
                 furniture_by_room_mcm = {
-                    "living room": """SOFA: Low-profile in BOLD COLOR - MUSTARD, OLIVE, or BURNT ORANGE (SIGNATURE!). TAPERED WALNUT legs.
-COFFEE TABLE: Surfboard shape in DARK WALNUT (SIGNATURE!) OR Noguchi-inspired. TAPERED LEGS essential.
-ACCENT CHAIRS: Eames Lounge Chair and Ottoman in leather (SIGNATURE!). OR shell chairs. OR womb chair in bold color.
-RUG: SHAG rug in cream, GOLD, or OLIVE (SIGNATURE!) OR bold geometric in warm tones.
-ACCESSORIES (MUST INCLUDE 2-3):
-□ STARBURST element (clock, mirror, wall art) - SIGNATURE!
-□ BOLD COLOR accent - mustard, olive, or orange - ESSENTIAL!
-□ BRASS accent (lamp, candleholder)
-□ Sculptural ceramic in period color
-PLANT: Snake plant in BULLET PLANTER (period ceramic!) in white, orange, or olive.
-LIGHTING: Arc floor lamp in BRASS (Arco style). SPUTNIK chandelier (SIGNATURE!)
-ART: Large abstract expressionist or bold graphic print.""",
+                    "living room": """MID-CENTURY 2026 - "Atomic Optimism":
+SOFA: Low-profile in BOLD SATURATED COLOR - ATOMIC TANGERINE, AVOCADO GREEN, or MUSTARD GOLD (SIGNATURE!). TAPERED DARK WALNUT legs.
+COFFEE TABLE: Surfboard or kidney shape in DARK WALNUT (SIGNATURE!). TAPERED LEGS essential. OR Noguchi-inspired.
+ACCENT CHAIRS: Eames Lounge Chair in leather (ICONIC!). OR Womb Chair in bold fabric. OR Shell chairs in period colors.
+RUG: SHAG in cream, GOLD, or AVOCADO (SIGNATURE!) OR bold geometric sunburst pattern.
+ACCESSORIES (MUST INCLUDE 3-4):
+□ SPUTNIK or STARBURST element (chandelier, clock, mirror) - ESSENTIAL SIGNATURE!
+□ BOLD SATURATED COLOR accent - tangerine, avocado, mustard (ESSENTIAL!)
+□ BRASS accents (lamp, candleholder, legs)
+□ Sculptural ceramic in period color (atomic shapes)
+□ BULLET PLANTER with architectural plant
+PLANT: Snake plant or fiddle leaf in BULLET PLANTER (period ceramic!) in white, tangerine, or olive.
+LIGHTING: SPUTNIK chandelier (SIGNATURE!) OR Arc floor lamp in BRASS. Brass is ESSENTIAL.
+ART: Large abstract expressionist OR bold graphic atomic print.""",
                     "dining room": """TABLE: Oval DARK WALNUT with TAPERED LEGS (SIGNATURE!). OR Saarinen tulip.
-CHAIRS: Eames molded plastic in colors OR Wegner Wishbone in WALNUT. All matching.
-PENDANT: SPUTNIK chandelier in BRASS (SIGNATURE!) OR PH Artichoke. BRASS essential.
-RUG: Bold geometric in period colors OR SHAG in gold/olive.
-CENTERPIECE: Sculptural ceramic bowl in period color.""",
+CHAIRS: Eames molded plastic in BOLD colors OR Wishbone in DARK WALNUT. All matching.
+PENDANT: SPUTNIK chandelier in BRASS (ESSENTIAL SIGNATURE!) OR PH Artichoke.
+RUG: Bold geometric SUNBURST pattern OR SHAG in gold/avocado.
+CENTERPIECE: Sculptural ceramic bowl in ATOMIC period color (tangerine, mustard).""",
                     "bedroom": """BED: DARK WALNUT platform with TAPERED LEGS (SIGNATURE!)
 □ Low profile, panel/slat headboard
 □ NO light wood - that's Scandinavian!
-□ Substantial, iconic presence
+□ Iconic, substantial presence
 
-BEDDING: White/cream base. BOLD accent throw - MUSTARD, OLIVE, or BURNT ORANGE (ESSENTIAL!)
-NIGHTSTANDS: DARK WALNUT with TAPERED LEGS (SIGNATURE!). BRASS hardware.
-LAMPS: Ceramic in period color (mustard, olive, cream). BRASS accents.
-RUG: SHAG in cream, gold, or olive.
-ACCESSORIES: STARBURST clock or mirror (SIGNATURE!), BRASS candleholder.""",
-                    "kitchen": """Period-appropriate:
+BEDDING: White/cream base. BOLD SATURATED accent throw - ATOMIC TANGERINE, AVOCADO, or MUSTARD (ESSENTIAL!)
+NIGHTSTANDS: DARK WALNUT with TAPERED LEGS and BRASS hardware (SIGNATURE!).
+LAMPS: Ceramic in BOLD period color (tangerine, mustard, avocado). BRASS accents essential.
+RUG: SHAG in cream, gold, or avocado.
+ACCESSORIES: STARBURST clock or mirror (SIGNATURE!), BRASS candleholder, atomic ceramics.""",
+                    "kitchen": """Atomic period aesthetic:
 - Teak cutting board
-- Ceramic canisters in period colors (white, ORANGE, OLIVE)
-- Fruit in sculptural bowl
-- Dansk or Scandinavian ceramics
-BAR STOOLS: DARK WALNUT with TAPERED LEGS. OR molded seats in period colors.""",
-                    "bathroom": """Bold, period-appropriate:
-- Simple tray with soap
-- Ceramic vessel in BOLD period color (MUSTARD, OLIVE, orange)
-- Snake plant in bullet planter
+- Ceramic canisters in BOLD period colors (tangerine, avocado, mustard)
+- Fruit in atomic-shaped sculptural bowl
+- Dansk or period Scandinavian ceramics
+BAR STOOLS: DARK WALNUT with TAPERED LEGS. OR molded seats in BOLD period colors.""",
+                    "bathroom": """Bold atomic period:
+- Minimal tray with artisan soap
+- Ceramic vessel in BOLD SATURATED period color (TANGERINE, AVOCADO, mustard)
+- Snake plant in BULLET PLANTER
 - Towels in bold solid color
 - BRASS accents (essential!)""",
-                    "exterior": """LIGHTING: WARM golden hour, rich and saturated.
-- Dramatic sky
-- Interior glow showing warm amber tones
-LANDSCAPING: Desert modern (agave, succulents) OR structured. Gravel, concrete.
-FURNITURE: Emphasize period features. DARK WALNUT or teak.""",
-                    "room": """MID-CENTURY = DARK WALNUT + BOLD COLORS + TAPERED LEGS:
-SEATING: BOLD color (mustard/olive/orange), TAPERED walnut legs
+                    "exterior": """LIGHTING: WARM saturated golden hour OR dramatic atomic-era sunset.
+- Rich, optimistic sky
+- Interior windows glowing warm amber
+LANDSCAPING: Desert modern (agave, architectural succulents). Gravel, concrete. Period planters.
+FURNITURE: DARK WALNUT or teak. Clean lines. BOLD cushions in period colors.""",
+                    "room": """MID-CENTURY 2026 = DARK WALNUT + BOLD SATURATED COLORS + TAPERED LEGS + SPUTNIK/BRASS:
+SEATING: BOLD saturated color (tangerine/avocado/mustard), TAPERED walnut legs
 TABLES: DARK WALNUT with TAPERED LEGS
-RUG: SHAG or bold geometric
-ACCESSORIES: STARBURST, BRASS, period ceramics
+RUG: SHAG or bold geometric SUNBURST
+ACCESSORIES: SPUTNIK, STARBURST, BRASS, BULLET PLANTERS, atomic ceramics
 PLANT: In ceramic BULLET PLANTER"""
                 }
                 furniture = furniture_by_room_mcm.get(room_type, furniture_by_room_mcm["room"])
 
-                return f"""MID-CENTURY MODERN STAGING (DARK WALNUT + BOLD COLORS + TAPERED LEGS): Stage this {room_type} with iconic 1950s-60s design.
+                return f"""MID-CENTURY 2026 STAGING - "Retro-Futurism - Atomic Optimism": Stage this {room_type} with bold 1950s-60s optimism.
 
 ⚠️ CRITICAL RULES:
 - NEVER invent wall damage, cracks, or imperfections
@@ -893,29 +938,33 @@ PLANT: In ceramic BULLET PLANTER"""
 
 ⚠️ STRUCTURAL PRESERVATION - NEVER alter walls, doorways, windows, or architectural features.
 
-MID-CENTURY STYLE DNA (What makes Mid-Century DIFFERENT from Scandinavian):
-- DARK WALNUT with TAPERED LEGS (NOT light blonde wood!)
-- BOLD COLORS: mustard yellow, olive green, burnt orange (NOT soft pastels!)
-- SLEEK, sculptural (NOT cozy chunky knit)
-- Rich, saturated amber lighting (2700-3000K)
-- BRASS accents essential (NOT black iron!)
+MID-CENTURY 2026 STYLE DNA - "Atomic Optimism":
+- DARK WALNUT with TAPERED LEGS (ESSENTIAL - NOT light blonde wood!)
+- BOLD SATURATED COLORS: atomic tangerine, avocado green, mustard gold (NOT soft pastels!)
+- SPUTNIK chandeliers and STARBURST motifs (SIGNATURE!)
+- BRASS accents throughout (NOT black iron!)
+- BULLET PLANTERS with architectural plants
+- SHAG textures in period colors
+- Rich, saturated warm lighting (2700-3000K)
+- Optimistic, space-age aesthetic
 
-SIGNATURE ELEMENTS (must include 2-3):
+SIGNATURE ELEMENTS (MUST include 3-4):
 □ DARK WALNUT furniture with TAPERED LEGS (ESSENTIAL!)
-□ BOLD COLOR accent - mustard, olive, or orange (ESSENTIAL!)
+□ BOLD SATURATED COLOR - tangerine, avocado, or mustard (ESSENTIAL!)
+□ SPUTNIK chandelier or lighting (SIGNATURE!)
 □ STARBURST element (clock, mirror, art)
-□ BRASS accent
+□ BRASS accents
 □ SHAG texture (rug or pillow)
 □ Ceramic BULLET PLANTER
 
-FORBIDDEN: Light blonde wood (Scandinavian!), soft pastels, black iron, chunky knits, chrome
+FORBIDDEN: Light blonde wood (Scandinavian!), soft pastels (Scandinavian!), black iron (Farmhouse!), chunky knits, chrome
 
 FURNITURE:
 {furniture}
 
 CRITICAL: Keep architecture identical to original. Do NOT cover damage/defects.
 
-Result: DARK WALNUT + BOLD COLORS + TAPERED LEGS + BRASS + STARBURST. Iconic, warm, statement-making."""
+Result: DARK WALNUT + BOLD SATURATED COLORS + TAPERED LEGS + SPUTNIK/BRASS. Atomic optimism meets timeless cool."""
 
             # Standard staging fallback for vacant rooms (default/unknown style)
             furniture_by_room = {
@@ -995,6 +1044,15 @@ SPECIFICALLY:
 - Do NOT remove or alter any architectural pass-throughs
 - Do NOT add walls or structural elements that don't exist
 
+⚠️ DAMAGE INVENTION PREVENTION (CRITICAL):
+When removing items like TVs, wall art, or clutter:
+- The wall/surface behind MUST appear CLEAN and UNDAMAGED
+- Do NOT add mounting holes, screw marks, or discoloration where items were
+- Do NOT invent paint chips, cracks, or marks where items were removed
+- If removing a TV from a wall, that wall section becomes a CLEAN, NORMAL wall
+- The ONLY damage allowed is damage CLEARLY VISIBLE in the original photo
+- Creating fake damage is FRAUD and violates MLS compliance
+
 BEFORE GENERATING: Identify ALL openings to adjacent spaces. They MUST appear in output.
 
 =============================================================================
@@ -1021,9 +1079,12 @@ Push entire image warm/golden. Shadows = amber. Wood = honey tones.
 
 KEEP EXISTING FURNITURE AND ARCHITECTURE: Same layout, same walls, same windows. Only remove clutter and enhance lighting.
 
-⚠️ FINAL CHECK: Verify all doorways, openings, and passages to adjacent spaces are preserved EXACTLY as in the original.
+⚠️ FINAL CHECK:
+1. Verify all doorways, openings, and passages are preserved EXACTLY
+2. Verify NO damage was invented where items were removed (TVs, art, etc.)
+3. Any removed items leave CLEAN walls behind - no holes, marks, or discoloration
 
-CRITICAL: Do NOT cover any damage/defects. Do NOT alter any architectural features.
+CRITICAL: Do NOT cover OR invent any damage/defects. Do NOT alter any architectural features.
 
 Result: Magazine-cover worthy through lighting + styling, not structural changes. Room must be recognizable as the same space."""
 

@@ -16,7 +16,7 @@ from config import get_settings
 from models import (
     Order, Plan, ImagePlan, ClientInfo,
     AirtableWebhookPayload, JobStatus, ImageStatus,
-    STYLE_MAPPING
+    resolve_style
 )
 from utils import generate_job_id, utc_now
 
@@ -94,8 +94,8 @@ class JobManager:
         (job_dir / "logs").mkdir(parents=True, exist_ok=True)
 
         # Parse style from Airtable dropdown (map to internal enum value)
-        raw_style = payload.fields.Style or "Neutral"
-        style = STYLE_MAPPING.get(raw_style, "neutral")
+        raw_style = payload.fields.Style or ""
+        style = resolve_style(raw_style)
         logger.info(f"Style mapping: '{raw_style}' -> '{style}'")
 
         # Get optional comments from client

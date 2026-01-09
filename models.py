@@ -47,8 +47,11 @@ class StylePreference(str, Enum):
 
 
 # Style mapping from Airtable dropdown text to internal enum values
+# NOTE: Airtable dropdown values must match EXACTLY - be careful with punctuation!
 STYLE_MAPPING = {
-    # Short names
+    # =========================================================================
+    # SHORT NAMES (for flexibility)
+    # =========================================================================
     "Modern": "modern",
     "Scandinavian": "scandinavian",
     "Coastal": "coastal",
@@ -57,14 +60,91 @@ STYLE_MAPPING = {
     "Mid-Century": "midcentury",
     "Midcentury": "midcentury",
     "Architecture Digest": "architecture_digest",
-    # Full dropdown values with descriptions
+    "AD": "architecture_digest",
+
+    # =========================================================================
+    # CURRENT AIRTABLE DROPDOWN VALUES (as of Jan 2026)
+    # These are the EXACT values from Airtable - DO NOT CHANGE without updating Airtable!
+    # =========================================================================
+    "Architecture Digest (Editorial, warm, sophisticated)": "architecture_digest",
+    "Modern (Clean contemporary design with warm minimalism)": "modern",
+    "Coastal (Relaxed beach house elegance)": "coastal",
+    "Farmhouse (Modern farmhouse with rustic warmth)": "farmhouse",
+    "Mid-Century Modern (Iconic 1950s-60s design)": "midcentury",
+    "Scandinavian (Nordic-inspired warmth and simplicity)": "scandinavian",
+
+    # =========================================================================
+    # LEGACY AIRTABLE VALUES (older dropdown text - keep for backwards compatibility)
+    # =========================================================================
     "Modern (Clean contemporary design with warm minimalism. Sophisticated but livable.)": "modern",
     "Scandinavian (Nordic-inspired warmth and simplicity. Light woods, cozy textures, hygge atmosphere.)": "scandinavian",
     "Coastal (Relaxed beach house elegance. Natural textures, ocean-inspired palette.)": "coastal",
     "Farmhouse (Modern farmhouse with rustic warmth. Shiplap, reclaimed wood, vintage charm.)": "farmhouse",
     "Mid-Century Modern (Iconic 1950s-60s design. Organic forms, tapered legs, statement furniture.)": "midcentury",
     "Architecture Digest (Editorial, warm, sophisticated - California wine country aesthetic with golden-hour lighting.)": "architecture_digest",
+
+    # =========================================================================
+    # LOWERCASE VARIANTS (in case Airtable sends lowercase)
+    # =========================================================================
+    "modern": "modern",
+    "scandinavian": "scandinavian",
+    "coastal": "coastal",
+    "farmhouse": "farmhouse",
+    "midcentury": "midcentury",
+    "mid-century": "midcentury",
+    "architecture_digest": "architecture_digest",
+    "architecture digest": "architecture_digest",
 }
+
+
+def resolve_style(raw_style: str) -> str:
+    """
+    Resolve a style string from Airtable to internal enum value.
+
+    Uses exact matching first, then prefix matching as fallback.
+    This handles cases where Airtable descriptions might change slightly.
+
+    Args:
+        raw_style: The style string from Airtable
+
+    Returns:
+        Internal style value (e.g., "modern", "farmhouse")
+    """
+    if not raw_style:
+        return "modern"  # Default to modern if no style provided
+
+    # First try exact match
+    if raw_style in STYLE_MAPPING:
+        return STYLE_MAPPING[raw_style]
+
+    # Try case-insensitive exact match
+    raw_lower = raw_style.lower()
+    for key, value in STYLE_MAPPING.items():
+        if key.lower() == raw_lower:
+            return value
+
+    # Try prefix matching (handles "Farmhouse (..." variations)
+    raw_prefix = raw_style.split("(")[0].strip().lower()
+    prefix_mapping = {
+        "modern": "modern",
+        "scandinavian": "scandinavian",
+        "coastal": "coastal",
+        "farmhouse": "farmhouse",
+        "mid-century modern": "midcentury",
+        "mid-century": "midcentury",
+        "midcentury": "midcentury",
+        "architecture digest": "architecture_digest",
+        "ad": "architecture_digest",
+    }
+
+    if raw_prefix in prefix_mapping:
+        return prefix_mapping[raw_prefix]
+
+    # If nothing matches, log a warning and default to modern
+    import logging
+    logger = logging.getLogger(__name__)
+    logger.warning(f"Unknown style '{raw_style}' - defaulting to 'modern'")
+    return "modern"
 
 
 # ============================================================================
@@ -85,7 +165,7 @@ class AirtableFields(BaseModel):
     Name: str = Field(..., description="Client name")
     Email: EmailStr = Field(..., description="Client email")
     Address: str = Field(..., description="Property address")
-    Style: Optional[str] = Field(default="Neutral", description="Style preference dropdown")
+    Style: Optional[str] = Field(default=None, description="Style preference dropdown")
     Comments: Optional[str] = Field(default=None, description="Special instructions from client")
     Photos: list[AirtablePhoto] = Field(..., description="Uploaded photos")
 
