@@ -74,6 +74,26 @@ GEMINI_IMAGE_CONFIGS = {
 }
 
 
+# =============================================================================
+# STRUCTURAL PRESERVATION RULES FOR IMAGE GENERATION
+# Shorter version for nano_client fallback prompts
+# =============================================================================
+
+NANO_STRUCTURAL_RULES = """
+🔒 ABSOLUTE STRUCTURAL LOCK - VIOLATION = UNUSABLE OUTPUT:
+
+CAMERA: Do NOT rotate view left/right. Same walls visible as original.
+FLOORING: Carpet stays carpet. Hardwood stays hardwood. Tile stays tile. NO CHANGES.
+WINDOWS: Same size, same position. Do NOT make small windows floor-to-ceiling.
+WALLS: Same positions. Do NOT add/remove walls or openings.
+CEILING: No track lighting or fixtures added. Crown molding preserved.
+PROPORTIONS: Room same size - no wide-angle distortion.
+
+⚠️ FLOORING IS CRITICAL: If you see CARPET in the original, output MUST have carpet.
+Changing flooring material is FRAUD - the flooring is part of the actual property.
+"""
+
+
 def choose_gemini_image_config(width: int, height: int) -> Tuple[str, str]:
     """
     Given the input image dimensions, return (aspect_ratio_str, image_size_str)
@@ -440,8 +460,29 @@ Result: 'Dwell magazine cover at sunset' through LIGHTING, not structural change
 
                 return f"""EDITORIAL STAGING (ARCHITECTURE DIGEST STYLE): Stage this {room_type} for magazine-cover quality.
 
+{NANO_STRUCTURAL_RULES}
+
 =============================================================================
-⚠️ CRITICAL: STRUCTURAL PRESERVATION (HIGHEST PRIORITY) ⚠️
+⚠️⚠️⚠️ CAMERA AND STRUCTURE LOCK ⚠️⚠️⚠️
+=============================================================================
+
+🚫 CAMERA - ABSOLUTE LOCK:
+- Maintain EXACT same camera position, angle, and field of view as original
+- Do NOT rotate view left or right - same walls must be visible
+- Before/after must align pixel-perfectly on architectural features
+
+🏠 ARCHITECTURE - ZERO CHANGES:
+- ALL walls in EXACTLY the same positions
+- ALL windows in EXACTLY the same positions, same size, same style
+- ALL doors in EXACTLY the same positions
+- Ceiling features UNCHANGED - NO track lighting added
+
+🛋️ FURNITURE - SAME WALLS:
+- If bed is on LEFT wall, staged bed goes on LEFT wall
+- Do NOT move major furniture to different walls
+
+=============================================================================
+⚠️ STRUCTURAL PRESERVATION (HIGHEST PRIORITY) ⚠️
 =============================================================================
 
 NEVER ALTER, REMOVE, OR INVENT:
@@ -457,6 +498,7 @@ SPECIFICALLY:
 - Do NOT extend walls where there are openings
 - Do NOT remove or alter any architectural pass-throughs
 - Do NOT add walls or structural elements that don't exist
+- Do NOT add track lighting, recessed lights, or skylights
 
 ⚠️ DAMAGE INVENTION PREVENTION (CRITICAL):
 When removing items like TVs, wall art, or furniture:
@@ -553,12 +595,31 @@ PLANT: One architectural plant or NONE"""
 
                 return f"""MODERN 2026 STAGING - "Ultra-Simple Holographic Minimalism": Stage this {room_type} with post-material ethereal design.
 
+{NANO_STRUCTURAL_RULES}
+
+=============================================================================
+⚠️⚠️⚠️ CAMERA AND STRUCTURE LOCK ⚠️⚠️⚠️
+=============================================================================
+
+🚫 CAMERA - ABSOLUTE LOCK:
+- Maintain EXACT same camera position, angle, and field of view as original
+- Do NOT rotate view left or right - same walls must be visible
+
+🏠 ARCHITECTURE - ZERO CHANGES:
+- ALL walls, windows, doors in EXACTLY the same positions
+- Ceiling features UNCHANGED - NO track lighting added
+
+🛋️ FURNITURE - SAME WALLS:
+- If bed is on LEFT wall, staged bed goes on LEFT wall
+
+=============================================================================
+
 ⚠️ CRITICAL RULES:
 - NEVER invent wall damage, cracks, or imperfections
 - NEVER shift camera angle - maintain EXACT perspective
 - MINIMAL to NO plants - Modern 2026 embraces the VOID
 
-⚠️ STRUCTURAL PRESERVATION - NEVER alter walls, doorways, windows, or architectural features.
+⚠️ STRUCTURAL PRESERVATION - NEVER alter walls, doorways, windows, or architectural features. NO added track lighting.
 
 MODERN 2026 STYLE DNA - "The Architecture of Silence":
 - COOL, ethereal light quality (4500-5500K) - crisp white with subtle holographic shimmer
@@ -649,12 +710,31 @@ PLANT: Organic trailing plants or dried botanicals"""
 
                 return f"""SCANDINAVIAN 2026 STAGING - "Nordic Ethereal - Spiritual Hygge": Stage this {room_type} with soul-nourishing Nordic warmth.
 
+{NANO_STRUCTURAL_RULES}
+
+=============================================================================
+⚠️⚠️⚠️ CAMERA AND STRUCTURE LOCK ⚠️⚠️⚠️
+=============================================================================
+
+🚫 CAMERA - ABSOLUTE LOCK:
+- Maintain EXACT same camera position, angle, and field of view as original
+- Do NOT rotate view left or right - same walls must be visible
+
+🏠 ARCHITECTURE - ZERO CHANGES:
+- ALL walls, windows, doors in EXACTLY the same positions
+- Ceiling features UNCHANGED - NO track lighting added
+
+🛋️ FURNITURE - SAME WALLS:
+- If bed is on LEFT wall, staged bed goes on LEFT wall
+
+=============================================================================
+
 ⚠️ CRITICAL RULES:
 - NEVER invent wall damage, cracks, or imperfections
 - NEVER shift camera angle - maintain EXACT perspective
 - Use soft, organic, IMPERFECT elements - handmade aesthetic
 
-⚠️ STRUCTURAL PRESERVATION - NEVER alter walls, doorways, windows, or architectural features.
+⚠️ STRUCTURAL PRESERVATION - NEVER alter walls, doorways, windows, or architectural features. NO added track lighting.
 
 SCANDINAVIAN 2026 STYLE DNA - "Spiritual Hygge":
 - LIGHT BLONDE wood (birch, ash, light oak) - NOT DARK WALNUT!
@@ -740,12 +820,31 @@ PLANT: Tropical in woven seagrass basket"""
 
                 return f"""COASTAL 2026 STAGING - "Hyper-Breezy Sensory Obsession": Stage this {room_type} with dopamine-inducing beach house joy.
 
+{NANO_STRUCTURAL_RULES}
+
+=============================================================================
+⚠️⚠️⚠️ CAMERA AND STRUCTURE LOCK ⚠️⚠️⚠️
+=============================================================================
+
+🚫 CAMERA - ABSOLUTE LOCK:
+- Maintain EXACT same camera position, angle, and field of view as original
+- Do NOT rotate view left or right - same walls must be visible
+
+🏠 ARCHITECTURE - ZERO CHANGES:
+- ALL walls, windows, doors in EXACTLY the same positions
+- Ceiling features UNCHANGED - NO track lighting added
+
+🛋️ FURNITURE - SAME WALLS:
+- If bed is on LEFT wall, staged bed goes on LEFT wall
+
+=============================================================================
+
 ⚠️ CRITICAL RULES:
 - NEVER invent wall damage, cracks, or imperfections
 - NEVER shift camera angle - maintain EXACT perspective
 - HYPER-BREEZY means light, airy, relaxed - not cluttered
 
-⚠️ STRUCTURAL PRESERVATION - NEVER alter walls, doorways, windows, or architectural features.
+⚠️ STRUCTURAL PRESERVATION - NEVER alter walls, doorways, windows, or architectural features. NO added track lighting.
 
 COASTAL 2026 STYLE DNA - "Hyper-Breezy Sensory Obsession":
 - DOPAMINE BRIGHTS are ESSENTIAL - CORAL, TURQUOISE, or SUNNY YELLOW pop
@@ -832,12 +931,31 @@ PLANT: Dried botanicals in vintage vessels"""
 
                 return f"""FARMHOUSE 2026 STAGING - "Neo-Farmhouse - Storied Sanctuary": Stage this {room_type} with soulful heritage warmth.
 
+{NANO_STRUCTURAL_RULES}
+
+=============================================================================
+⚠️⚠️⚠️ CAMERA AND STRUCTURE LOCK ⚠️⚠️⚠️
+=============================================================================
+
+🚫 CAMERA - ABSOLUTE LOCK:
+- Maintain EXACT same camera position, angle, and field of view as original
+- Do NOT rotate view left or right - same walls must be visible
+
+🏠 ARCHITECTURE - ZERO CHANGES:
+- ALL walls, windows, doors in EXACTLY the same positions
+- Ceiling features UNCHANGED - NO track lighting added
+
+🛋️ FURNITURE - SAME WALLS:
+- If bed is on LEFT wall, staged bed goes on LEFT wall
+
+=============================================================================
+
 ⚠️ CRITICAL RULES:
 - NEVER invent wall damage, cracks, or imperfections
 - CHARACTER in FURNITURE (worn, aged) = STYLE. Damage on WALLS = FRAUD.
 - NEVER shift camera angle - maintain EXACT perspective
 
-⚠️ STRUCTURAL PRESERVATION - NEVER alter walls, doorways, windows, or architectural features.
+⚠️ STRUCTURAL PRESERVATION - NEVER alter walls, doorways, windows, or architectural features. NO added track lighting.
 
 FARMHOUSE 2026 STYLE DNA - "Storied Sanctuary":
 - MUDDY PALETTE is ESSENTIAL: mushroom, olive brown, aged aubergine, warm clay, faded rust
@@ -931,12 +1049,26 @@ PLANT: In ceramic BULLET PLANTER"""
 
                 return f"""MID-CENTURY 2026 STAGING - "Retro-Futurism - Atomic Optimism": Stage this {room_type} with bold 1950s-60s optimism.
 
+{NANO_STRUCTURAL_RULES}
+
+=============================================================================
+⚠️⚠️⚠️ CAMERA AND STRUCTURE LOCK ⚠️⚠️⚠️
+=============================================================================
+
+🚫 CAMERA - ABSOLUTE LOCK:
+- Maintain EXACT same camera position, angle, and field of view as original
+- Do NOT rotate view left or right - same walls must be visible
+
+🏠 ARCHITECTURE - ZERO CHANGES:
+- ALL walls, windows, doors in EXACTLY the same positions
+- Ceiling features UNCHANGED - NO track lighting added
+
+🛋️ FURNITURE - SAME WALLS:
+- If bed is on LEFT wall, staged bed goes on LEFT wall
+
 ⚠️ CRITICAL RULES:
 - NEVER invent wall damage, cracks, or imperfections
-- NEVER shift camera angle - maintain EXACT perspective
 - Use DARK WALNUT - NOT light blonde wood (that's Scandinavian!)
-
-⚠️ STRUCTURAL PRESERVATION - NEVER alter walls, doorways, windows, or architectural features.
 
 MID-CENTURY 2026 STYLE DNA - "Atomic Optimism":
 - DARK WALNUT with TAPERED LEGS (ESSENTIAL - NOT light blonde wood!)
@@ -982,13 +1114,15 @@ Result: DARK WALNUT + BOLD SATURATED COLORS + TAPERED LEGS + SPUTNIK/BRASS. Atom
 
             return f"""VIRTUAL STAGING TASK: Stage this empty {room_type} photo for a real estate listing in a {style} style.
 
-KEEP ARCHITECTURE UNCHANGED: Keep the exact same layout, walls, flooring, windows, ceiling, and all architectural features from the original photo. Do NOT move walls, change flooring, or alter room dimensions.
+{NANO_STRUCTURAL_RULES}
+
+KEEP ARCHITECTURE UNCHANGED: Keep the exact same layout, walls, flooring, windows, ceiling, and all architectural features from the original photo. Do NOT move walls, change flooring material (carpet/hardwood/tile), or alter room dimensions.
 
 Add realistically scaled furniture: {furniture}. Include tasteful decor like plants and art that match the {style} style. All furniture must be properly sized for this specific room - do NOT use oversized furniture to fake room size.
 
 CRITICAL: Do NOT place any furniture, rugs, or decor to cover or hide any visible damage, stains, cracks, or wear on walls, floors, or ceiling. All defects must remain fully visible.
 
-Level the photo so vertical lines are truly vertical. Do NOT move camera horizontally or make the room appear larger.
+Level the photo so vertical lines are truly vertical. Do NOT move camera horizontally or rotate the view. Do NOT make the room appear larger.
 
 Apply professional photo enhancement: correct exposure, fix white balance, reduce haze. Result must be photorealistic."""
 
@@ -1091,13 +1225,15 @@ Result: Magazine-cover worthy through lighting + styling, not structural changes
             # Standard declutter fallback for occupied rooms
             return f"""VIRTUAL STYLING TASK: Clean up and enhance this {room_type} photo for a real estate listing.
 
+{NANO_STRUCTURAL_RULES}
+
 KEEP EVERYTHING UNCHANGED: Keep the exact same layout, walls, flooring, ceiling, and ALL major furniture exactly where it is. Do NOT remove or replace any furniture pieces.
 
 Remove only loose clutter, trash, and personal items to make the space look tidy. You may add ONLY small coordinating decor items (throw pillows, a small plant) that complement existing furniture.
 
 CRITICAL: Do NOT use any furniture, decor, or accessories to cover or hide any visible damage, stains, cracks, or wear. All defects must remain fully visible.
 
-Level the photo so vertical lines are truly vertical. Do NOT move camera horizontally.
+Level the photo so vertical lines are truly vertical. Do NOT move camera horizontally or rotate the view.
 
 Apply professional photo enhancement: correct exposure, fix white balance, reduce haze. Result must be photorealistic."""
     

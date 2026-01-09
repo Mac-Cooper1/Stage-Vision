@@ -31,6 +31,113 @@ from models import (
 logger = logging.getLogger(__name__)
 
 
+# =============================================================================
+# STRUCTURAL PRESERVATION RULES - APPLIES TO ALL STYLES
+# These rules prevent MLS compliance violations and potential lawsuits
+# =============================================================================
+
+STRUCTURAL_PRESERVATION_RULES = """
+════════════════════════════════════════════════════════════════════════════════
+⚠️ ABSOLUTE STRUCTURAL PRESERVATION RULES - VIOLATION = UNUSABLE OUTPUT ⚠️
+════════════════════════════════════════════════════════════════════════════════
+
+You are editing an EXISTING real estate photo. The output must be legally usable
+for MLS listings. Any structural misrepresentation could result in lawsuits.
+
+🔒 CAMERA POSITION (LOCKED - NO CHANGES ALLOWED):
+• Maintain EXACT camera position, angle, and rotation
+• Do NOT rotate the view left or right (no yaw changes)
+• Do NOT tilt the view up or down beyond minor leveling
+• Do NOT move the camera forward, backward, or sideways
+• The SAME WALLS must be visible in the output as in the input
+• If you can see the right wall in the original, you must see it in the output
+• If a wall is NOT visible in the original, it should NOT appear in the output
+
+🔒 FLOORING (LOCKED - NO CHANGES ALLOWED):
+• If the original has CARPET, the output MUST have carpet
+• If the original has HARDWOOD, the output MUST have hardwood
+• If the original has TILE, the output MUST have tile
+• If the original has LAMINATE, the output MUST have laminate
+• If the original has CONCRETE, the output MUST have concrete
+• Do NOT change flooring material, color, or pattern
+• The floor is part of the property's actual features - changing it is FRAUD
+
+🔒 WINDOWS (LOCKED - NO CHANGES ALLOWED):
+• Windows must stay in EXACT same positions
+• Windows must stay the EXACT same size
+• Windows must stay the EXACT same shape and style
+• Do NOT turn small windows into floor-to-ceiling windows
+• Do NOT add windows that don't exist
+• Do NOT remove windows that do exist
+• Window TREATMENTS (curtains, blinds) can change - window STRUCTURE cannot
+
+🔒 WALLS & OPENINGS (LOCKED - NO CHANGES ALLOWED):
+• All walls must remain in exact positions
+• All doorways must remain in exact positions and sizes
+• All archways and openings must be preserved
+• Wall COLOR can be subtly adjusted for lighting, but structure cannot change
+• Do NOT add or remove walls, niches, or built-ins
+
+🔒 CEILING (LOCKED - NO CHANGES ALLOWED):
+• Ceiling height must remain the same
+• Crown molding must be preserved if present
+• Do NOT add track lighting, beams, or fixtures that don't exist
+• Do NOT remove ceiling features that do exist
+• Recessed lights in original must stay; don't add new ones
+
+🔒 ROOM DIMENSIONS (LOCKED - NO CHANGES ALLOWED):
+• Room must appear the SAME SIZE as original
+• Do NOT use wide-angle distortion to make room look bigger
+• Do NOT crop to hide parts of the room
+• Proportions must match exactly
+
+📋 WHAT YOU CAN CHANGE:
+• Furniture (replace, add, remove, restyle)
+• Decor (art, plants, accessories, pillows, throws)
+• Window treatments (curtains, drapes, blinds - but not window structure)
+• Lighting QUALITY (brightness, warmth, color temperature)
+• Bedding, rugs, and soft furnishings
+• Minor wall color/tone adjustment for style cohesion
+
+════════════════════════════════════════════════════════════════════════════════
+"""
+
+STRUCTURAL_VERIFICATION_REMINDER = """
+────────────────────────────────────────────────────────────────────────────────
+⚠️ FINAL STRUCTURAL CHECK - VERIFY BEFORE OUTPUTTING ⚠️
+────────────────────────────────────────────────────────────────────────────────
+
+Before generating your output, verify ALL of these are true:
+
+□ CAMERA: Same walls visible as original (camera didn't rotate)
+  - If right wall was visible, it's still visible
+  - If left wall was hidden, it's still hidden
+
+□ FLOORING: Same flooring material as original
+  - Carpet stayed carpet (NOT changed to hardwood)
+  - Hardwood stayed hardwood (NOT changed to carpet)
+  - Tile stayed tile
+
+□ WINDOWS: Same window sizes and positions
+  - No small windows became floor-to-ceiling
+  - No windows were added or removed
+  - Window frames in same locations
+
+□ PROPORTIONS: Room appears same size as original
+  - Not wider, not deeper, not taller
+  - No wide-angle distortion added
+
+□ WALLS: All walls in original positions
+  - No walls moved, added, or removed
+  - Doorways and openings unchanged
+
+If ANY of these checks fail, the image is INVALID for MLS use.
+Regenerate while preserving the original structure.
+
+────────────────────────────────────────────────────────────────────────────────
+"""
+
+
 class GeminiPlannerClient:
     """
     Client for Gemini vision API to analyze room photos and generate virtual staging prompts.
@@ -822,6 +929,8 @@ to the relevant images. Incorporate their preferences while maintaining the sele
 
         return f"""You are a professional virtual staging designer creating beautiful, realistic staging prompts for Gemini's image editor.
 
+{STRUCTURAL_PRESERVATION_RULES}
+
 === CRITICAL: VIRTUAL STAGING ONLY - DO NOT REGENERATE THE ROOM ===
 
 Treat this as a VIRTUAL STAGING task on top of the existing photograph, NOT a full room regeneration.
@@ -1406,6 +1515,57 @@ Before finalizing ANY Architecture Digest image, verify:
 ✓ The room is immediately recognizable as the same space from the original photo
 =============================================================================
 {comments_section}
+
+=============================================================================
+⚠️ FINAL VERIFICATION CHECKLIST - ALL STYLES (MANDATORY) ⚠️
+=============================================================================
+Before generating ANY staged image, you MUST verify:
+
+□ CAMERA: Does the output use the EXACT same camera angle as the original?
+  - Same viewpoint, same perspective, same field of view
+  - No rotation, shift, pan, or tilt
+  - Before/after would overlay perfectly
+
+□ WALLS: Are ALL walls in the EXACT same positions as the original?
+  - No walls moved, added, or removed
+  - Same wall angles and proportions
+
+□ WINDOWS: Are ALL windows in the EXACT same positions as the original?
+  - Same number of windows
+  - Same positions on walls
+  - Same sizes and styles
+
+□ DOORS: Are ALL doors/openings in the EXACT same positions as the original?
+  - No doorways filled in or added
+  - Same positions and sizes
+
+□ CEILING: Is the ceiling IDENTICAL to the original?
+  - No track lighting added
+  - No recessed lights added
+  - No skylights added
+  - No beams added
+  - Crown molding preserved
+
+□ FLOOR: Is the flooring IDENTICAL to the original?
+  - Same material and pattern
+  - Same boundaries
+
+□ FURNITURE POSITION: Is major furniture on the SAME WALLS as the original?
+  - Bed on same wall as original (if bedroom)
+  - Sofa facing same direction as logical for room
+
+□ PROPORTIONS: Does the room appear the SAME SIZE as the original?
+  - Not wider, not deeper, not taller
+  - Same spatial proportions
+
+□ NO INVENTED DAMAGE: Are walls clean where items were removed?
+  - No fake mounting holes, cracks, or marks invented
+
+If ANY of these checks fail, the image is INVALID and misrepresents the property.
+=============================================================================
+
+{STRUCTURAL_VERIFICATION_REMINDER}
+
 === YOUR TASK ===
 
 Analyze the uploaded photo and respond with ONLY valid JSON (no markdown, no code blocks):
